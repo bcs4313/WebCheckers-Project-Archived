@@ -7,7 +7,7 @@ a web micro-framework.
 ## Team
 
 - Triston Lincoln
-- MEMBER2
+- Michael Ambrose
 - MEMBER3
 - MEMBER4
 

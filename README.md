@@ -9,7 +9,7 @@ a web micro-framework.
 - Triston Lincoln
 - Michael Ambrose
 - Carlos Hargrove
-- MEMBER4
+- Cody Smith
 
 
 ## Prerequisites

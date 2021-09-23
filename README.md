@@ -8,7 +8,7 @@ a web micro-framework.
 
 - Triston Lincoln
 - Michael Ambrose
-- MEMBER3
+- Carlos Hargrove
 - MEMBER4
 
 

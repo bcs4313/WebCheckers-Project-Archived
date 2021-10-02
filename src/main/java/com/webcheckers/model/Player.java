@@ -19,6 +19,7 @@ public class Player {
      */
     public Player(String username)
     {
+        // null safety
         this.username = Objects.requireNonNullElse(username, "MISSING NAME");
         this.isVerified = false;
     }

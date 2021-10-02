@@ -19,12 +19,44 @@ public class PlayerLobby {
     // all logged-in users
     private HashMap<String, Player> usernameMap;
 
+    // A string of characters that are not allowed in
+    // a username. A user cannot log in with these.
+    private final String invalidChars = "~`!@#$%^&*()_+" +
+            "=-|\\{}[]:;\"'?/>.<,'}";
+
+    /**
+     * Basic constructor. Just makes a username hashmap and logs creation.
+     */
     public PlayerLobby()
     {
         LOG.fine("New player services instance created.");
 
         // create a new username hashmap
         usernameMap = new HashMap<>();
+    }
+
+    /**
+     * Checks if the player username is fit for logging in
+     * @param player the player to check
+     * @return if the name fits syntax rules
+     */
+    private boolean verifyPlayerName(Player player)
+    {
+        String username = player.getUsername();
+        if(username.equals("MISSING NAME")) { return false; }
+        if(username.equals("")) { return false; }
+
+        // check to see if ANY illegal character exists in
+        // the username
+        for(int i = 0; i < invalidChars.length(); i++)
+        {
+            String character = username.substring(i,i+1);
+            if(username.contains(character))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -35,17 +67,21 @@ public class PlayerLobby {
      */
     public boolean login(Player player)
     {
+        // get list via hashmap keyset
         Set<String> usernameList = usernameMap.keySet();
-        if(usernameList.contains(player.getUsername()) && !player.getUsername().equals("MISSING NAME"))
-        {
-            usernameMap.put(player.getUsername(), player);
-            player.setVerified(true);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+
+        // first we will do some syntax checks for username validation
+        boolean isNameValid = verifyPlayerName(player);
+
+        // if the name already exists they cannot login
+        if(usernameList.contains(player.getUsername())) { return false; }
+        if(!isNameValid) { return false; }
+
+        // validation checks passed. We will now log in
+        usernameMap.put(player.getUsername(), player);
+        player.setVerified(true);
+        return true;
+
     }
 
     /**

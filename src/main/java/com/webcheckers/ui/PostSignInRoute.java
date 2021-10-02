@@ -1,12 +1,15 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.PlayerLobby;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import com.webcheckers.model.Player;
+import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+
+import static spark.Spark.halt;
 
 /**
  * The POST /signin route handler.
@@ -38,7 +41,19 @@ public class PostSignInRoute implements Route {
     //Todo: Finish method.
     @Override
     public String handle(Request request, Response response) {
+
+        final Session session = request.session();
+
+        final String username = request.queryParams("username");
+        boolean attemptLogin = playerLobby.login(new Player(username));
+        if (attemptLogin) {
+            response.redirect(WebServer.HOME_URL);
+        } else{
+            response.redirect(WebServer.HOME_URL);
+        }
+
         return null;
         }
+
 }
 

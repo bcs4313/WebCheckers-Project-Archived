@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 /**
  * Application tier component responsible for
  * handling sign in actions.
+ * @author Cody Smith (bcs4313@rit.edu)
  */
 public class PlayerLobby {
     // create a logger for this server-based object

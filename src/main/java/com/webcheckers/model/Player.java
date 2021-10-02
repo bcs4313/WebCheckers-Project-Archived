@@ -4,7 +4,8 @@ import java.util.Objects;
 
 /**
  * A relatively simple model that stores the player's
- * name.
+ * name and verification status.
+ * @author Cody Smith (bcs4313@rit.edu)
  */
 public class Player {
 
@@ -27,6 +28,7 @@ public class Player {
         return this.username;
     }
 
+    // is the user logged in?
     public boolean isVerified()
     {
         return this.isVerified;

@@ -1,5 +1,11 @@
 <html>
-
+<!--
+    This is the freemarker templete for the /signin page.
+    Included in the page is the form to submit a request to sign in
+    (handled by the POST /signin route)
+    Data needed: title
+    @author: Triston Lincoln
+-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
     <meta http-equiv="refresh" content="10">

@@ -26,7 +26,7 @@
             <!-- user sign in form, consisting of one button and on text field-->
             <form action="/signin" method="post">
                 <label for="username"><b>Username</b></label>
-                <input type="text">
+                <input name="username" type="text">
 
                 <button type="submit">Login</button>
             </form>

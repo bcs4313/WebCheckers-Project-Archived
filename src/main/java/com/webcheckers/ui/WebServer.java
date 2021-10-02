@@ -7,8 +7,7 @@ import spark.TemplateEngine;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static spark.Spark.get;
-import static spark.Spark.staticFileLocation;
+import static spark.Spark.*;
 
 
 /**
@@ -151,6 +150,9 @@ public class WebServer {
 
     // Shows the Checkers game SignIn page.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
+
+    post(SIGNIN_URL, new PostSignInRoute(playerLobby, templateEngine));
+
     //
     LOG.config("WebServer is initialized.");
   }

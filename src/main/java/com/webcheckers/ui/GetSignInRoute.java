@@ -3,6 +3,9 @@ package com.webcheckers.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
+
+import javax.swing.text.View;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -19,8 +22,11 @@ import com.webcheckers.util.Message;
  * @author Michael Ambrose
  */
 
-public class GetSignInRoute {
+public class GetSignInRoute implements Route{
 
+    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
+
+    private final String VIEW_NAME = "signin.ftl";
     private final TemplateEngine templateEngine;
 
     /**
@@ -32,12 +38,28 @@ public class GetSignInRoute {
     public GetSignInRoute(final TemplateEngine templateEngine) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
+        LOG.config("GetSignInRoute is initialized");
     }
 
-    @Override
-    public Object handle(Request request, Response response) {
+   /**
+   * Render the WebCheckers SignIn page.
+   *
+   * @param request
+   *   the HTTP request
+   * @param response
+   *   the HTTP response
+   *
+   * @return
+   *   the rendered HTML for the Home page
+   */
 
-        return templateEngine.render();
+   @Override
+    public Object handle(Request request, Response response) {
+        Map<String, Object> vm = new HashMap<>();
+
+        vm.put("title", "Checkers Sign In");
+
+        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }
 

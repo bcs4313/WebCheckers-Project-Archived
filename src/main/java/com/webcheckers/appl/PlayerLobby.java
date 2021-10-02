@@ -19,11 +19,6 @@ public class PlayerLobby {
     // all logged-in users
     private HashMap<String, Player> usernameMap;
 
-    // A string of characters that are not allowed in
-    // a username. A user cannot log in with these.
-    private final String invalidChars = "~`!@#$%^&*()_+" +
-            "=-|\\{}[]:;\"'?/>.<,'}";
-
     /**
      * Basic constructor. Just makes a username hashmap and logs creation.
      */
@@ -46,17 +41,7 @@ public class PlayerLobby {
         if(username.equals("MISSING NAME")) { return false; }
         if(username.equals("")) { return false; }
 
-        // check to see if ANY illegal character exists in
-        // the username
-        for(int i = 0; i < invalidChars.length(); i++)
-        {
-            String character = username.substring(i,i+1);
-            if(username.contains(character))
-            {
-                return false;
-            }
-        }
-        return true;
+        return !username.contains("[^a-zA-Z/d]");
     }
 
     /**

@@ -1,15 +1,15 @@
 package com.webcheckers;
 
+import com.google.gson.Gson;
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.ui.WebServer;
+import spark.TemplateEngine;
+import spark.template.freemarker.FreeMarkerEngine;
+
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
-import com.google.gson.Gson;
-import com.webcheckers.ui.WebServer;
-
-import spark.TemplateEngine;
-import spark.template.freemarker.FreeMarkerEngine;
 
 
 /**
@@ -95,8 +95,13 @@ public final class Application {
     // response to Ajax requests.
     final Gson gson = new Gson();
 
+    // The application uses PlayerLobby to handle log in and log out operations
+    // for users. It prevents concurrent usernames from existing and helps
+    // identify Player objects.
+    final PlayerLobby playerLobby = new PlayerLobby();
+
     // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine, gson);
+    final WebServer webServer = new WebServer(templateEngine, gson, playerLobby);
 
     // inject web server into application
     final Application app = new Application(webServer);

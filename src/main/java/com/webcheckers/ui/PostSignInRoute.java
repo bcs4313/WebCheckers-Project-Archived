@@ -1,14 +1,12 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.PlayerLobby;
-import spark.*;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-
-import static spark.Spark.halt;
 
 /**
  * The POST /signin route handler.
@@ -22,7 +20,7 @@ public class PostSignInRoute implements Route {
     /**
      * The constructor for the @code POST /signin route handler.
      *
-     * @param playerLobby - contains login info.
+     * @param playerLobby - contains login info. Aids in signing in a user.
      * @param templateEngine - template engine to use for rendering HTML page
      *
      * @throws NullPointerException
@@ -42,7 +40,5 @@ public class PostSignInRoute implements Route {
     public String handle(Request request, Response response) {
         return null;
         }
-    }
-
-
 }
+

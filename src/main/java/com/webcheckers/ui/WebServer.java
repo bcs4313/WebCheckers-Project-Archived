@@ -1,13 +1,14 @@
 package com.webcheckers.ui;
 
-import static spark.Spark.*;
+import com.google.gson.Gson;
+import com.webcheckers.appl.PlayerLobby;
+import spark.TemplateEngine;
 
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.google.gson.Gson;
-
-import spark.TemplateEngine;
+import static spark.Spark.get;
+import static spark.Spark.staticFileLocation;
 
 
 /**
@@ -61,6 +62,8 @@ public class WebServer {
   private final TemplateEngine templateEngine;
   private final Gson gson;
 
+  private final PlayerLobby playerLobby;
+
   //
   // Constructor
   //
@@ -72,17 +75,20 @@ public class WebServer {
    *    The default {@link TemplateEngine} to render page-level HTML views.
    * @param gson
    *    The Google JSON parser object used to render Ajax responses.
-   *
+   * @param playerLobby
+   *    Application Level object that manages user sign in
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby playerLobby) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
+    Objects.requireNonNull(playerLobby, "PlayerLobby must not be null");
     //
     this.templateEngine = templateEngine;
     this.gson = gson;
+    this.playerLobby = playerLobby;
   }
 
   //

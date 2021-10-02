@@ -19,7 +19,7 @@ import com.webcheckers.util.Message;
  * @author Michael Ambrose
  */
 
-public class GetSignInRoute {
+public class GetSignInRoute implements Route {
 
     private final TemplateEngine templateEngine;
 

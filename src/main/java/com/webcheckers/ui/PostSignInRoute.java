@@ -42,7 +42,5 @@ public class PostSignInRoute implements Route {
     public String handle(Request request, Response response) {
         return null;
         }
-    }
-
 
 }

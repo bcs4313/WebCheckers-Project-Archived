@@ -1,20 +1,11 @@
 package com.webcheckers.ui;
 
+import spark.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-import javax.swing.text.View;
-
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
-import static spark.Spark.halt;
-
-import com.webcheckers.util.Message;
 
 /**
  * The {@code GET /signin} route handler.

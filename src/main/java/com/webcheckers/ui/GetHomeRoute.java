@@ -1,17 +1,12 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.util.Message;
+import spark.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
-
-import com.webcheckers.util.Message;
 
 /**
  * The UI Controller to GET the Home page.
@@ -54,6 +49,11 @@ public class GetHomeRoute implements Route {
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
+
+    // attempt to retrieve the username for the session
+    String username = request.session().attribute("username");
+
+    vm.put("username", username); // store username in home.ftl
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);

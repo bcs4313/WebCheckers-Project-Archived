@@ -4,12 +4,7 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-
-import static spark.Spark.halt;
 
 /**
  * The POST /signin route handler.
@@ -38,15 +33,16 @@ public class PostSignInRoute implements Route {
         this.templateEngine = templateEngine;
     }
 
-    //Todo: Finish method.
     @Override
     public String handle(Request request, Response response) {
 
         final Session session = request.session();
 
         final String username = request.queryParams("username");
-        boolean attemptLogin = playerLobby.login(new Player(username));
+        Player ply = new Player(username);
+        boolean attemptLogin = playerLobby.login(ply);
         if (attemptLogin) {
+            session.attribute("username", ply.getUsername()); // store username in client session
             response.redirect(WebServer.HOME_URL);
         } else{
             response.redirect(WebServer.HOME_URL);

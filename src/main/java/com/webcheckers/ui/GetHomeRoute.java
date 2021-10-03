@@ -2,10 +2,13 @@ package com.webcheckers.ui;
 
 import com.webcheckers.util.Message;
 import spark.*;
+import com.webcheckers.model.Player;
+import com.webcheckers.appl.PlayerLobby;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -20,14 +23,16 @@ public class GetHomeRoute implements Route {
 
   private final TemplateEngine templateEngine;
 
+  private final PlayerLobby playerLobby;
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+    this.playerLobby = Objects.requireNonNull(playerLobby, "playerLobby is required");
     //
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -48,6 +53,10 @@ public class GetHomeRoute implements Route {
     LOG.finer("GetHomeRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
+
+    HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
+    Set<String> allUsernames = usernameMap.keySet();
+
     vm.put("title", "Welcome!");
 
     // attempt to retrieve the username for the session
@@ -55,6 +64,8 @@ public class GetHomeRoute implements Route {
 
     vm.put("username", username); // store username in home.ftl
 
+    //store list of all signed-in usernames
+    vm.put("allUsernames", allUsernames);
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 

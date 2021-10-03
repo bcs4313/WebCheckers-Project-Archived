@@ -31,6 +31,9 @@ public class PlayerLobby {
         usernameMap = new HashMap<>();
     }
 
+    public HashMap<String, Player> getUsernameMap(){
+        return usernameMap;
+    }
     /**
      * Checks if the player username is fit for logging in
      * @param player the player to check

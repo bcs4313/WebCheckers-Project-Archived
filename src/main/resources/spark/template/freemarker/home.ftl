@@ -25,9 +25,14 @@
             spectating active games,
             or replay archived games
       -->
+    <#if username??>
+      <#list allUsernames as users>
+        <p>${users}</p>
+      </#list>
+    <#else>
 
-      </div>
-
+    </#if>
+    </div>
   </div>
 </body>
 

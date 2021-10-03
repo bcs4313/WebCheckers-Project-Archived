@@ -66,7 +66,10 @@ public class GetHomeRoute implements Route {
 
     //store list of all signed-in usernames
     vm.put("allUsernames", allUsernames);
+
+    //store the amount of active players
     vm.put("amtPlayers", allUsernames.size());
+
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 

@@ -5,6 +5,7 @@ import com.webcheckers.model.Player;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.*;
 
 /**
  * Application tier component responsible for
@@ -41,7 +42,7 @@ public class PlayerLobby {
         if(username.equals("MISSING NAME")) { return false; }
         if(username.equals("")) { return false; }
 
-        return !username.contains("[^a-zA-Z/d]");
+        return Pattern.matches("[a-zA-Z0-9]*", username);
     }
 
     /**

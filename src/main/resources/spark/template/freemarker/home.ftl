@@ -26,11 +26,14 @@
             or replay archived games
       -->
     <#if username??>
-      <#list allUsernames as users>
-        <p>${users}</p>
+      Current Players:
+      <#list allUsernames>
+        <#items as user>
+          <p>${user}</p>
+        </#items>
       </#list>
     <#else>
-
+      Number of Active Players: ${amtPlayers}
     </#if>
     </div>
   </div>

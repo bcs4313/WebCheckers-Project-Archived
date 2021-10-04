@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class GetSignInRoute implements Route{
 
     private final String VIEW_NAME = "signin.ftl";
     private final TemplateEngine templateEngine;
+    private static final Message INVALID_MSG = Message.info("Username invalid. Try another username.");
 
     /**
      * The constructor for the {@code GET/signin} route handler
@@ -47,6 +49,14 @@ public class GetSignInRoute implements Route{
    @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
+
+        Boolean error = request.session().attribute("error");
+
+        if (error != null) {
+            if (error) {
+                vm.put("message", INVALID_MSG);
+            }
+        }
 
         vm.put("title", "Checkers Sign In");
 

@@ -38,6 +38,7 @@ public class PostSignInRoute implements Route {
 
         final Session session = request.session();
 
+        session.attribute("error", false);
         final String username = request.queryParams("username");
         Player ply = new Player(username);
         boolean attemptLogin = playerLobby.login(ply);
@@ -45,7 +46,8 @@ public class PostSignInRoute implements Route {
             session.attribute("username", ply.getUsername()); // store username in client session
             response.redirect(WebServer.HOME_URL);
         } else{
-            response.redirect(WebServer.HOME_URL);
+            session.attribute("error", true);
+            response.redirect(WebServer.SIGNIN_URL);
         }
 
         return null;

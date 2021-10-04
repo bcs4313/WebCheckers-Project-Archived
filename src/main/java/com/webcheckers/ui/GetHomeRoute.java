@@ -5,10 +5,7 @@ import spark.*;
 import com.webcheckers.model.Player;
 import com.webcheckers.appl.PlayerLobby;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -56,6 +53,7 @@ public class GetHomeRoute implements Route {
 
     HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
     Set<String> allUsernames = usernameMap.keySet();
+    ArrayList<String> copyNames = new ArrayList<>(allUsernames);
 
     vm.put("title", "Welcome!");
 
@@ -64,8 +62,9 @@ public class GetHomeRoute implements Route {
 
     vm.put("username", username); // store username in home.ftl
 
+    copyNames.remove(username);
     //store list of all signed-in usernames
-    vm.put("allUsernames", allUsernames);
+    vm.put("allUsernames", copyNames);
 
     //store the amount of active players
     vm.put("amtPlayers", allUsernames.size());

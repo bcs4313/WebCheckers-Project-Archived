@@ -14,7 +14,13 @@ public class Row implements Iterable<Space> {
     private ArrayList<Space> spaces;
     private final int EACHSPACE = 8;
 
-    public Row(int index, GameBoard.cells[] board) throws Exception {
+    /**
+     * Constructor for the Row class
+     * @param index which row position is this on the checker board?
+     * @param brow an individual row from the original GameBoard matrix
+     * @throws Exception invalid index exception
+     */
+    public Row(int index, GameBoard.cells[] brow) throws Exception {
         this.index=index;
         if(index>7){
             throw new Exception("Invalid index size: Must be 7 or lower.");
@@ -22,7 +28,7 @@ public class Row implements Iterable<Space> {
 
         spaces = new ArrayList<>();
         for(int i=0; i<EACHSPACE; i++){
-            GameBoard.cells pieceType = board[i];
+            GameBoard.cells pieceType = brow[i];
             Space s = new Space(i, pieceType);
             spaces.add(i, s);
         }

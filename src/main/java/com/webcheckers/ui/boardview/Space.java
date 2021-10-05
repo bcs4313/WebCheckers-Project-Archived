@@ -6,8 +6,8 @@ import com.webcheckers.model.GameBoard;
  * This class represents each space on the checker board 
  */
 public class Space {
-    private int cellIdx;
-    private Piece currentPiece;
+    private int cellIdx; // cell id num
+    private Piece currentPiece; // piece this space contains
 
     /**
      * Constructor
@@ -16,9 +16,8 @@ public class Space {
      *  the id of the specific cell
      * @param pieceType
      *  the piece that is on the space (can be empty)
-     * @throws Exception
+     * @throws Exception invalid index exception
      */
-
     public Space(int cellIDx, GameBoard.cells pieceType) throws Exception {
         this.cellIdx=cellIDx;
         if(cellIDx>7){
@@ -31,6 +30,7 @@ public class Space {
         }
     }
 
+    // get a cell's identification number
     public int getCellIdx(){
         return cellIdx;
     }
@@ -41,6 +41,7 @@ public class Space {
     }
 
 
+    // return the piece this space contains
     public Piece getPiece(){
         return currentPiece;
     }

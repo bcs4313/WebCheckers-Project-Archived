@@ -55,10 +55,14 @@ public class GetGameRoute implements Route{
 
         final Session session = request.session();
 
+        // retrieve opponent name and get them from the player lobby,
+        // also do this for the client
         final String opponent = request.queryParams("opponent"); //
         String username = request.session().attribute("username");
         Player currentUser = this.playerLobby.getPlayer(username);
 
+        // if an assignable opponent exists for a player (game started),
+        // automatically load a board for them.
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
             GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
@@ -74,7 +78,7 @@ public class GetGameRoute implements Route{
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
-            if (opponentUser.isInGame()){
+            if (opponentUser.isInGame()) { // error case
                 session.attribute("error", true);
                 response.redirect(WebServer.HOME_URL);
             }

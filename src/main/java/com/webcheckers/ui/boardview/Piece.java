@@ -8,25 +8,27 @@ import com.webcheckers.model.GameBoard;
 
 public class Piece {
 
+    // checker piece types
     private enum Type {
         KING,
         SINGLE
     }
 
+    // checker team colors
     private enum Color{
         RED,
         WHITE
     }
 
-    private Type type;
-    private Color color;
+    private Type type; // king or single?
+    private Color color; // white of red?
 
     /**
      * Constructor
      * 
-     * @param pieceType
+     * @param pieceType enum value that defines what piece
+     * this space actually contains
      */
-
     public Piece(GameBoard.cells pieceType){
 
         if(pieceType != GameBoard.cells.WK && pieceType != GameBoard.cells.RK)

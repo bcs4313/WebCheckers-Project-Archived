@@ -62,7 +62,12 @@ public class Player {
         inGame = status;
     }
 
+    // set the opponent assigned to this player,
+    //note: used to initiate a game for another user if
+    // an opponent starts a game for them
     public void setOpponent(Player opponent){ this.opponent = opponent; }
 
+    // get the opponent player, returns null if no one has
+    // started a match with this player
     public Player getOpponent(){ return this.opponent; }
 }

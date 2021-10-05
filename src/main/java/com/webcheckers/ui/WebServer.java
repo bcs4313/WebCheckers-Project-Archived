@@ -70,7 +70,7 @@ public class WebServer {
   private final TemplateEngine templateEngine;
   private final Gson gson;
 
-  private final PlayerLobby playerLobby;
+  private final PlayerLobby playerLobby; // player waiting room manager
 
   //
   // Constructor

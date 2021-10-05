@@ -17,7 +17,8 @@ public class BoardView implements Iterable<Row> {
     /**
      * Constructor
      * 
-     * @param board
+     * @param board a 2d matrix of cells that will be converted
+     * into a html view.
      */
     public BoardView(GameBoard.cells[][] board) {
         try {

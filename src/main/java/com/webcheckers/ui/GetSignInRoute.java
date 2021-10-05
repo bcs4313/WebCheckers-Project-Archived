@@ -25,7 +25,7 @@ public class GetSignInRoute implements Route{
     /**
      * The constructor for the {@code GET/signin} route handler
      * 
-     * @param templateEngine
+     * @param templateEngine engine used to construct a page with a ftl file.
      */
 
     public GetSignInRoute(final TemplateEngine templateEngine) {
@@ -58,7 +58,7 @@ public class GetSignInRoute implements Route{
             }
         }
 
-        vm.put("title", "Checkers Sign In");
+        vm.put("title", "Checkers Sign In"); // add title to signin.ftl
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

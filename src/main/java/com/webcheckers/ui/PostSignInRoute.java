@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author Carlos Hargrove
  */
 public class PostSignInRoute implements Route {
-    private final PlayerLobby playerLobby;
+    private final PlayerLobby playerLobby; // needed for the sign in process
     private final TemplateEngine templateEngine;
 
 

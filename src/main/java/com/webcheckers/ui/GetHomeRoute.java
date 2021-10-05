@@ -53,11 +53,13 @@ public class GetHomeRoute implements Route {
     //
     Map<String, Object> vm = new HashMap<>();
 
+    // get a map of players in the lobby, using the keyset
+    // to obtain purely a set of player names.
     HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
     Set<String> allUsernames = usernameMap.keySet();
     ArrayList<String> copyNames = new ArrayList<>(allUsernames);
 
-    vm.put("title", "Welcome!");
+    vm.put("title", "Welcome!"); // store title in home.ftl
 
     // attempt to retrieve the username for the session
     String username = request.session().attribute("username");
@@ -79,6 +81,9 @@ public class GetHomeRoute implements Route {
     vm.put("amtPlayers", allUsernames.size());
 
 
+    // get a boolean that evaluates if a previous signin was
+    // invalid. If so, identify the error and display it on the home.ftl
+    // page.
     Boolean error = request.session().attribute("error");
     if (error != null){
       if (error) {

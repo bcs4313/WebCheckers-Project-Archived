@@ -1,6 +1,5 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -19,7 +18,6 @@ public class GetGameRoute implements Route{
 
     private final String VIEW_NAME = "game.ftl";
     private final TemplateEngine templateEngine;
-    private static final Message INVALID_MSG = Message.info("Could not load page");
 
     
     /**
@@ -49,14 +47,6 @@ public class GetGameRoute implements Route{
     @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
-
-        Boolean error = request.session().attribute("error");
-
-        if (error != null) {
-            if (error) {
-                vm.put("message", INVALID_MSG);
-            }
-        }
 
         vm.put("title", "Playing Game");
 

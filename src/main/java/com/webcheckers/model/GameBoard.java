@@ -123,7 +123,7 @@ public class GameBoard {
         return currentView;
     }
 
-    public cells[][] flippedBoard() {
+    public void flipBoard() {
         cells[][] boardFlipped = this.board;
 
         for(int i = 0; i <= 2; i++) {
@@ -141,6 +141,5 @@ public class GameBoard {
                 }
             }
         }
-       return boardFlipped;
     }
 }

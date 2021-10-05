@@ -62,6 +62,7 @@ public class GetGameRoute implements Route{
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
             GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
+            thisBoard.flipBoard();
             BoardView thisBoardView = thisBoard.toBoardView();
             vm.put("currentUser", currentUser);
             vm.put("title", "Playing Game");
@@ -93,6 +94,8 @@ public class GetGameRoute implements Route{
                 vm.put("board", thisBoardView);
             }
         }
+
+        vm.put("username", username); // store username in home.ftl
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

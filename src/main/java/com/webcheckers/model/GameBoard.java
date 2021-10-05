@@ -133,16 +133,22 @@ public class GameBoard {
     public void flipBoard() {
         cells[][] boardFlipped = this.board;
 
+        // for each row in the top half of the board
         for(int i = 0; i <= 2; i++) {
+            // for every piece
             for(int j = 0; j < boardFlipped[i].length; j++) {
+                // if the piece is white, change to red
                 if(boardFlipped[i][j] == cells.W) {
                     boardFlipped[i][j] = cells.R;
                 }
             }
         }
 
+        // for each row in the bottom half of the board
         for(int i = 5; i <= 7; i++) {
+            // for each piece
             for(int j = 0; j < boardFlipped[i].length; j++) {
+                // if the piece is red, change to white
                 if(boardFlipped[i][j] == cells.R) {
                     boardFlipped[i][j] = cells.W;
                 }

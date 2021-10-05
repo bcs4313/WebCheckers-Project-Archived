@@ -20,15 +20,6 @@ public class RequestManager {
     HashMap<String, ArrayList<Request>> requestMap;
 
     /**
-     * Constructor for this object
-     * @param lobby server level lobby object this request points to
-     */
-    public RequestManager(PlayerLobby lobby)
-    {
-        this.lobby = lobby;
-    }
-
-    /**
      * Send a request to a particular player. Creates
      * a request object and stores it inside the manager
      * for retrieval.

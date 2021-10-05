@@ -20,7 +20,7 @@ public class GetSignInRoute implements Route{
 
     private final String VIEW_NAME = "signin.ftl";
     private final TemplateEngine templateEngine;
-    private static final Message INVALID_MSG = Message.info("Username invalid. Try another username.");
+    private static final Message INVALID_MSG = Message.error("Username invalid. Try another username.");
 
     /**
      * The constructor for the {@code GET/signin} route handler

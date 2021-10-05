@@ -29,7 +29,10 @@
       Current Players:
       <#list allUsernames>
         <#items as user>
-          <p>${user}</p>
+          <form action="/game" method="post">
+            <p>
+              <button type="submit" class="player">${user}</button>
+            </p>
         </#items>
       </#list>
     <#else>

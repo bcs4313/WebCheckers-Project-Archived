@@ -99,6 +99,14 @@ public class GameBoard {
         activeColor = activeColors.RED;
     }
 
+    public Player getRedPlayer(){
+        return this.redPlayer;
+    }
+
+    public Player getWhitePlayer(){
+        return this.whitePlayer;
+    }
+
     /**
      * Convert the board into a much stranger looking
      * view object to display on game.ftl.

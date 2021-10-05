@@ -27,7 +27,7 @@ public class Request {
      * @param sender the person who sent the request
      * @param receiver the person receiving this request
      */
-    Request(Player sender, Player receiver)
+    public Request(Player sender, Player receiver)
     {
         this.sender = sender;
         this.receiver = receiver;

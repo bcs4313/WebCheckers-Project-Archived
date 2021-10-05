@@ -119,6 +119,28 @@ public class GameBoard {
     public BoardView toBoardView()
     {
         currentView = new BoardView(this.board);
+
         return currentView;
+    }
+
+    public cells[][] flippedBoard() {
+        cells[][] boardFlipped = this.board;
+
+        for(int i = 0; i <= 2; i++) {
+            for(int j = 0; j < boardFlipped[i].length; j++) {
+                if(boardFlipped[i][j] == cells.W) {
+                    boardFlipped[i][j] = cells.R;
+                }
+            }
+        }
+
+        for(int i = 5; i <= 7; i++) {
+            for(int j = 0; j < boardFlipped[i].length; j++) {
+                if(boardFlipped[i][j] == cells.R) {
+                    boardFlipped[i][j] = cells.W;
+                }
+            }
+        }
+       return boardFlipped;
     }
 }

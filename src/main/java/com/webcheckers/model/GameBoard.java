@@ -2,6 +2,10 @@ package com.webcheckers.model;
 
 import com.webcheckers.ui.boardview.BoardView;
 
+/**
+ * Model that represents a real life checker board
+ * combined with an online user session.
+ */
 public class GameBoard {
     // used to assign IDs to all gameboard objects
     static int universal_ID = 0;

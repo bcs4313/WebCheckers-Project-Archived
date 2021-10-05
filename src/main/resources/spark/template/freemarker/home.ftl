@@ -31,6 +31,7 @@
         <#items as user>
           <form action="/game" method="get">
             <p>
+              <input type="hidden" name="opponent" value=${user} />
               <button type="submit" class="player">${user}</button>
             </p>
         </#items>

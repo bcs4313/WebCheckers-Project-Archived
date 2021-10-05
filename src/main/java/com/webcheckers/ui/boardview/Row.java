@@ -19,7 +19,8 @@ public class Row implements Iterable<Space> {
         spaces = new ArrayList<>();
         for(int i=0; i<EACHSPACE; i++){
             GameBoard.cells pieceType = board[i];
-            spaces.add(i,new Space(i, pieceType));
+            Space s = new Space(i, pieceType);
+            spaces.add(i, s);
         }
 
     }

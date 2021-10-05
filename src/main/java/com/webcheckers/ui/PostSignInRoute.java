@@ -43,7 +43,7 @@ public class PostSignInRoute implements Route {
         Player ply = new Player(username);
         boolean attemptLogin = playerLobby.login(ply);
         if (attemptLogin) {
-            session.attribute("username", ply.getUsername()); // store username in client session
+            session.attribute("username", ply.getName()); // store username in client session
             response.redirect(WebServer.HOME_URL);
         } else{
             session.attribute("error", true);

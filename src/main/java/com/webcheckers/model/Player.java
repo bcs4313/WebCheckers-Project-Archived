@@ -14,7 +14,7 @@ public class Player {
 
     // is the player busy in a game right now?
     private boolean inGame;
-    private final String username;
+    private final String name;
 
     /**
      * Basic Constructor for a Player
@@ -23,14 +23,14 @@ public class Player {
     public Player(String username)
     {
         // null safety
-        this.username = Objects.requireNonNullElse(username, "MISSING NAME");
+        this.name = Objects.requireNonNullElse(username, "MISSING NAME");
         this.isVerified = false;
         this.inGame = false;
     }
 
-    public String getUsername()
+    public String getName()
     {
-        return this.username;
+        return this.name;
     }
 
     // is the user logged in?

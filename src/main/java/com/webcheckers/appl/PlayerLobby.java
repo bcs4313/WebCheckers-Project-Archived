@@ -41,7 +41,7 @@ public class PlayerLobby {
      */
     private boolean verifyPlayerName(Player player)
     {
-        String username = player.getUsername();
+        String username = player.getName();
         if(username.equals("MISSING NAME")) { return false; }
         if(username.equals("")) { return false; }
 
@@ -49,7 +49,7 @@ public class PlayerLobby {
             char j = username.charAt(i);
             String k = Character.toString(j);
             if (k.matches("[a-zA-Z0-9]")){
-                return Pattern.matches("[a-zA-Z0-9\s]*", username);
+                return Pattern.matches("[a-zA-Z0-9 ]*", username);
             }
         }
 
@@ -71,11 +71,11 @@ public class PlayerLobby {
         boolean isNameValid = verifyPlayerName(player);
 
         // if the name already exists they cannot login
-        if(usernameList.contains(player.getUsername())) { return false; }
+        if(usernameList.contains(player.getName())) { return false; }
         if(!isNameValid) { return false; }
 
         // validation checks passed. We will now log in
-        usernameMap.put(player.getUsername(), player);
+        usernameMap.put(player.getName(), player);
         player.setVerified(true);
         return true;
 
@@ -90,7 +90,7 @@ public class PlayerLobby {
     {
         Player ply = getPlayer(username);
         ply.setVerified(false);
-        usernameMap.remove(ply.getUsername());
+        usernameMap.remove(ply.getName());
     }
 
     /**

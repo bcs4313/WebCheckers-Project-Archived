@@ -13,10 +13,9 @@ public class Request {
     private final Player receiver;
 
     // list of states the request could be in
-    enum states {
+    public enum states {
         PENDING,
         APPROVED,
-        DENIED
     }
 
     // current state of this individual request
@@ -35,12 +34,12 @@ public class Request {
     }
 
     // gets
-    states getState() { return state; }
+    public states getState() { return state; }
 
-    Player getSender() { return sender; }
+    public Player getSender() { return sender; }
 
-    Player getReceiver() { return receiver; }
+    public Player getReceiver() { return receiver; }
 
     // sets
-    void setState(states state) { this.state = state; }
+    public void setState(states state) { this.state = state; }
 }

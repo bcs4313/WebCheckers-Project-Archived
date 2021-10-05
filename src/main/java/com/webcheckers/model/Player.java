@@ -11,6 +11,9 @@ public class Player {
 
     // identifies if a player is logged in or not
     private boolean isVerified;
+
+    // is the player busy in a game right now?
+    private boolean inGame;
     private final String username;
 
     /**
@@ -22,6 +25,7 @@ public class Player {
         // null safety
         this.username = Objects.requireNonNullElse(username, "MISSING NAME");
         this.isVerified = false;
+        this.inGame = false;
     }
 
     public String getUsername()
@@ -35,6 +39,12 @@ public class Player {
         return this.isVerified;
     }
 
+    // is the user currently playing a game?
+    public boolean isInGame()
+    {
+        return inGame;
+    }
+
     /**
      * Set verification status of player object
      * (if their session is still active)
@@ -43,5 +53,11 @@ public class Player {
     public void setVerified(boolean status)
     {
         isVerified = status;
+    }
+
+    // set the in game status for the player
+    public void setInGame(boolean status)
+    {
+        inGame = status;
     }
 }

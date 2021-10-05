@@ -1,15 +1,20 @@
-package com.webcheckers.model;
+package com.webcheckers.ui.boardview;
 
-import java.util.ArrayList;
+import com.webcheckers.model.GameBoard;
 
 public class Space {
     private int cellIDx;
     private Piece currentPiece;
 
-    public Space(int cellIDx) throws Exception {
+    public Space(int cellIDx, GameBoard.cells pieceType) throws Exception {
         this.cellIDx=cellIDx;
         if(cellIDx>7){
             throw new Exception("Invalid index size: Must be 7 or lower.");
+        }
+
+        if(pieceType != GameBoard.cells.E && pieceType != GameBoard.cells.X)
+        {
+            currentPiece = new Piece(pieceType);
         }
     }
 

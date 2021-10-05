@@ -107,8 +107,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.version}</version>
         <configuration>
-          <source>${jdk.version}</source>
-          <target>${jdk.version}</target>
+          <source>15</source>
+          <target>15</target>
         </configuration>
       </plugin>
 
@@ -235,8 +235,8 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
         <configuration>
-          <destfile>/target/coverage-reports/jacoco-unit.exec</destfile>
-          <datafile>/target/coverage-reports/jacoco-unit.exec</datafile>
+          <!-- <destfile>/target/coverage-reports/jacoco-unit.exec</destfile>
+          <datafile>/target/coverage-reports/jacoco-unit.exec</datafile> -->
         </configuration>
         <executions>
           <execution>

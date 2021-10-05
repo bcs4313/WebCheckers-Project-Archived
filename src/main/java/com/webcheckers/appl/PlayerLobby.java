@@ -45,7 +45,15 @@ public class PlayerLobby {
         if(username.equals("MISSING NAME")) { return false; }
         if(username.equals("")) { return false; }
 
-        return Pattern.matches("[a-zA-Z0-9]*", username);
+        for (int i = 0; i < username.length(); i++){
+            char j = username.charAt(i);
+            String k = Character.toString(j);
+            if (k.matches("[a-zA-Z0-9]")){
+                return Pattern.matches("[a-zA-Z0-9\s]*", username);
+            }
+        }
+
+        return false;
     }
 
     /**

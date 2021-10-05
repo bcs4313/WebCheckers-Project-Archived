@@ -123,6 +123,13 @@ public class GameBoard {
         return currentView;
     }
 
+    /**
+     * Flips the current board for the white player
+     * to view their pieces on their side
+     * 
+     * @return a flipped board to display to the opponent
+     */
+
     public void flipBoard() {
         cells[][] boardFlipped = this.board;
 

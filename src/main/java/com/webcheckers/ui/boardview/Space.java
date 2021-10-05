@@ -2,9 +2,22 @@ package com.webcheckers.ui.boardview;
 
 import com.webcheckers.model.GameBoard;
 
+/**
+ * This class represents each space on the checker board 
+ */
 public class Space {
     private int cellIdx;
     private Piece currentPiece;
+
+    /**
+     * Constructor
+     * 
+     * @param cellIDx
+     *  the id of the specific cell
+     * @param pieceType
+     *  the piece that is on the space (can be empty)
+     * @throws Exception
+     */
 
     public Space(int cellIDx, GameBoard.cells pieceType) throws Exception {
         this.cellIdx=cellIDx;

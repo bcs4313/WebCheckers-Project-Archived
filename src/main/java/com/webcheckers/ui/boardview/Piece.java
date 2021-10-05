@@ -2,6 +2,10 @@ package com.webcheckers.ui.boardview;
 
 import com.webcheckers.model.GameBoard;
 
+/**
+ * This class represents a checker piece on the game board
+ */
+
 public class Piece {
 
     private enum Type {
@@ -16,6 +20,12 @@ public class Piece {
 
     private Type type;
     private Color color;
+
+    /**
+     * Constructor
+     * 
+     * @param pieceType
+     */
 
     public Piece(GameBoard.cells pieceType){
 

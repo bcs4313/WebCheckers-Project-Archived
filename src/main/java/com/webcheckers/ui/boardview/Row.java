@@ -5,6 +5,10 @@ import com.webcheckers.model.GameBoard;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * This class represents a row on
+ * the game board
+ */
 public class Row implements Iterable<Space> {
     private int index;
     private ArrayList<Space> spaces;

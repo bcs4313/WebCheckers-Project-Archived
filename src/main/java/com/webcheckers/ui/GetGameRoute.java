@@ -9,44 +9,44 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * The {@code GET /signin} route handler.
+ * The {@code GET /game} route handler.
  *
  * @author Michael Ambrose
  */
 
-public class GetSignInRoute implements Route{
+public class GetGameRoute implements Route{
+    private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
-    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
-
-    private final String VIEW_NAME = "signin.ftl";
+    private final String VIEW_NAME = "game.ftl";
     private final TemplateEngine templateEngine;
-    private static final Message INVALID_MSG = Message.info("Username invalid. Try another username.");
+    private static final Message INVALID_MSG = Message.info("Could not load page");
 
+    
     /**
-     * The constructor for the {@code GET/signin} route handler
+     * The constructor for the {@code GET/game} route handler
      * 
      * @param templateEngine
      */
 
-    public GetSignInRoute(final TemplateEngine templateEngine) {
+    public GetGameRoute(final TemplateEngine templateEngine) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
-        LOG.config("GetSignInRoute is initialized");
+        LOG.config("GetGameRoute is initialized");
     }
 
-   /**
-   * Render the WebCheckers SignIn page.
-   *
-   * @param request
-   *   the HTTP request
-   * @param response
-   *   the HTTP response
-   *
-   * @return
-   *   the rendered HTML for the SignIn page
-   */
+    /**
+     * Render the WebCheckers Game page
+     * 
+     * @param request
+     *  the HTTP request
+     * @param response
+     *  the HTTP response
+     * 
+     * @return
+     *  the rendered HTML for the Game page
+     */
 
-   @Override
+    @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
 
@@ -58,9 +58,8 @@ public class GetSignInRoute implements Route{
             }
         }
 
-        vm.put("title", "Checkers Sign In");
+        vm.put("title", "Playing Game");
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }
-

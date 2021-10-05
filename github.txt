@@ -1,0 +1,23 @@
+commit 830b72fe199ba5f260d35a615ff6846f5124124e
+Author: Carlos <csh2830@rit.edu>
+Date:   Wed Sep 22 23:18:29 2021 -0400
+
+    My name is in, -Carlos Hargrove
+
+commit 1df465100dd56548b921e12e8421c8df974f0f08
+Author: Michael Ambrose <ma8540@rit.edu>
+Date:   Wed Sep 22 22:10:07 2021 -0400
+
+    Member2 added
+
+commit 5df9c15978d71298dc1b1d3dc3b8937e90f656d1
+Author: Triston Lincoln <trl6895@g.rit.edu>
+Date:   Tue Sep 21 21:18:31 2021 -0400
+
+    Name added to README
+
+commit 98dc5c2f84203c3d7d3806b31492a16c336f184c
+Author: github-classroom[bot] <66690702+github-classroom[bot]@users.noreply.github.com>
+Date:   Tue Sep 21 23:20:33 2021 +0000
+
+    Initial commit

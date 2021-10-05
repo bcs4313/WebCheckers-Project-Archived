@@ -15,6 +15,7 @@ public class Player {
     // is the player busy in a game right now?
     private boolean inGame;
     private final String name;
+    private Player opponent;
 
     /**
      * Basic Constructor for a Player
@@ -60,4 +61,8 @@ public class Player {
     {
         inGame = status;
     }
+
+    public void setOpponent(Player opponent){ this.opponent = opponent; }
+
+    public Player getOpponent(){ return this.opponent; }
 }

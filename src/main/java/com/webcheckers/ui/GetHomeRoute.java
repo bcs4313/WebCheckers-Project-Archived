@@ -18,6 +18,8 @@ public class GetHomeRoute implements Route {
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
+  private static final Message ERROR_OPP_IN_GAME_MSG = Message.error("Requested opponent is already in a game.");
+
   private final TemplateEngine templateEngine;
 
   private final PlayerLobby playerLobby;
@@ -59,6 +61,13 @@ public class GetHomeRoute implements Route {
 
     // attempt to retrieve the username for the session
     String username = request.session().attribute("username");
+    Player currentUser = this.playerLobby.getPlayer(username);
+
+    if (currentUser != null) {
+      if (currentUser.isInGame()) {
+        response.redirect(WebServer.GAME_URL);
+      }
+    }
 
     vm.put("username", username); // store username in home.ftl
 
@@ -69,8 +78,22 @@ public class GetHomeRoute implements Route {
     //store the amount of active players
     vm.put("amtPlayers", allUsernames.size());
 
-    // display a user message in the Home page
-    vm.put("message", WELCOME_MSG);
+
+    Boolean error = request.session().attribute("error");
+    if (error != null){
+      if (error) {
+        // if user selected an opponent who is in a game, display this message
+        vm.put("message", ERROR_OPP_IN_GAME_MSG);
+      }
+      else {
+        // display a user message in the Home page
+        vm.put("message", WELCOME_MSG);
+      }
+    }
+    else {
+      // display a user message in the Home page
+      vm.put("message", WELCOME_MSG);
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));

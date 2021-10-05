@@ -53,20 +53,46 @@ public class GetGameRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
         HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
 
+        final Session session = request.session();
+
         final String opponent = request.queryParams("opponent"); //
         String username = request.session().attribute("username");
         Player currentUser = this.playerLobby.getPlayer(username);
-        Player opponentUser = this.playerLobby.getPlayer(opponent);
-        GameBoard thisBoard = new GameBoard(currentUser, opponentUser);
-        BoardView thisBoardView = thisBoard.toBoardView();
-        vm.put("currentUser", currentUser);
-        vm.put("title", "Playing Game");
-        vm.put("viewMode","PLAY");
-        vm.put("redPlayer", thisBoard.getRedPlayer());
-        vm.put("whitePlayer", thisBoard.getWhitePlayer());
-        vm.put("activeColor","RED");
-        vm.put("board", thisBoardView);
 
+        if (currentUser.getOpponent() != null){
+            Player opponentUser = currentUser.getOpponent();
+            GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
+            BoardView thisBoardView = thisBoard.toBoardView();
+            vm.put("currentUser", currentUser);
+            vm.put("title", "Playing Game");
+            vm.put("viewMode","PLAY");
+            vm.put("redPlayer", thisBoard.getRedPlayer());
+            vm.put("whitePlayer", thisBoard.getWhitePlayer());
+            vm.put("activeColor","RED");
+            vm.put("board", thisBoardView);
+        }
+        else {
+            Player opponentUser = this.playerLobby.getPlayer(opponent);
+            if (opponentUser.isInGame()){
+                session.attribute("error", true);
+                response.redirect(WebServer.HOME_URL);
+            }
+            else{
+                currentUser.setInGame(true);
+                opponentUser.setInGame(true);
+                currentUser.setOpponent(opponentUser);
+                opponentUser.setOpponent(currentUser);
+                GameBoard thisBoard = new GameBoard(currentUser, opponentUser);
+                BoardView thisBoardView = thisBoard.toBoardView();
+                vm.put("currentUser", currentUser);
+                vm.put("title", "Playing Game");
+                vm.put("viewMode","PLAY");
+                vm.put("redPlayer", thisBoard.getRedPlayer());
+                vm.put("whitePlayer", thisBoard.getWhitePlayer());
+                vm.put("activeColor","RED");
+                vm.put("board", thisBoardView);
+            }
+        }
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

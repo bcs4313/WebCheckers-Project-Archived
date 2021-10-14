@@ -4,6 +4,7 @@ import com.webcheckers.model.GameBoard;
 
 /**
  * This class represents a checker piece on the game board
+ * @author Carlos Hargrove
  */
 
 public class Piece {

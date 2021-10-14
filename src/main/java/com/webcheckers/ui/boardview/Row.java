@@ -8,6 +8,7 @@ import java.util.Iterator;
 /**
  * This class represents a row on
  * the game board
+ * @author Carlos Hargrove
  */
 public class Row implements Iterable<Space> {
     private int index;

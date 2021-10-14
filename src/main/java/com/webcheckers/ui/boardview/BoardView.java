@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Take a board matrix and addes the rows from the 
+ * Take a board matrix and adds the rows from the
  * board to an array list so it can be iterated through
+ * @author Carlos Hargrove
  */
 
 public class BoardView implements Iterable<Row> {

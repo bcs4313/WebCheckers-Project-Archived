@@ -5,6 +5,7 @@ import com.webcheckers.ui.boardview.BoardView;
 /**
  * Model that represents a real life checker board
  * combined with an online user session.
+ * @author Cody Smith (bcs4313@rit.edu)
  */
 public class GameBoard {
     // used to assign IDs to all gameboard objects

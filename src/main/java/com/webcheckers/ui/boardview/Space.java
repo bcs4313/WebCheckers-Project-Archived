@@ -3,7 +3,8 @@ package com.webcheckers.ui.boardview;
 import com.webcheckers.model.GameBoard;
 
 /**
- * This class represents each space on the checker board 
+ * This class represents each space on the checker board
+ * @author Carlos Hargrove
  */
 public class Space {
     private int cellIdx; // cell id num

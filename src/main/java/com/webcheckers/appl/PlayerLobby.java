@@ -86,6 +86,7 @@ public class PlayerLobby {
      * from the user list.
      * @param username name of player to remove
      */
+    //TODO: actually implement sign out lol
     public void logout(String username)
     {
         Player ply = getPlayer(username);

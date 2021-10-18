@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+import static spark.Spark.halt;
 
 /**
  * The {@code GET /signin} route handler.
@@ -17,13 +18,14 @@ import java.util.logging.Logger;
 public class GetSignInRoute implements Route{
 
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
+    public static final String TITLE_ATTR = "title"; //Carlos added this, same as the message below this.
 
     private final String VIEW_NAME = "signin.ftl";
     private final TemplateEngine templateEngine;
-    private static final Message INVALID_MSG = Message.error("Username invalid. Try another username.");
-
-    /**
-     * The constructor for the {@code GET/signin} route handler
+    public static final Message INVALID_MSG = Message.error("Username invalid. Try another username.");     //Public for
+                                                                                            //now but I think we have to
+    /**                                                                                  //move our test folder location
+     * The constructor for the {@code GET/signin} route handler                    //so it doesn't have to be.
      * 
      * @param templateEngine engine used to construct a page with a ftl file.
      */
@@ -51,14 +53,15 @@ public class GetSignInRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
 
         Boolean error = request.session().attribute("error");
-
         if (error != null) {
             if (error) {
+
                 vm.put("message", INVALID_MSG);
+
             }
         }
 
-        vm.put("title", "Checkers Sign In"); // add title to signin.ftl
+        vm.put(TITLE_ATTR, "Checkers Sign In"); // add title to signin.ftl  //Carlos changed this to Title_ATTR
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

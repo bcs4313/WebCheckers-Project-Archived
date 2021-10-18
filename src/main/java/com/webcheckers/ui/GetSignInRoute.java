@@ -53,14 +53,11 @@ public class GetSignInRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
 
         Boolean error = request.session().attribute("error");
-        System.out.println(error);                            //Carlos used this to test
         if (error != null) {
             if (error) {
 
-                //throw new                                     //Carlos added this
                 vm.put("message", INVALID_MSG);
-                //halt();                                     //Carlos added this
-                //response.redirect(VIEW_NAME);      //Carlos Added this
+
             }
         }
 

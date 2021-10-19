@@ -24,7 +24,7 @@ public class PostSignInRoute implements Route {
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */
-    PostSignInRoute(PlayerLobby playerLobby, TemplateEngine templateEngine) {
+    public PostSignInRoute(PlayerLobby playerLobby, TemplateEngine templateEngine) {
         // validation
         Objects.requireNonNull(playerLobby, "playerLobby must not be null");
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
@@ -45,12 +45,12 @@ public class PostSignInRoute implements Route {
         if (attemptLogin) {
             session.attribute("username", ply.getName()); // store username in client session
             response.redirect(WebServer.HOME_URL);
+            return "success";
         } else{
             session.attribute("error", true);
             response.redirect(WebServer.SIGNIN_URL);
+            return "error";
         }
-
-        return null;
         }
 
 }

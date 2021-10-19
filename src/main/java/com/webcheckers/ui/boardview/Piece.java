@@ -10,13 +10,13 @@ import com.webcheckers.model.GameBoard;
 public class Piece {
 
     // checker piece types
-    private enum Type {
+    public enum Type {
         KING,
         SINGLE
     }
 
     // checker team colors
-    private enum Color{
+    public enum Color{
         RED,
         WHITE
     }

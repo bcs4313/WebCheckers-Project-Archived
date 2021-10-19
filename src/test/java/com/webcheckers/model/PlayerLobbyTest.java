@@ -23,11 +23,17 @@ public class PlayerLobbyTest {
     // Friendly Objects
     private Player player;
 
+    /**
+     * creates the CuT before each test
+     */
     @BeforeEach
     public void setup() {
         CuT = new PlayerLobby();
     }
 
+    /**
+     * Tests cases where the login method should return a failure
+     */
     @Test
     public void loginSystemFails() {
         player = new Player("   "); //INVALID USERNAME: no alphanumeric
@@ -43,6 +49,9 @@ public class PlayerLobbyTest {
         assertFalse(CuT.getUsernameMap().containsKey(player.getName()));
     }
 
+    /**
+     * Test case where the CuT attempts login of a null player
+     */
     @Test
     public void noPlayerLoginTest() {
         //Give CuT null player to login
@@ -50,6 +59,9 @@ public class PlayerLobbyTest {
         assertFalse(CuT.getUsernameMap().containsKey(null));
     }
 
+    /**
+     * Test cases where there should be successful login attempts
+     */
     @Test
     public void loginSystemSuccesses() {
         //Valid Username with alphanumerics

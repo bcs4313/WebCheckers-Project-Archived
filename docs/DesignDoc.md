@@ -3,51 +3,51 @@ geometry: margin=1in
 ---
 # PROJECT Design Documentation
 
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics._
-
 ## Team Information
-* Team name: TEAMNAME
+* Team name: 04b
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Triston Lincoln
+  * Carlos Hargrove
+  * Michael Ambrose
+  * Cody Smith
 
 ## Executive Summary
 
 This is a summary of the project.
 
 ### Purpose
-> _Provide a very brief statement about the project and the most
-> important user group and user goals._
+The goal of this project is to create an application that allows players to play each other in a web based version of American Checkers. This application will include the ability to spectate games and play asynchronus games.
 
 ### Glossary and Acronyms
-> _Provide a table of terms and acronyms._
-
-| Term | Definition |
-|------|------------|
-| VO | Value Object |
-
+| Term |      Definition        |
+|------|------------------------|
+| VO   |     Value Object       |
+| MVP  | Minimum Viable Product |
 
 ## Requirements
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
-
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
+The MVP of this application allows many different players to log-in and play American Checkers against others.
 
 ### MVP Features
-> _Provide a list of top-level Epics and/or Stories of the MVP._
+For this application's MVP, a user should be able to 
+- sign-in with a unique username 
+- sign-out when they are finished playing 
+- choose a player to play checkers against and provided they are available to play, they should be able to play a game of checkers against them
+The game of checkers should be based of the American rules which includes 
+- the ability to perform basic piece movement
+- perform double jumps
+- obtain king pieces
+A game is lost when 
+- the player loses all of their pieces. 
+- the player resigns from a game.
 
 ### Roadmap of Enhancements
-> _Provide a list of top-level features in the order you plan to consider them._
+- Spectator mode: Will allow a player who is not in a game to spectate two other players who are playing a game
+- Asynchronous mode: Will allow a player to start an asynchrous game, where they can leave and come back once their opponent has made a move
+
 
 
 ## Application Domain

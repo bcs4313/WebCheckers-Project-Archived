@@ -36,10 +36,12 @@ For this application's MVP, a user should be able to
 - sign-in with a unique username 
 - sign-out when they are finished playing 
 - choose a player to play checkers against and provided they are available to play, they should be able to play a game of checkers against them
+
 The game of checkers should be based of the American rules which includes 
 - the ability to perform basic piece movement
 - perform double jumps
 - obtain king pieces
+
 A game is lost when 
 - the player loses all of their pieces. 
 - the player resigns from a game.
@@ -54,7 +56,7 @@ A game is lost when
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](domain-model-placeholder.png)
+![The WebCheckers Domain Model](Group_B_Checker_Domain_Model.png)
 
 > _Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
@@ -87,7 +89,7 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
+![The WebCheckers Web Interface Statechart](State_Chart_Diagram.png)
 
 > _Provide a summary of the application's user interface.  Describe, from
 > the user's perspective, the flow of the pages in the web application._

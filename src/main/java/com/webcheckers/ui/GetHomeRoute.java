@@ -16,9 +16,18 @@ import java.util.logging.Logger;
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
-  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  public static final String TITLE_ATTR = "title";
+  public static final String MESSAGE_ATTR = "message";
+  public static final String USERNAME_ATTR = "username";
+  public static final String USERLIST_ATTR = "allUsernames";
+  public static final String USERAMT_ATTR = "amtPlayers";
+  public static final String ERROR_ATTR = "error";
 
-  private static final Message ERROR_OPP_IN_GAME_MSG = Message.error("Requested opponent is already in a game.");
+  public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  public static final Message ERROR_OPP_IN_GAME_MSG = Message.error("Requested opponent is already in a game.");
+
+  public static final String VIEW_NAME = "home.ftl";
+  public static final String TITLE = "Welcome!";
 
   private final TemplateEngine templateEngine;
 
@@ -59,10 +68,10 @@ public class GetHomeRoute implements Route {
     Set<String> allUsernames = usernameMap.keySet();
     ArrayList<String> copyNames = new ArrayList<>(allUsernames);
 
-    vm.put("title", "Welcome!"); // store title in home.ftl
+    vm.put(TITLE_ATTR, TITLE); // store title in home.ftl
 
     // attempt to retrieve the username for the session
-    String username = request.session().attribute("username");
+    String username = request.session().attribute(USERNAME_ATTR);
     Player currentUser = this.playerLobby.getPlayer(username);
 
     if (currentUser != null) {
@@ -71,36 +80,36 @@ public class GetHomeRoute implements Route {
       }
     }
 
-    vm.put("username", username); // store username in home.ftl
+    vm.put(USERNAME_ATTR, username); // store username in home.ftl
 
     copyNames.remove(username);
     //store list of all signed-in usernames
-    vm.put("allUsernames", copyNames);
+    vm.put(USERLIST_ATTR, copyNames);
 
     //store the amount of active players
-    vm.put("amtPlayers", allUsernames.size());
+    vm.put(USERAMT_ATTR, allUsernames.size());
 
 
     // get a boolean that evaluates if a previous signin was
     // invalid. If so, identify the error and display it on the home.ftl
     // page.
-    Boolean error = request.session().attribute("error");
+    Boolean error = request.session().attribute(ERROR_ATTR);
     if (error != null){
       if (error) {
         // if user selected an opponent who is in a game, display this message
-        vm.put("message", ERROR_OPP_IN_GAME_MSG);
+        vm.put(MESSAGE_ATTR, ERROR_OPP_IN_GAME_MSG);
       }
       else {
         // display a user message in the Home page
-        vm.put("message", WELCOME_MSG);
+        vm.put(MESSAGE_ATTR, WELCOME_MSG);
       }
     }
     else {
       // display a user message in the Home page
-      vm.put("message", WELCOME_MSG);
+      vm.put(MESSAGE_ATTR, WELCOME_MSG);
     }
 
     // render the View
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    return templateEngine.render(new ModelAndView(vm , VIEW_NAME));
   }
 }

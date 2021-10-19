@@ -58,9 +58,12 @@ This section describes the application domain.
 
 ![The WebCheckers Domain Model](Group_B_Checker_Domain_Model.png)
 
-> _Provide a high-level overview of the domain for this application. You
-> can discuss the more important domain entities and their relationship
-> to each other._
+_Program opens to a home page that has 2 forms. When not signed in it details information about the site and allows the 
+user to sign in. If they choose to sign in they'll be brought to a page where they can enter a Username. Upon creating a 
+unique profile they will gain access to signed in form of the home page and be directed back. This displays a list of all 
+users. If a player is press who is not in a game a request to play a game will be sent. If both players agree to the request
+they will both be taken to the game itself. Which is just an HTML representation of a game of checkers. Players can quit 
+at any time to find a new game or sign out._
 
 
 ## Architecture and Design
@@ -91,8 +94,12 @@ with the WebCheckers application.
 
 ![The WebCheckers Web Interface Statechart](State_Chart_Diagram.png)
 
-> _Provide a summary of the application's user interface.  Describe, from
-> the user's perspective, the flow of the pages in the web application._
+_The user will connect to the home page. From there they will be encouraged to log in to access the rest of the website's
+functions. Once logged in they will be sent back to the home page and will be able to interact with other users. When 
+they interact with another user a challenge will be sent out. If both players accept a game will begin. From there both 
+users will have their side of the board visible on the bottom, and their opponent's on the top. From their they can play
+out the whole match and leave if they so desire which would take them back to the home page. The home page also has a log
+out button to return them into a pre-logged in state._
 
 
 ### UI Tier

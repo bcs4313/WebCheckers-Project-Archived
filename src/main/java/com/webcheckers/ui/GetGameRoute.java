@@ -78,6 +78,11 @@ public class GetGameRoute implements Route{
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
+            if(opponentUser == null)
+            {
+                session.attribute("error", true);
+                response.redirect(WebServer.HOME_URL);
+            }
             if (opponentUser.isInGame()) { // error case
                 session.attribute("error", true);
                 response.redirect(WebServer.HOME_URL);

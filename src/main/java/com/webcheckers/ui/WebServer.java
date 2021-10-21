@@ -60,6 +60,11 @@ public class WebServer {
   public static final String SIGNIN_URL = "/signin";
 
   /**
+   * The URL pattern to request the SignOut page
+   */
+  public static final String SIGNOUT_URL = "/signout";
+
+  /**
    * The URL pattern to request the Game page
    */
   public static final String GAME_URL = "/game";
@@ -162,6 +167,9 @@ public class WebServer {
     // Posts login request to Signin Page
     post(SIGNIN_URL, new PostSignInRoute(playerLobby, templateEngine));
 
+    post(SIGNOUT_URL, new PostSignOutRoute(playerLobby, templateEngine));
+
+    // Posts requests to the Game Page
     post(GAME_URL, new PostGameRoute(templateEngine));
 
     //

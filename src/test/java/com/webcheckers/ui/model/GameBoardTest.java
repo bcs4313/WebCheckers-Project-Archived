@@ -1,14 +1,19 @@
 package com.webcheckers.ui.model;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.webcheckers.model.GameBoard;
-import com.webcheckers.model.Player;
 import com.webcheckers.model.GameBoard.cells;
+import com.webcheckers.model.Player;
 import com.webcheckers.ui.boardview.BoardView;
-
+import com.webcheckers.ui.boardview.Piece;
+import com.webcheckers.ui.boardview.Row;
+import com.webcheckers.ui.boardview.Space;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * JUnit tests for the GameBoard model-tier class
@@ -75,8 +80,7 @@ public class GameBoardTest {
     @Test
     public void test_to_board_view() {
         BoardView boardView = new BoardView(board);
-
-        assertEquals(boardView, CuT.toBoardView());
+        assertTrue(compareViews(boardView, CuT.toBoardView()));
     }
 
     /**
@@ -95,9 +99,64 @@ public class GameBoardTest {
             {W, X, W, X, W, X, W, X}};
         
         BoardView boardView = new BoardView(flipped_board);
-        CuT.flipBoard();
+        GameBoard flippedCuT = CuT.flipBoard();
 
-        assertEquals(boardView, CuT.toBoardView());
+        assertTrue(compareViews(boardView, flippedCuT.toBoardView()));
+    }
+
+    /**
+     * Private method to compare boardViews with
+     * each other. Needed for testing.
+     * @return if the boards are equal
+     */
+    private boolean compareViews(BoardView b1, BoardView b2)
+    {
+        // equal assertions of boardView require comparisons of board
+        // structures.
+        // get iterators of generated views
+        Iterator<Row> baseIterator = b1.iterator();
+        Iterator<Row> CuTIterator = b2.iterator();
+
+        // structures should have the same dimensions, so only
+        // one loop for each subsection is required
+        while(baseIterator.hasNext()) // iterate through rows
+        {
+            Row baseRow = baseIterator.next();
+            Row CuTRow = CuTIterator.next();
+            Iterator<Space> baseRowIterator = baseRow.iterator();
+            Iterator<Space> baseCuTIterator = CuTRow.iterator();
+            while(baseRowIterator.hasNext()) // iterate through spaces
+            {
+                // get spaces from iterators
+                Space baseSpace = baseRowIterator.next();
+                Space CuTSpace = baseCuTIterator.next();
+
+                // get pieces from spaces
+                Piece basePiece = baseSpace.getPiece();
+                Piece CuTPiece = CuTSpace.getPiece();
+
+                // assertions
+                if(basePiece != null) {
+                    if(basePiece.getType() != CuTPiece.getType())
+                    {
+                        return false;
+                    }
+
+                    if(basePiece.getColor() != CuTPiece.getColor())
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if(CuTPiece != null)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
     
 }

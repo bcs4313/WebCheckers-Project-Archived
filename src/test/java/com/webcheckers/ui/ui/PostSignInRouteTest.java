@@ -64,7 +64,7 @@ public class PostSignInRouteTest {
         String result = testComponent.handle(request, response);
 
         // assert that this login failed
-        assertEquals(result, "fail");
+        assertEquals(result, "error");
     }
 
     /**

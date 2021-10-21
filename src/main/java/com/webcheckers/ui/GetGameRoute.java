@@ -66,7 +66,7 @@ public class GetGameRoute implements Route{
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
             GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
-            thisBoard.flipBoard();
+            thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
             BoardView thisBoardView = thisBoard.toBoardView();
             vm.put("currentUser", currentUser);
             vm.put("title", "Playing Game");

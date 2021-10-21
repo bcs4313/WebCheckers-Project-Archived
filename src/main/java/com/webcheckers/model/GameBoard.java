@@ -104,6 +104,18 @@ public class GameBoard {
         activeColor = activeColors.RED;
     }
 
+    /**
+     * Overloaded Constructor for boards that are not in the initial state
+     * @param sender who sent the game request?
+     * @param receiver who accepted the request?
+     * @param baseBoard what is the initial state of this board?
+     */
+    public GameBoard(Player sender, Player receiver, cells[][] baseBoard)
+    {
+        this(sender, receiver); // call the default constructor
+        this.board = baseBoard; // now change the board to a new state
+    }
+
     public Player getRedPlayer(){
         return this.redPlayer;
     }
@@ -127,12 +139,12 @@ public class GameBoard {
     /**
      * Flips the current board for the white player
      * to view their pieces on their side
-     * 
+     *
      * @return a flipped board to display to the opponent
      */
 
-    public void flipBoard() {
-        cells[][] boardFlipped = this.board;
+    public GameBoard flipBoard() {
+        cells[][] boardFlipped = this.board.clone(); // create an identical copy of board
 
         // for each row in the top half of the board
         for(int i = 0; i <= 2; i++) {
@@ -155,5 +167,6 @@ public class GameBoard {
                 }
             }
         }
+        return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped);
     }
 }

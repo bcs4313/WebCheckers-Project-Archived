@@ -48,7 +48,7 @@ public class RuleMaster {
         {
             if (r.isTriggered(b_before, b_after))
             {
-                r.action();
+                r.action(b_before);
             }
         }
     }

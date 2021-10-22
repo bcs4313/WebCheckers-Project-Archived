@@ -169,4 +169,8 @@ public class GameBoard {
         }
         return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped);
     }
+
+    public cells[][] getBoard(){
+        return board;
+    }
 }

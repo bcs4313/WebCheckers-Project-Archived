@@ -180,20 +180,7 @@ public class GameBoard {
         return board;
     }
 
-    public void setGameOver(boolean gameOver) {
-        isGameOver = gameOver;
-    }
 
-    public void setWin(String player){
-        if(player.equals("red player")){
-            red_win=true;
-            return;
-        }
-        if(player.equals("white player")){
-            white_win=true;
-            return;
-        }
-    }
 
 
 }

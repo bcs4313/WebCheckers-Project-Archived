@@ -13,6 +13,9 @@ public class RuleMaster {
 
     GameBoard b_before; // stored before state
     GameBoard b_after; // stored after state
+    boolean isGameOver;
+    boolean white_win;
+    boolean red_win;
 
     // basic constructor
     public RuleMaster()
@@ -50,6 +53,21 @@ public class RuleMaster {
             {
                 r.action(b_before);
             }
+        }
+    }
+
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
+    }
+
+    public void setWin(String player){
+        if(player.equals("red player")){
+            red_win=true;
+            return;
+        }
+        if(player.equals("white player")){
+            white_win=true;
+            return;
         }
     }
 }

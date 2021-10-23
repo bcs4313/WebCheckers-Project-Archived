@@ -44,11 +44,11 @@ public class WinCondition extends Rule {
     @Override
     public GameBoard action(GameBoard boardToModify) {
         if(red_has_piece==false){
-            boardToModify.setWin("white player");
+            master.setWin("white player");
         }else if(white_has_piece==false){
-            boardToModify.setWin("red player");
+            master.setWin("red player");
         }
-        boardToModify.setGameOver(true);
+        master.setGameOver(true);
         return boardToModify;
     }
 }

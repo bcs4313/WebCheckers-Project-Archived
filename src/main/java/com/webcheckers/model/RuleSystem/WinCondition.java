@@ -4,13 +4,13 @@ import com.webcheckers.model.GameBoard;
 
 public class WinCondition extends Rule {
 
-    private boolean p1_hasPiece;
-    private boolean p2_hasPiece;
+    private boolean red_has_piece;
+    private boolean white_has_piece;
 
     WinCondition(){
         super(null);
-        this.p1_hasPiece=false;
-        this.p2_hasPiece=false;
+        this.red_has_piece=false;
+        this.white_has_piece=false;
     }
 
     public enum cells {
@@ -28,13 +28,13 @@ public class WinCondition extends Rule {
             for(int i=0; i<post_board.length; i++){
                 for(int j=0; j<post_board[i].length; j++){
                     if(post_board[i][j].equals(GameBoard.cells.R)||post_board[i][j].equals(GameBoard.cells.RK)){
-                        this.p1_hasPiece=true;
+                        this.red_has_piece=true;
                     } else if(post_board[i][j].equals(GameBoard.cells.W)||post_board[i][j].equals(GameBoard.cells.WK)){
-                        this.p2_hasPiece=true;
+                        this.white_has_piece=true;
                     }
                 }
             }
-            if(p1_hasPiece==false||p2_hasPiece==false){
+            if(red_has_piece==false||white_has_piece==false){
                 return true;
             }
             return false;
@@ -43,6 +43,12 @@ public class WinCondition extends Rule {
 
     @Override
     public GameBoard action(GameBoard boardToModify) {
-        return null;
+        if(red_has_piece==false){
+            boardToModify.setWin("white player");
+        }else if(white_has_piece==false){
+            boardToModify.setWin("red player");
+        }
+        boardToModify.setGameOver(true);
+        return boardToModify;
     }
 }

@@ -27,6 +27,12 @@ public class GameBoard {
     // whose turn is it currently?
     activeColors activeColor;
 
+    boolean isGameOver;
+
+    boolean red_win;
+
+    boolean white_win;
+
     enum viewModes{
         PLAY,
         SPECTATOR,
@@ -173,4 +179,21 @@ public class GameBoard {
     public cells[][] getBoard(){
         return board;
     }
+
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
+    }
+
+    public void setWin(String player){
+        if(player.equals("red player")){
+            red_win=true;
+            return;
+        }
+        if(player.equals("white player")){
+            white_win=true;
+            return;
+        }
+    }
+
+
 }

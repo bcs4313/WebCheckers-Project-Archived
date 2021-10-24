@@ -39,7 +39,7 @@ public class GameBoard {
         REPLAY
     }
 
-    enum activeColors{
+    public enum activeColors{
         RED,
         WHITE
     }
@@ -180,7 +180,9 @@ public class GameBoard {
         return board;
     }
 
-
+    public activeColors getActiveColor(){
+        return activeColor;
+    }
 
 
 }

@@ -63,6 +63,12 @@ public class WebServer {
    * The URL pattern to request the Game page
    */
   public static final String GAME_URL = "/game";
+
+  public static final String CHECKTURN_URL = "/checkTurn";
+
+  public static final String VALIDATEMOVE_URL = "/validateMove";
+
+  public static final String BACKUPMOVE_URL = "/backupMove";
   //
   // Attributes
   //
@@ -164,6 +170,11 @@ public class WebServer {
 
     post(GAME_URL, new PostGameRoute(templateEngine));
 
+    post(CHECKTURN_URL, new PostCheckTurn(templateEngine));
+
+    post(VALIDATEMOVE_URL, new PostCheckTurn(templateEngine));
+
+    post(BACKUPMOVE_URL, new PostBackupMove(templateEngine));
     //
     LOG.config("WebServer is initialized.");
   }

@@ -122,14 +122,6 @@ public class GameBoard {
         this.board = baseBoard; // now change the board to a new state
     }
 
-    public Player getRedPlayer(){
-        return this.redPlayer;
-    }
-
-    public Player getWhitePlayer(){
-        return this.whitePlayer;
-    }
-
     /**
      * Convert the board into a much stranger looking
      * view object to display on game.ftl.
@@ -176,13 +168,49 @@ public class GameBoard {
         return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped);
     }
 
+    /**
+     * get the current layout of the board
+     * @return cells[][], the 2D array representation of the board
+     */
     public cells[][] getBoard(){
         return board;
     }
 
-    public activeColors getActiveColor(){
-        return activeColor;
+    /**
+     * simulates the end of a turn being made.
+     * if the current active color is RED, switch it to
+     * WHTIE, and vice versa.
+     */
+    public void switchActiveColor(){
+        if (this.activeColor.equals(activeColors.RED)){
+            this.activeColor = activeColors.WHITE;
+        }
+        else{
+            this.activeColor = activeColors.RED;
+        }
     }
 
+    /**
+     * getter for the GameBoard's red player
+     * @return the red player
+     */
+    public Player getRedPlayer(){
+        return this.redPlayer;
+    }
 
+    /**
+     * getter for the GameBoard's white player
+     * @return the white player
+     */
+    public Player getWhitePlayer(){
+        return this.whitePlayer;
+    }
+
+    /**
+     * getter for the GameBoard's active color
+     * @return the current active color (player)
+     */
+    public activeColors getActiveColor(){
+        return this.activeColor;
+    }
 }

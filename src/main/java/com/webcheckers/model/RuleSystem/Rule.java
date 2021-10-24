@@ -21,5 +21,5 @@ public abstract class Rule {
      * Enter the action that your rule will take upon being
      * triggered.
      */
-    public abstract GameBoard action(GameBoard boardToModify);
+    public abstract void action();
 }

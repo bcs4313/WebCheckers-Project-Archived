@@ -28,22 +28,11 @@ public class KingMoveRule extends Rule {
      */
     @Override
     public boolean isTriggered(GameBoard b_before, GameBoard b_after) {
-        GameBoard.cells[][] before_config = b_before.getBoard();
-        GameBoard.cells[][] after_config = b_after.getBoard();
-        for(int i = 0; i < before_config.length; i++){
-            for(int j = 0; j < before_config[i].length; j++){
-                if(before_config[i][j] != after_config[i][j]){
-                    if(after_config[i][j].equals(GameBoard.cells.RK) || after_config[i][j].equals(GameBoard.cells.WK)){
-                        this.after_row = i;
-                        this.after_col = j;
-                    }
-                    else{
-                        this.before_row = i;
-                        this.before_col = j;
-                    }
-                }
-            }
-        }
+        MovementPair mp = master.identifyMovement();
+        this.before_row = mp.before_y;
+        this.before_col = mp.before_x;
+        this.after_row = mp.after_y;
+        this.after_col = mp.after_x;
 
         // Return false if move is legal (movement rule should be the same for both red and white king pieces)
         if (this.after_row == (this.before_row - 1) || this.after_row == (this.before_row + 1)){

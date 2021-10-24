@@ -44,6 +44,8 @@ public class RuleMaster {
 
     /**
      * Modify the gameboard and do actions by triggering each rule in the ruleset
+     * prereq: board has the current acting player's orientation on the bottom of
+     * the board.
      */
     public void triggerRuleSet()
     {

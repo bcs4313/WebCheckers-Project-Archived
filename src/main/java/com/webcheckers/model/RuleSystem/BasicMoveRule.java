@@ -82,7 +82,6 @@ public class BasicMoveRule extends Rule{
      * @return the game board as it was prior to move made
      */
     @Override
-    public GameBoard action(GameBoard boardToModify){
-        return null;
+    public void action(){
     }
 }

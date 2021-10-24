@@ -13,7 +13,8 @@ public class WinCondition extends Rule {
         this.white_has_piece=false;
     }
 
-    // is this necessary if the cell Types are present in the GameBoard class? - Triston
+    // TODO
+    //  is this necessary if the cell Types are present in the GameBoard class? - Triston
     public enum cells {
         X,
         E,

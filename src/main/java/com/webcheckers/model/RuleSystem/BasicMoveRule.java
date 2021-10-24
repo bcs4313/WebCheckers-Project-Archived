@@ -46,7 +46,6 @@ public class BasicMoveRule extends Rule{
                 }
             }
         }
-        // TODO - May need to change implementation depending on if jumping over piece? May be covered in a different rule
         // If so, check if it was moved illegally
         // If it's a red piece, legality means that the piece was moved to either (row = i-1,col = j-1) or (row = i-1, col = j+1)
         GameBoard.activeColors pieceColor = b_before.getActiveColor();

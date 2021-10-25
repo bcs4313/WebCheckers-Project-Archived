@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import javax.swing.text.Position;
-
 /**
  * Representation of a movement from one position to another
  * @author Cody Smith (bcs4313@rit.edu)

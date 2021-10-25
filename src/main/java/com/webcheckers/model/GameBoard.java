@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.model.RuleSystem.RuleMaster;
 import com.webcheckers.ui.boardview.BoardView;
 
 /**
@@ -10,6 +11,9 @@ import com.webcheckers.ui.boardview.BoardView;
 public class GameBoard {
     // used to assign IDs to all gameboard objects
     static int universal_ID = 0;
+
+    // handles all rules regarding the board state and various actions
+    private RuleMaster master;
 
     // current state of the board players see
     BoardView currentView;
@@ -108,6 +112,9 @@ public class GameBoard {
 
         // assign red to go first
         activeColor = activeColors.RED;
+
+        // create rule system
+        master = new RuleMaster();
     }
 
     /**
@@ -188,6 +195,15 @@ public class GameBoard {
         else{
             this.activeColor = activeColors.RED;
         }
+    }
+
+    /**
+     * Get the rule system/state of this board in particular
+     * @return RuleMaster class
+     */
+    public RuleMaster getMaster()
+    {
+        return master;
     }
 
     /**

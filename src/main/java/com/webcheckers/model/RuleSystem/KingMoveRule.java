@@ -29,6 +29,12 @@ public class KingMoveRule extends Rule {
     @Override
     public boolean isTriggered(GameBoard b_before, GameBoard b_after) {
         MovementPair mp = master.identifyMovement();
+
+        if(mp == null)
+        {
+            return false;
+        }
+
         this.before_row = mp.before_y;
         this.before_col = mp.before_x;
         this.after_row = mp.after_y;

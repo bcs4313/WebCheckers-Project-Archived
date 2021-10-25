@@ -170,9 +170,9 @@ public class WebServer {
 
     post(GAME_URL, new PostGameRoute(templateEngine));
 
-    post(CHECKTURN_URL, new PostCheckTurn(templateEngine));
+    post(CHECKTURN_URL, new PostCheckTurn(templateEngine, this.playerLobby));
 
-    post(VALIDATEMOVE_URL, new PostCheckTurn(templateEngine));
+    post(VALIDATEMOVE_URL, new PostValidateMove(templateEngine));
 
     post(BACKUPMOVE_URL, new PostBackupMove(templateEngine));
     //

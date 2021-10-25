@@ -66,15 +66,18 @@ public class GetGameRoute implements Route{
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
             GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
-            thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
+            if (thisBoard.getWhitePlayer().equals(currentUser)) {
+                thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
+            }
             BoardView thisBoardView = thisBoard.toBoardView();
             vm.put("currentUser", currentUser);
             vm.put("title", "Playing Game");
             vm.put("viewMode","PLAY");
             vm.put("redPlayer", thisBoard.getRedPlayer());
             vm.put("whitePlayer", thisBoard.getWhitePlayer());
-            vm.put("activeColor","RED");
+            vm.put("activeColor",thisBoard.getActiveColor());
             vm.put("board", thisBoardView);
+            vm.put("game",thisBoard);
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
@@ -94,8 +97,9 @@ public class GetGameRoute implements Route{
                 vm.put("viewMode","PLAY");
                 vm.put("redPlayer", thisBoard.getRedPlayer());
                 vm.put("whitePlayer", thisBoard.getWhitePlayer());
-                vm.put("activeColor","RED");
+                vm.put("activeColor",thisBoard.getActiveColor());
                 vm.put("board", thisBoardView);
+                vm.put("game",thisBoard);
             }
         }
 

@@ -69,6 +69,8 @@ public class WebServer {
   public static final String VALIDATEMOVE_URL = "/validateMove";
 
   public static final String BACKUPMOVE_URL = "/backupMove";
+
+  public static final String RESIGNGAME_URL = "/resignGame";
   //
   // Attributes
   //
@@ -175,6 +177,8 @@ public class WebServer {
     post(VALIDATEMOVE_URL, new PostValidateMove(templateEngine));
 
     post(BACKUPMOVE_URL, new PostBackupMove(templateEngine));
+
+    post(RESIGNGAME_URL, new PostResignGame(templateEngine, this.playerLobby));
     //
     LOG.config("WebServer is initialized.");
   }

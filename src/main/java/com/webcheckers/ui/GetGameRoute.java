@@ -86,11 +86,12 @@ public class GetGameRoute implements Route{
                 response.redirect(WebServer.HOME_URL);
             }
             else{
-                currentUser.setInGame(true);
-                opponentUser.setInGame(true);
+
                 currentUser.setOpponent(opponentUser);
                 opponentUser.setOpponent(currentUser);
                 GameBoard thisBoard = new GameBoard(currentUser, opponentUser);
+                currentUser.setInGame(true, thisBoard);
+                opponentUser.setInGame(true, thisBoard);
                 BoardView thisBoardView = thisBoard.toBoardView();
                 vm.put("currentUser", currentUser);
                 vm.put("title", "Playing Game");

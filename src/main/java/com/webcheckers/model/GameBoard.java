@@ -213,4 +213,8 @@ public class GameBoard {
     public activeColors getActiveColor(){
         return this.activeColor;
     }
+
+    public int getGameID(){
+        return this.gameID;
+    }
 }

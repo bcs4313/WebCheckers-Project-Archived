@@ -5,6 +5,7 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
 import com.webcheckers.ui.boardview.BoardView;
+import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.Objects;
@@ -28,29 +29,29 @@ public class PostCheckTurn implements Route {
     }
 
     @Override
-    public String handle(Request request, Response response) {
+    public Object handle(Request request, Response response) {
 
         final Session session = request.session();
 
+        String id = request.queryParams("gameID");
         String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
-        Player redPlayer = session.attribute("redPlayer");
-        Player whitePlayer = session.attribute("whitePlayer");
-        GameBoard.activeColors activeColor = session.attribute("activeColor");
-        Player currentUser = this.playerLobby.getPlayer(username);
 
-        if (whitePlayer.equals(currentUser)) {
-            if (activeColor.equals(GameBoard.activeColors.WHITE)){
+        Player currentUser = this.playerLobby.getPlayer(username);
+        GameBoard game = currentUser.getGame();
+
+        Gson gson = new Gson();
+        if (game.getWhitePlayer().equals(currentUser)) {
+            if (game.getActiveColor().equals(GameBoard.activeColors.WHITE)){
                 response.redirect(WebServer.GAME_URL);
-                return "true";
+                return gson.toJson(Message.info("true"));
             }
         }
         else{
-            if (activeColor.equals(GameBoard.activeColors.RED)){
+            if (game.getActiveColor().equals(GameBoard.activeColors.RED)){
                 response.redirect(WebServer.GAME_URL);
-                return "true";
+                return gson.toJson(Message.info("true"));
             }
         }
-        response.redirect(WebServer.GAME_URL);
-        return "false";
+        return gson.toJson(Message.info("false"));
     }
 }

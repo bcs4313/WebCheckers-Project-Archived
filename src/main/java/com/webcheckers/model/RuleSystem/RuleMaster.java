@@ -95,7 +95,7 @@ public class RuleMaster {
     public int[] identifyMovementHelper(int start_y, int start_x)
     {
         // These two arrays run in parallel to identify possible movements
-        int[] yShifts = {-1,-1, -2, 2,  1, 1, 2, 2};
+        int[] yShifts = {-1,-1, -2, -2,  1, 1, 2, 2};
         int[] xShifts = {-1, 1, -2, 2, -1, 1,-2, 2};
 
         GameBoard.cells[][] c_before = b_before.getBoard();

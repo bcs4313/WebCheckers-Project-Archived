@@ -5,6 +5,8 @@ import com.webcheckers.model.GameBoard;
 /**
  * Rule that checks the movement validity of a piece
  * in the King state (diagonally both ways, but not to the side)
+ * 
+ * @author Michael Ambrose (ma8540@rit.edu)
  */
 public class KingMoveRule extends Rule {
 

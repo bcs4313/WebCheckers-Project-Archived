@@ -110,7 +110,7 @@ public class GetGameRouteTest {
         Player self = new Player("self");
         playerLobby.login(opp);
         playerLobby.login(self);
-        opp.setInGame(true);
+        //opp.setInGame(true);
 
         // add request parameters
         when(session.attribute("currentUser")).thenReturn(self);

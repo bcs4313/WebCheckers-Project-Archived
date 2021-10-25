@@ -31,6 +31,7 @@ public class PostGameRoute implements Route {
     public String handle(Request request, Response response) {
 
         final Session session = request.session();
+        System.out.print("POST GAME ROUTE");
 
         return null;
     }

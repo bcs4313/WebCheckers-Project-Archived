@@ -167,4 +167,9 @@ public class RuleMaster {
             return;
         }
     }
+
+    public GameBoard.cells[][] getB_before() {
+        return b_before;
+    }
 }
+

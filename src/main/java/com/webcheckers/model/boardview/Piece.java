@@ -1,4 +1,4 @@
-package com.webcheckers.ui.boardview;
+package com.webcheckers.model.boardview;
 
 import com.webcheckers.model.GameBoard;
 

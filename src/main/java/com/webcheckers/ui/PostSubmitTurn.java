@@ -38,6 +38,7 @@ public class PostSubmitTurn implements Route {
         // now to retrieve a game with the queried ID
         GameBoard gb = sessionManager.retrieveSession(idVal);
         gb.switchActiveColor();
+
         //response.redirect(WebServer.GAME_URL);
         return gson.toJson(Message.info("Submitted Turn"));
     }

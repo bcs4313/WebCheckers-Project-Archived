@@ -43,7 +43,7 @@ public class RuleMaster {
         ruleSet = new ArrayList<>();
         board = currentBoard;
         chainer = new Chainer(this);
-
+        moveLog = new MoveLog(this);
         // initialize game level bools
         isGameOver = false;
         white_win = false;

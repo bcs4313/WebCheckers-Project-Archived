@@ -38,6 +38,7 @@ public class SessionManager {
      */
     public void addSession(int gameID, GameBoard session)
     {
+        System.out.println("added session");
         gameBoardMap.put(gameID, session);
     }
 

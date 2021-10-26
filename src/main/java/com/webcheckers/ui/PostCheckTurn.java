@@ -5,7 +5,6 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.boardview.BoardView;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -45,7 +44,7 @@ public class PostCheckTurn implements Route {
         //GameBoard game = currentUser.getGame();
         //System.out.println(game.getGameID());
         Gson gson = new Gson();
-        if (game.getWhitePlayer().equals(currentUser)) {
+        if (game.getWhitePlayer().getName().equals(currentUser.getName())) {
             if (game.getActiveColor().equals(GameBoard.activeColors.WHITE)){
                 //response.redirect(WebServer.GAME_URL);
                 return gson.toJson(Message.info("true"));

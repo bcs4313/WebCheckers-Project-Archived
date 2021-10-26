@@ -34,7 +34,8 @@ public class MoveLog {
 
     /**
      * Retrieve the position of the checker previous to this move.
-     * @return
+     * The position retrieved will automatically be removed.
+     * @return Previous position of checker.
      */
     public Position getPrevPosition()
     {

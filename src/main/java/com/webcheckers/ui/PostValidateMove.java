@@ -58,7 +58,8 @@ public class PostValidateMove implements Route {
         final String username = request.queryParams("username");
         Player ply = new Player(username);
         GameBoard gb = ply.getGame();
-        System.out.println("PostValidateTrigger--> " + gb.getGameID());
+        System.out.println("Game = '" + gb.toString());
+        //System.out.println("PostValidateTrigger--> " + gb.getGameID());
 
         // get the rulemaster of the board to evaluate the validity of a move
         RuleMaster master = gb.getMaster();

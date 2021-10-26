@@ -41,11 +41,19 @@
                   <td><img src="../img/single-piece-red.svg" /></td>
                   <td class="name">Red</td>
                 </tr>
+                <tr>
+                  <td><img src="../img/king-piece-red.svg" /></td>
+                  <td class="name">KingRed</td>
+                </tr>
               </table>
               <table data-color='WHITE'>
                 <tr>
                   <td><img src="../img/single-piece-white.svg" /></td>
                   <td class="name">White</td>
+                </tr>
+                <tr>
+                  <td><img src="../img/king-piece-white.svg" /></td>
+                  <td class="name">KingWhite</td>
                 </tr>
               </table>
             </div>

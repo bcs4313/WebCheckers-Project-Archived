@@ -183,6 +183,9 @@ public class GameBoard {
         return board;
     }
 
+    public void setboard(cells[][] board){
+        this.board = board;
+    }
     /**
      * simulates the end of a turn being made.
      * if the current active color is RED, switch it to

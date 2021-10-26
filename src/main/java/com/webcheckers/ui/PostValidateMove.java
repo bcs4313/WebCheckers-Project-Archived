@@ -1,10 +1,11 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Player;
-import com.webcheckers.model.RuleSystem.RuleMaster;
 import com.webcheckers.model.Position;
+import com.webcheckers.model.RuleSystem.RuleMaster;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -38,13 +39,18 @@ public class PostValidateMove implements Route {
 
     @Override
     public String handle(Request request, Response response) {
-        Move move = request.attribute("actionData"); // retrieve attribute regarding movement data
+        Gson gson = new Gson();
+        Move movement = gson.fromJson(request.queryParams("actionData"), Move.class);
 
         System.out.println("PostValidateTrigger");
-
+        System.out.println("obj = " + movement.toString());
         // retrieve positions regarding the move
-        Position beforePos = move.getStart();
-        Position afterPos = move.getEnd();
+        Position beforePos = movement.getStart();
+        Position afterPos = movement.getEnd();
+
+        System.out.println("beforePos = " + beforePos.toString());
+        System.out.println("afterPos = " + afterPos.toString());
+
         System.out.println("BEFOREPOS:: y:" + beforePos.getRow() + " x:" + beforePos.getCell());
         System.out.println("AFTERPOS:: y:" + afterPos.getRow() + " x:" + afterPos.getCell());
 
@@ -53,8 +59,11 @@ public class PostValidateMove implements Route {
         Player ply = new Player(username);
         GameBoard gb = ply.getGame();
         System.out.println("PostValidateTrigger--> " + gb.getGameID());
+
         // get the rulemaster of the board to evaluate the validity of a move
         RuleMaster master = gb.getMaster();
+        //master.createBoardTransition(beforePos, afterPos);
+        //master.triggerRuleSet(); // trigger the ruleset of master
 
         //master.
 

@@ -1,6 +1,7 @@
 package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Position;
 
 /**
  * Rule that checks the movement validity of a piece
@@ -29,18 +30,14 @@ public class KingMoveRule extends Rule {
      * @return true if rule was violated, false otherwise
      */
     @Override
-    public boolean isTriggered(GameBoard b_before, GameBoard b_after) {
-        MovementPair mp = master.identifyMovement();
+    public boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after) {
+        Position prevPos = master.getPrevPos();
+        Position afterPos = master.getAfterPos();
 
-        if(mp == null)
-        {
-            return false;
-        }
-
-        this.before_row = mp.before_y;
-        this.before_col = mp.before_x;
-        this.after_row = mp.after_y;
-        this.after_col = mp.after_x;
+        this.before_row = prevPos.getRow();
+        this.before_col = prevPos.getCell();
+        this.after_row = afterPos.getRow();
+        this.after_col = afterPos.getCell();
 
         // Return false if move is legal (movement rule should be the same for both red and white king pieces)
         if (this.after_row == (this.before_row - 1) || this.after_row == (this.before_row + 1)){
@@ -53,7 +50,6 @@ public class KingMoveRule extends Rule {
 
     /**
      * revert move if move was illegal
-     * @param boardToModify the session's game board
      * @return the game board as it was prior to move made
      */
     @Override

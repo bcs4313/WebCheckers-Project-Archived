@@ -1,6 +1,7 @@
 package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Position;
 
 import java.util.ArrayList;
 
@@ -11,26 +12,66 @@ import java.util.ArrayList;
 public class RuleMaster {
     ArrayList<Rule> ruleSet; // rules to scroll through on each action
 
-    GameBoard b_before; // stored before state
-    GameBoard b_after; // stored after state
+    GameBoard board; // where the actual gameboard object is stored
+    GameBoard.cells[][] b_before; // board grid before change
+    GameBoard.cells[][] b_after; // board grid after change
+    Position prevPos; // previous position of checker movement
+    Position afterPos; // after position of checker movement
+
     boolean isGameOver;
     boolean white_win;
     boolean red_win;
 
     // basic constructor
-    public RuleMaster()
+    public RuleMaster(GameBoard currentBoard)
+
     {
         ruleSet = new ArrayList<>();
+        board = currentBoard;
+
+        // add all rules to the ruleset
+        ruleSet.add(new BackwardJumpRule(this));
+        ruleSet.add(new BasicMoveRule(this));
+        ruleSet.add(new ForwardJumpRule(this));
+        ruleSet.add(new KingMoveRule(this));
+        ruleSet.add(new KingPromotionRule(this));
+        ruleSet.add(new WinConditionRule(this));
+
+    }
+
+    public Position getPrevPos()
+    {
+        return prevPos;
+    }
+
+    public Position getAfterPos()
+    {
+        return afterPos;
     }
 
     /**
      * store board before and after states
      * to be used by individual rules
+     * @param before position before checker was moved
+     * @param after position after checker was moved
      */
-    public void createBoardTransition(GameBoard before, GameBoard after)
+    public void createBoardTransition(Position before, Position after)
     {
-        b_before = before;
-        b_after = after;
+        prevPos = before;
+        afterPos = after;
+
+        // get board before/after states
+        b_before = board.getBoard().clone();
+        b_after = board.getBoard().clone();
+
+        int prevCell = prevPos.getCell();
+        int prevRow = prevPos.getRow();
+        int afterCell = afterPos.getCell();
+        int afterRow = afterPos.getRow();
+
+        // switch position
+        b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];
+        b_after[prevRow][prevCell] = GameBoard.cells.E;
     }
 
     /**
@@ -59,71 +100,6 @@ public class RuleMaster {
     }
 
     // Rule Helper Methods
-
-    /**
-     * Examines entire board to see if a checker has moved, if so,
-     * return it.
-     * @return binary list of new position {y, x} or null
-     */
-    public MovementPair identifyMovement()
-    {
-        for(int y = 0; y < 8; y++)
-        {
-            for(int x = 0; x < 8; x++)
-            {
-                int[] movement = identifyMovementHelper(y, x);
-                if(movement != null)
-                {
-                    MovementPair mp = new MovementPair();
-                    mp.before_y = y;
-                    mp.before_x = x;
-                    mp.after_y = movement[0];
-                    mp.after_x = movement[1];
-                    return mp;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Examines a location to see if a checker has moved from that position.
-     * @param start_y initial position
-     * @param start_x end position
-     * @return binary list of new position {y, x}
-     */
-    public int[] identifyMovementHelper(int start_y, int start_x)
-    {
-        // These two arrays run in parallel to identify possible movements
-        int[] yShifts = {-1,-1, -2, -2,  1, 1, 2, 2};
-        int[] xShifts = {-1, 1, -2, 2, -1, 1,-2, 2};
-
-        GameBoard.cells[][] c_before = b_before.getBoard();
-        GameBoard.cells[][] c_after = b_after.getBoard();
-
-        // check to see if original position is empty, if not then the movement
-        // clearly has never occurred
-        if(c_before[start_y][start_x] != GameBoard.cells.E)
-        {
-            return null;
-        }
-
-        for(int i = 0; i < yShifts.length; i++)
-        {
-            int y = yShifts[i];
-            int x = xShifts[i];
-            // first check for a nonempty space
-            if (c_before[y][x] != GameBoard.cells.E) {
-                // now see if the beforeBoard and afterBoard states are different, if so. return
-                if(c_before[y][x] == c_after[y][x])
-                {
-                    return new int[]{y,x};
-                }
-            }
-        }
-
-        return null;
-    }
 
     public void setGameOver(boolean gameOver) {
         isGameOver = gameOver;

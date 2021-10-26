@@ -13,7 +13,7 @@ public class Space {
 
     /**
      * Constructor
-     * 
+     *
      * @param cellIDx
      *  the id of the specific cell
      * @param pieceType

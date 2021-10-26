@@ -18,7 +18,7 @@ public class BasicMoveRule extends Rule{
     private int after_col;
 
     public BasicMoveRule(RuleMaster master){
-        super(null);
+        super(master);
     }
 
     /**
@@ -28,14 +28,12 @@ public class BasicMoveRule extends Rule{
      * @return true if rule was violated, false otherwise
      */
     @Override
-    public boolean isTriggered(GameBoard b_before, GameBoard b_after) {
+    public boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after) {
         // Find the prior position of moved piece and a piece was moved
-        GameBoard.cells[][] before_config = b_before.getBoard();
-        GameBoard.cells[][] after_config = b_after.getBoard();
-        for(int i = 0; i < before_config.length; i++){
-            for(int j = 0; j < before_config[i].length; j++){
-                if(before_config[i][j] != after_config[i][j]){
-                    if(after_config[i][j].equals(GameBoard.cells.R) || after_config[i][j].equals(GameBoard.cells.W)){
+        for(int i = 0; i < b_before.length; i++){
+            for(int j = 0; j < b_before[i].length; j++){
+                if(b_before[i][j] != b_after[i][j]){
+                    if(b_after[i][j].equals(GameBoard.cells.R) || b_after[i][j].equals(GameBoard.cells.W)){
                         this.after_row = i;
                         this.after_col = j;
                     }
@@ -48,7 +46,7 @@ public class BasicMoveRule extends Rule{
         }
         // If so, check if it was moved illegally
         // If it's a red piece, legality means that the piece was moved to either (row = i-1,col = j-1) or (row = i-1, col = j+1)
-        GameBoard.activeColors pieceColor = b_before.getActiveColor();
+        GameBoard.activeColors pieceColor = master.board.getActiveColor();
         if (pieceColor.equals(GameBoard.activeColors.RED)){
             // If moved illegally, return true
             if (this.after_row != (this.before_row - 1)){
@@ -78,7 +76,6 @@ public class BasicMoveRule extends Rule{
 
     /**
      * revert move if move was illegal
-     * @param boardToModify the session's game board
      * @return the game board as it was prior to move made
      */
     @Override

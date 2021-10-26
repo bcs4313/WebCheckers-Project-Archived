@@ -18,7 +18,7 @@ public class BasicMoveRule extends Rule{
     private int after_col;
 
     public BasicMoveRule(RuleMaster master){
-        super(null);
+        super(master);
     }
 
     /**

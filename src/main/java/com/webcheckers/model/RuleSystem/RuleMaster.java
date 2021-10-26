@@ -28,6 +28,15 @@ public class RuleMaster {
     {
         ruleSet = new ArrayList<>();
         board = currentBoard;
+
+        // add all rules to the ruleset
+        ruleSet.add(new BackwardJumpRule(this));
+        ruleSet.add(new BasicMoveRule(this));
+        ruleSet.add(new ForwardJumpRule(this));
+        ruleSet.add(new KingMoveRule(this));
+        ruleSet.add(new KingPromotionRule(this));
+        ruleSet.add(new WinConditionRule(this));
+
     }
 
     public Position getPrevPos()

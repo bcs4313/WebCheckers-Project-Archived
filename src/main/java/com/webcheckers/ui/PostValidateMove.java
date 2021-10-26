@@ -57,6 +57,7 @@ public class PostValidateMove implements Route {
         // get the rulemaster of the board to evaluate the validity of a move
         RuleMaster master = gb.getMaster();
         master.createBoardTransition(beforePos, afterPos);
+        master.triggerRuleSet(); // trigger the ruleset of master
 
         //master.
 

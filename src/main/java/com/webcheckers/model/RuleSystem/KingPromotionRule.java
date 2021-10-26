@@ -11,10 +11,10 @@ import com.webcheckers.model.GameBoard.cells;
  * 
  * @author Michael Ambrose (ma8540@rit.edu)
  */
-public class KingPromotion extends Rule {
+public class KingPromotionRule extends Rule {
     private cells[][] spaces;
 
-    public KingPromotion(RuleMaster master) {
+    public KingPromotionRule(RuleMaster master) {
         super(master);
     }
 

@@ -2,13 +2,13 @@ package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
 
-public class WinCondition extends Rule {
+public class WinConditionRule extends Rule {
 
     private boolean red_has_piece;
     private boolean white_has_piece;
 
-    WinCondition(){
-        super(null);
+    WinConditionRule(RuleMaster master){
+        super(master);
         this.red_has_piece=false;
         this.white_has_piece=false;
     }

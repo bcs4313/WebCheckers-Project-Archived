@@ -9,17 +9,19 @@ import com.webcheckers.model.GameBoard;
 public class Space {
     private int cellIdx; // cell id num
     private Piece currentPiece; // piece this space contains
+    private int row;
 
     /**
      * Constructor
-     * 
+     *
      * @param cellIDx
      *  the id of the specific cell
      * @param pieceType
      *  the piece that is on the space (can be empty)
      * @throws Exception invalid index exception
      */
-    public Space(int cellIDx, GameBoard.cells pieceType) throws Exception {
+    public Space(int cellIDx, GameBoard.cells pieceType, int row) throws Exception {
+        this.row=row;
         this.cellIdx=cellIDx;
         if(cellIDx>7){
             throw new Exception("Invalid index size: Must be 7 or lower.");
@@ -38,7 +40,26 @@ public class Space {
 
     //todo: needs to check if piece is a dark square and has no other piece on it.
     public boolean isValid(){
-        return false;
+        System.out.println(row +"/"+cellIdx);
+        if(row % 2==1){ //if black space
+            if(cellIdx%2==1){
+                return false;
+            } else{
+                if(currentPiece==null) {
+                    return true;
+                }
+                return false;
+            }
+        } else {
+            if (cellIdx % 2 == 1) {
+                if(currentPiece==null) {
+                    return true;
+                }
+                return false;
+            } else{
+                return false;
+            }
+        }
     }
 
 

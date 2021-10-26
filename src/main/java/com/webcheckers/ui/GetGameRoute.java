@@ -68,7 +68,10 @@ public class GetGameRoute implements Route{
         // automatically load a board for them.
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
-            GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
+            GameBoard thisBoard = opponentUser.getGame();
+            //String id = request.queryParams("gameID");
+            //GameBoard thisBoard = sessionManager.retrieveSession(Integer.parseInt(id));
+            //GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
             if (thisBoard.getWhitePlayer().equals(currentUser)) {
                 thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
             }

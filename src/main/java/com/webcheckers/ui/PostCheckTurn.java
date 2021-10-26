@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
 import com.webcheckers.ui.boardview.BoardView;
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class PostCheckTurn implements Route {
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
-
+    private final SessionManager sessionManager;
     /**
      * The constructor for the POST /checkTurn route handler.
      *
@@ -22,10 +23,11 @@ public class PostCheckTurn implements Route {
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */
-    PostCheckTurn(TemplateEngine templateEngine, PlayerLobby playerLobby) {
+    PostCheckTurn(TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
         this.playerLobby = playerLobby;
+        this.sessionManager = sessionManager;
     }
 
     @Override
@@ -39,18 +41,19 @@ public class PostCheckTurn implements Route {
         String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
 
         Player currentUser = this.playerLobby.getPlayer(username);
-        GameBoard game = currentUser.getGame();
-        System.out.println(game.getGameID());
+        GameBoard game = sessionManager.retrieveSession(Integer.parseInt(id));
+        //GameBoard game = currentUser.getGame();
+        //System.out.println(game.getGameID());
         Gson gson = new Gson();
         if (game.getWhitePlayer().equals(currentUser)) {
             if (game.getActiveColor().equals(GameBoard.activeColors.WHITE)){
-                response.redirect(WebServer.GAME_URL);
+                //response.redirect(WebServer.GAME_URL);
                 return gson.toJson(Message.info("true"));
             }
         }
         else{
             if (game.getActiveColor().equals(GameBoard.activeColors.RED)){
-                response.redirect(WebServer.GAME_URL);
+                //response.redirect(WebServer.GAME_URL);
                 return gson.toJson(Message.info("true"));
             }
         }

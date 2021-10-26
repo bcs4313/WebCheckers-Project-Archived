@@ -83,7 +83,7 @@ public class PostValidateMove implements Route {
             // true:
             // false: opponent is still taking their turn
 
-            return gson.toJson(Message.info("false"));
+            return gson.toJson(Message.info("Nice Move!"));
         }
         else
         {

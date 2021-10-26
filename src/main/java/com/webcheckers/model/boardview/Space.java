@@ -1,4 +1,4 @@
-package com.webcheckers.ui.boardview;
+package com.webcheckers.model.boardview;
 
 import com.webcheckers.model.GameBoard;
 
@@ -38,9 +38,8 @@ public class Space {
         return cellIdx;
     }
 
-    //todo: needs to check if piece is a dark square and has no other piece on it.
+    // check if piece is a dark square and has no other piece on it.
     public boolean isValid(){
-        System.out.println(row +"/"+cellIdx);
         if(row % 2==1){ //if black space
             if(cellIdx%2==1){
                 return false;

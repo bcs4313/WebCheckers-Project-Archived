@@ -4,7 +4,7 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.boardview.BoardView;
+import com.webcheckers.model.boardview.BoardView;
 import spark.*;
 
 import java.util.HashMap;
@@ -56,6 +56,8 @@ public class GetGameRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
         HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
 
+        System.out.println("GetGameRoute trigger");
+
         final Session session = request.session();
 
         // retrieve opponent name and get them from the player lobby,
@@ -69,24 +71,24 @@ public class GetGameRoute implements Route{
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
             GameBoard thisBoard = opponentUser.getGame();
-            //String id = request.queryParams("gameID");
-            //GameBoard thisBoard = sessionManager.retrieveSession(Integer.parseInt(id));
-            //GameBoard thisBoard = new GameBoard(opponentUser, currentUser);
-            if (thisBoard.getWhitePlayer().equals(currentUser)) {
+
+            System.out.println("ID:: " + thisBoard.getGameID());
+
+            if (currentUser.getGame().getRedPlayer() == opponentUser) {
                 thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
             }
+
             BoardView thisBoardView = thisBoard.toBoardView();
             vm.put("currentUser", currentUser);
             vm.put("title", "Playing Game");
             vm.put("viewMode","PLAY");
             vm.put("redPlayer", thisBoard.getRedPlayer());
             vm.put("whitePlayer", thisBoard.getWhitePlayer());
-            vm.put("activeColor",thisBoard.getActiveColor());
+            vm.put("activeColor", thisBoard.getActiveColor());
             vm.put("board", thisBoardView);
             vm.put("game",thisBoard);
 
-            // game must be stored in SessionManager
-            sessionManager.addSession(thisBoard.getGameID(), thisBoard);
+            System.out.println("activeColor = " + thisBoard.getActiveColor().toString());
 
             // Game ID must be stored in session
             vm.put("gameID", currentUser.getGame().getGameID());
@@ -109,6 +111,8 @@ public class GetGameRoute implements Route{
                 currentUser.setInGame(true, thisBoard);
                 opponentUser.setInGame(true, thisBoard);
 
+                System.out.println("ID:: " + thisBoard.getGameID());
+
                 // game must be stored in SessionManager
                 sessionManager.addSession(thisBoard.getGameID(), thisBoard);
 
@@ -119,6 +123,9 @@ public class GetGameRoute implements Route{
                 vm.put("currentUser", currentUser);
                 vm.put("title", "Playing Game");
                 vm.put("viewMode","PLAY");
+
+                System.out.println("activeColor == " + thisBoard.getActiveColor().toString());
+
                 vm.put("redPlayer", thisBoard.getRedPlayer());
                 vm.put("whitePlayer", thisBoard.getWhitePlayer());
                 vm.put("activeColor",thisBoard.getActiveColor());

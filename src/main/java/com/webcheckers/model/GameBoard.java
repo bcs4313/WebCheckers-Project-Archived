@@ -1,7 +1,7 @@
 package com.webcheckers.model;
 
 import com.webcheckers.model.RuleSystem.RuleMaster;
-import com.webcheckers.ui.boardview.BoardView;
+import com.webcheckers.model.boardview.BoardView;
 
 /**
  * Model that represents a real life checker board
@@ -115,6 +115,8 @@ public class GameBoard {
 
         // create rule system
         master = new RuleMaster(this);
+
+        System.out.println("board constructed");
     }
 
     /**
@@ -122,11 +124,13 @@ public class GameBoard {
      * @param sender who sent the game request?
      * @param receiver who accepted the request?
      * @param baseBoard what is the initial state of this board?
+     * @param color whose turn is it currently?
      */
-    public GameBoard(Player sender, Player receiver, cells[][] baseBoard)
+    public GameBoard(Player sender, Player receiver, cells[][] baseBoard, activeColors color)
     {
         this(sender, receiver); // call the default constructor
         this.board = baseBoard; // now change the board to a new state
+        this.activeColor = color;
     }
 
     /**
@@ -172,7 +176,7 @@ public class GameBoard {
                 }
             }
         }
-        return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped);
+        return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped, getActiveColor());
     }
 
     /**
@@ -194,9 +198,11 @@ public class GameBoard {
     public void switchActiveColor(){
         if (this.activeColor.equals(activeColors.RED)){
             this.activeColor = activeColors.WHITE;
+            System.out.println("Switched active color to WHITE");
         }
         else{
             this.activeColor = activeColors.RED;
+            System.out.println("Switched active color to RED");
         }
     }
 

@@ -25,29 +25,25 @@ public class WinCondition extends Rule {
     }
 
     @Override
-    public boolean isTriggered(GameBoard b_before, GameBoard b_after) {
-        GameBoard.cells[][] post_board=b_after.getBoard();
-            for(int i=0; i<post_board.length; i++){
-                for(int j=0; j<post_board[i].length; j++){
-                    if(post_board[i][j].equals(GameBoard.cells.R)||post_board[i][j].equals(GameBoard.cells.RK)){
-                        this.red_has_piece=true;
-                    } else if(post_board[i][j].equals(GameBoard.cells.W)||post_board[i][j].equals(GameBoard.cells.WK)){
-                        this.white_has_piece=true;
-                    }
+    public boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after) {
+        for (GameBoard.cells[] cells : b_after) {
+            for (GameBoard.cells cell : cells) {
+                if (cell.equals(GameBoard.cells.R) || cell.equals(GameBoard.cells.RK)) {
+                    this.red_has_piece = true;
+                } else if (cell.equals(GameBoard.cells.W) || cell.equals(GameBoard.cells.WK)) {
+                    this.white_has_piece = true;
                 }
             }
-            if(red_has_piece==false||white_has_piece==false){
-                return true;
-            }
-            return false;
+        }
+        return !red_has_piece || !white_has_piece;
 
     }
 
     @Override
     public void action() {
-        if(red_has_piece==false){
+        if(!red_has_piece){
             master.setWin("white player");
-        }else if(white_has_piece==false){
+        }else if(!white_has_piece){
             master.setWin("red player");
         }
         master.setGameOver(true);

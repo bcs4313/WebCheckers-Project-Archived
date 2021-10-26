@@ -12,7 +12,6 @@ import com.webcheckers.model.GameBoard.cells;
  * @author Michael Ambrose (ma8540@rit.edu)
  */
 public class KingPromotion extends Rule {
-    private GameBoard board;
     private cells[][] spaces;
 
     public KingPromotion(RuleMaster master) {
@@ -26,8 +25,8 @@ public class KingPromotion extends Rule {
      * @return true if case is valid, false otherwise
      */
     @Override
-    public boolean isTriggered(GameBoard b_before, GameBoard b_after) {
-        spaces = board.getBoard();
+    public boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after) {
+        spaces = b_after;
 
         for(GameBoard.cells space : spaces[0]) {
             if(space == cells.R) 

@@ -114,7 +114,7 @@ public class GameBoard {
         activeColor = activeColors.RED;
 
         // create rule system
-        master = new RuleMaster();
+        master = new RuleMaster(this);
     }
 
     /**

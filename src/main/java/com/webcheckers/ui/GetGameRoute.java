@@ -78,6 +78,8 @@ public class GetGameRoute implements Route{
             vm.put("activeColor",thisBoard.getActiveColor());
             vm.put("board", thisBoardView);
             vm.put("game",thisBoard);
+            System.out.println("Atrributing game ID: " + currentUser.getGame().getGameID());
+            session.attribute("gameID", currentUser.getGame().getGameID());
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
@@ -92,6 +94,11 @@ public class GetGameRoute implements Route{
                 GameBoard thisBoard = new GameBoard(currentUser, opponentUser);
                 currentUser.setInGame(true, thisBoard);
                 opponentUser.setInGame(true, thisBoard);
+
+                // Game ID must be stored in session
+                System.out.println("Atrributing game ID: " + currentUser.getGame().getGameID());
+                session.attribute("gameID", currentUser.getGame().getGameID());
+
                 BoardView thisBoardView = thisBoard.toBoardView();
                 vm.put("currentUser", currentUser);
                 vm.put("title", "Playing Game");

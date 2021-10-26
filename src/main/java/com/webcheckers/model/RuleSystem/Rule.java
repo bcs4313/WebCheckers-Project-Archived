@@ -15,7 +15,7 @@ public abstract class Rule {
      * with the new state, will your rule trigger?
      * @return if your rule took action
      */
-    public abstract boolean isTriggered(GameBoard b_before, GameBoard b_after);
+    public abstract boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after);
 
     /**
      * Enter the action that your rule will take upon being

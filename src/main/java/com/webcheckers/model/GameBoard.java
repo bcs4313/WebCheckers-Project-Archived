@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
-import com.webcheckers.ui.boardview.BoardView;
+import com.webcheckers.model.RuleSystem.RuleMaster;
+import com.webcheckers.model.boardview.BoardView;
 
 /**
  * Model that represents a real life checker board
@@ -10,6 +11,9 @@ import com.webcheckers.ui.boardview.BoardView;
 public class GameBoard {
     // used to assign IDs to all gameboard objects
     static int universal_ID = 0;
+
+    // handles all rules regarding the board state and various actions
+    private RuleMaster master;
 
     // current state of the board players see
     BoardView currentView;
@@ -27,13 +31,19 @@ public class GameBoard {
     // whose turn is it currently?
     activeColors activeColor;
 
+    boolean isGameOver;
+
+    boolean red_win;
+
+    boolean white_win;
+
     enum viewModes{
         PLAY,
         SPECTATOR,
         REPLAY
     }
 
-    enum activeColors{
+    public enum activeColors{
         RED,
         WHITE
     }
@@ -102,6 +112,11 @@ public class GameBoard {
 
         // assign red to go first
         activeColor = activeColors.RED;
+
+        // create rule system
+        master = new RuleMaster(this);
+
+        System.out.println("board constructed");
     }
 
     /**
@@ -109,19 +124,13 @@ public class GameBoard {
      * @param sender who sent the game request?
      * @param receiver who accepted the request?
      * @param baseBoard what is the initial state of this board?
+     * @param color whose turn is it currently?
      */
-    public GameBoard(Player sender, Player receiver, cells[][] baseBoard)
+    public GameBoard(Player sender, Player receiver, cells[][] baseBoard, activeColors color)
     {
         this(sender, receiver); // call the default constructor
         this.board = baseBoard; // now change the board to a new state
-    }
-
-    public Player getRedPlayer(){
-        return this.redPlayer;
-    }
-
-    public Player getWhitePlayer(){
-        return this.whitePlayer;
+        this.activeColor = color;
     }
 
     /**
@@ -167,6 +176,70 @@ public class GameBoard {
                 }
             }
         }
-        return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped);
+        return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped, getActiveColor());
+    }
+
+    /**
+     * get the current layout of the board
+     * @return cells[][], the 2D array representation of the board
+     */
+    public cells[][] getBoard(){
+        return board;
+    }
+
+    public void setboard(cells[][] board){
+        this.board = board;
+    }
+    /**
+     * simulates the end of a turn being made.
+     * if the current active color is RED, switch it to
+     * WHTIE, and vice versa.
+     */
+    public void switchActiveColor(){
+        if (this.activeColor.equals(activeColors.RED)){
+            this.activeColor = activeColors.WHITE;
+            System.out.println("Switched active color to WHITE");
+        }
+        else{
+            this.activeColor = activeColors.RED;
+            System.out.println("Switched active color to RED");
+        }
+    }
+
+    /**
+     * Get the rule system/state of this board in particular
+     * @return RuleMaster class
+     */
+    public RuleMaster getMaster()
+    {
+        return master;
+    }
+
+    /**
+     * getter for the GameBoard's red player
+     * @return the red player
+     */
+    public Player getRedPlayer(){
+        return this.redPlayer;
+    }
+
+    /**
+     * getter for the GameBoard's white player
+     * @return the white player
+     */
+    public Player getWhitePlayer(){
+        return this.whitePlayer;
+    }
+
+    /**
+     * getter for the GameBoard's active color
+     * @return the current active color (player)
+     */
+    public activeColors getActiveColor(){
+        return this.activeColor;
+    }
+
+    public int getGameID(){
+        return this.gameID;
     }
 }

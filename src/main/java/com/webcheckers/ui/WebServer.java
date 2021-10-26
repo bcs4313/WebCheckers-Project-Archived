@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
 import spark.TemplateEngine;
 
 import java.util.Objects;
@@ -68,6 +69,16 @@ public class WebServer {
    * The URL pattern to request the Game page
    */
   public static final String GAME_URL = "/game";
+
+  public static final String CHECKTURN_URL = "/checkTurn";
+
+  public static final String VALIDATEMOVE_URL = "/validateMove";
+
+  public static final String BACKUPMOVE_URL = "/backupMove";
+
+  public static final String RESIGNGAME_URL = "/resignGame";
+
+  public static final String SUBMITTURN_URL = "/submitTurn";
   //
   // Attributes
   //
@@ -76,6 +87,7 @@ public class WebServer {
   private final Gson gson;
 
   private final PlayerLobby playerLobby; // player waiting room manager
+  private final SessionManager sessionManager; // game ID management system
 
   //
   // Constructor
@@ -93,7 +105,7 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby playerLobby) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby playerLobby, final SessionManager sessionManager) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -102,6 +114,7 @@ public class WebServer {
     this.templateEngine = templateEngine;
     this.gson = gson;
     this.playerLobby = playerLobby;
+    this.sessionManager = sessionManager;
   }
 
   //
@@ -162,7 +175,7 @@ public class WebServer {
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
 
     // Shows the Checkers game Game page
-    get(GAME_URL, new GetGameRoute(templateEngine, this.playerLobby));
+    get(GAME_URL, new GetGameRoute(templateEngine, this.playerLobby, this.sessionManager));
 
     // Posts login request to Signin Page
     post(SIGNIN_URL, new PostSignInRoute(playerLobby, templateEngine));
@@ -172,6 +185,15 @@ public class WebServer {
     // Posts requests to the Game Page
     post(GAME_URL, new PostGameRoute(templateEngine));
 
+    post(CHECKTURN_URL, new PostCheckTurn(templateEngine, this.playerLobby, this.sessionManager));
+
+    post(VALIDATEMOVE_URL, new PostValidateMove(templateEngine, this.sessionManager));
+
+    post(BACKUPMOVE_URL, new PostBackupMove(templateEngine, this.sessionManager));
+
+    post(RESIGNGAME_URL, new PostResignGame(templateEngine, this.playerLobby));
+
+    post(SUBMITTURN_URL, new PostSubmitTurn(templateEngine, this.sessionManager));
     //
     LOG.config("WebServer is initialized.");
   }

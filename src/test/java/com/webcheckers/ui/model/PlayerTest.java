@@ -56,16 +56,16 @@ public class PlayerTest {
             final Player beta = new Player("beta");
             assertEquals(beta.isInGame(),false);
 
-            beta.setInGame(false);
+           // beta.setInGame(false);
             assertEquals(beta.isInGame(),false);
 
-            beta.setInGame(true);
+           // beta.setInGame(true);
             assertEquals(beta.isInGame(),true);
 
-            beta.setInGame(true);
+           // beta.setInGame(true);
             assertEquals(beta.isInGame(),true);
 
-            beta.setInGame(false);
+           // beta.setInGame(false);
             assertEquals(beta.isInGame(),false);
         }
 

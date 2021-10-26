@@ -1,6 +1,7 @@
 package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Position;
 
 import java.util.ArrayList;
 
@@ -11,23 +12,126 @@ import java.util.ArrayList;
 public class RuleMaster {
     ArrayList<Rule> ruleSet; // rules to scroll through on each action
 
-    GameBoard b_before; // stored before state
-    GameBoard b_after; // stored after state
+    private GameBoard board; // where the actual gameboard object is stored
+    private GameBoard.cells[][] b_before; // board grid before change
+    private GameBoard.cells[][] b_after; // board grid after change
+    private Position prevPos; // previous position of checker movement
+    private Position afterPos; // after position of checker movement
+
+    private MoveLog moveLog; // object that stores previous moves a player during their turn
+    private Chainer chainer; // object that forces jump chains to occur
+
+    /**
+     * booleans to handled by rule objects
+     * each name corresponds to an abstract rule
+     */
+    // turn level
+    boolean invalidForwardJump;
+    boolean invalidBackwardJump;
+    boolean invalidBasicMove;
+    boolean invalidKingMove;
+
+    //game level
+    boolean isGameOver;
+    boolean white_win;
+    boolean red_win;
 
     // basic constructor
-    public RuleMaster()
+    public RuleMaster(GameBoard currentBoard)
+
     {
         ruleSet = new ArrayList<>();
+        board = currentBoard;
+        chainer = new Chainer(this);
+        moveLog = new MoveLog(this);
+        // initialize game level bools
+        isGameOver = false;
+        white_win = false;
+        red_win = false;
+
+        // add all rules to the ruleset
+        ruleSet.add(new BackwardJumpRule(this));
+        ruleSet.add(new BasicMoveRule(this));
+        ruleSet.add(new ForwardJumpRule(this));
+        ruleSet.add(new KingMoveRule(this));
+        ruleSet.add(new KingPromotionRule(this));
+        ruleSet.add(new WinConditionRule(this));
+
+    }
+
+    public Position getPrevPos()
+    {
+        return prevPos;
+    }
+
+    public Position getAfterPos()
+    {
+        return afterPos;
     }
 
     /**
      * store board before and after states
      * to be used by individual rules
+     * @param before position before checker was moved
+     * @param after position after checker was moved
      */
-    public void createBoardTransition(GameBoard before, GameBoard after)
+    public void createBoardTransition(Position before, Position after)
     {
-        b_before = before;
-        b_after = after;
+        prevPos = before;
+        afterPos = after;
+
+        // get board before/after states
+        b_before = board.getBoard().clone();
+        b_after = board.getBoard().clone();
+
+        int prevCell = prevPos.getCell();
+        int prevRow = prevPos.getRow();
+        int afterCell = afterPos.getCell();
+        int afterRow = afterPos.getRow();
+
+        // switch position
+        b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];
+        b_after[prevRow][prevCell] = GameBoard.cells.E;
+
+        // log new movement into memory
+        moveLog.addMovement(before);
+    }
+
+    /**
+     * Retrieve previous board state
+     * @return board state before movement
+     */
+    public GameBoard.cells[][] getB_Before()
+    {
+        return b_before;
+    }
+
+    /**
+     * Retrieve new board state
+     * @return board state after movement
+     */
+    public GameBoard.cells[][] getB_After()
+    {
+        return b_after;
+    }
+
+    /**
+     * Get stack object of previous positions in turn
+     * @return log of checker positions in turn
+     */
+    public MoveLog getLog()
+    {
+        return moveLog;
+    }
+
+    /**
+     * Get object that works with forced implications
+     * of chain jumps
+     * @return chain jump object
+     */
+    public Chainer getChainer()
+    {
+        return chainer;
     }
 
     /**
@@ -41,15 +145,60 @@ public class RuleMaster {
 
     /**
      * Modify the gameboard and do actions by triggering each rule in the ruleset
+     * prereq: board has the current acting player's orientation on the bottom of
+     * the board.
+     * @return if the move is authorized to occur
      */
-    public void triggerRuleSet()
+    public boolean triggerRuleSet()
     {
+        // initialize turn level bools
+        invalidForwardJump = false;
+        invalidBackwardJump = false;
+        invalidBasicMove = false;
+        invalidKingMove = false;
+
         for(Rule r : ruleSet)
         {
             if (r.isTriggered(b_before, b_after))
             {
-                r.action(b_before);
+                r.action();
             }
         }
+
+        System.out.println("validForwardJump = " + invalidForwardJump);
+        System.out.println("validBackwardJump = " + invalidBackwardJump);
+        System.out.println("validBasicMove = " + invalidBasicMove);
+        System.out.println("validKingMove = " + invalidKingMove);
+
+        // log a jump in the chainer if a jump was allowed
+        if(!invalidBackwardJump || !invalidForwardJump)
+        {
+            chainer.logJump(afterPos);
+        }
+
+        // now to evaluate if this move is allowed
+        return (!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove);
+    }
+
+    // Rule Helper Methods
+
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
+    }
+
+    public void setWin(String player){
+        if(player.equals("red player")){
+            red_win=true;
+            return;
+        }
+        if(player.equals("white player")){
+            white_win=true;
+            return;
+        }
+    }
+
+    public GameBoard.cells[][] getB_before() {
+        return b_before;
     }
 }
+

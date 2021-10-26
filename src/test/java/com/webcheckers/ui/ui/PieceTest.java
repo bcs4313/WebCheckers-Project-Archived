@@ -3,7 +3,7 @@ package com.webcheckers.ui.ui;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.webcheckers.model.GameBoard.cells;
-import com.webcheckers.ui.boardview.Piece;
+import com.webcheckers.model.boardview.Piece;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

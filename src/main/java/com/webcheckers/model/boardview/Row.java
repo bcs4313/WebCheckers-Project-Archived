@@ -1,4 +1,4 @@
-package com.webcheckers.ui.boardview;
+package com.webcheckers.model.boardview;
 
 import com.webcheckers.model.GameBoard;
 
@@ -30,7 +30,7 @@ public class Row implements Iterable<Space> {
         spaces = new ArrayList<>();
         for(int i=0; i<EACHSPACE; i++){
             GameBoard.cells pieceType = brow[i];
-            Space s = new Space(i, pieceType);
+            Space s = new Space(i, pieceType, index);
             spaces.add(i, s);
         }
 

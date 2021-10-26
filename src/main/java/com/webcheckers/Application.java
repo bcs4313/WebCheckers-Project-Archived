@@ -2,6 +2,7 @@ package com.webcheckers;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
 import com.webcheckers.ui.WebServer;
 import spark.TemplateEngine;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -100,8 +101,13 @@ public final class Application {
     // identify Player objects.
     final PlayerLobby playerLobby = new PlayerLobby();
 
+    // The application uses SessionManager to allow easy identification
+    // of player game sessions by their ID number. If a game doesn't
+    // exist on this object the game will cease to be played.
+    final SessionManager sessionManager = new SessionManager();
+
     // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine, gson, playerLobby);
+    final WebServer webServer = new WebServer(templateEngine, gson, playerLobby, sessionManager);
 
     // inject web server into application
     final Application app = new Application(webServer);

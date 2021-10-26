@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -17,6 +18,8 @@ public class Player {
     private final String name;
     private Player opponent;
 
+    private GameBoard playersGame;
+
     /**
      * Basic Constructor for a Player
      * @param username name of the player
@@ -25,6 +28,7 @@ public class Player {
     {
         // null safety
         this.name = Objects.requireNonNullElse(username, "MISSING NAME");
+        this.playersGame = null;
         this.isVerified = false;
         this.inGame = false;
     }
@@ -57,8 +61,9 @@ public class Player {
     }
 
     // set the in game status for the player
-    public void setInGame(boolean status)
+    public void setInGame(boolean status, GameBoard game)
     {
+        this.playersGame = game;
         inGame = status;
     }
 
@@ -70,4 +75,8 @@ public class Player {
     // get the opponent player, returns null if no one has
     // started a match with this player
     public Player getOpponent(){ return this.opponent; }
+
+    public GameBoard getGame(){
+        return this.playersGame;
+    }
 }

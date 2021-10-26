@@ -1,6 +1,7 @@
 package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Position;
 
 /**
  * Rule that checks to make sure a basic piece wasn't moved
@@ -29,49 +30,20 @@ public class BasicMoveRule extends Rule{
      */
     @Override
     public boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after) {
-        // Find the prior position of moved piece and a piece was moved
-        for(int i = 0; i < b_before.length; i++){
-            for(int j = 0; j < b_before[i].length; j++){
-                if(b_before[i][j] != b_after[i][j]){
-                    if(b_after[i][j].equals(GameBoard.cells.R) || b_after[i][j].equals(GameBoard.cells.W)){
-                        this.after_row = i;
-                        this.after_col = j;
-                    }
-                    else{
-                        this.before_row = i;
-                        this.before_col = j;
-                    }
-                }
-            }
-        }
-        // If so, check if it was moved illegally
-        // If it's a red piece, legality means that the piece was moved to either (row = i-1,col = j-1) or (row = i-1, col = j+1)
-        GameBoard.activeColors pieceColor = master.board.getActiveColor();
-        if (pieceColor.equals(GameBoard.activeColors.RED)){
-            // If moved illegally, return true
-            if (this.after_row != (this.before_row - 1)){
-                return true;
-            }
-            else if (this.after_col != (this.before_col - 1) || this.after_col != (this.before_col + 1)){
-                return true;
-            }
-            // else, return false
-            else{
-                return false;
-            }
-        }
-        // If it's a white piece, legality means that the piece was moved to either (row = i+1,col = j+1) or (row = i+1,col = j-1)
-        if (pieceColor.equals(GameBoard.activeColors.WHITE)){
-            // If moved illegally, return true
-            if (this.after_row != (this.before_row + 1)){
-                return true;
-            }
-            else if (this.after_col != (this.before_col - 1) || this.after_col != (this.before_col + 1)){
-                return true;
-            }
-        }
+        Position prevPos = master.getPrevPos();
+        Position afterPos = master.getAfterPos();
+
+        this.before_row = prevPos.getRow();
+        this.before_col = prevPos.getCell();
+        this.after_row = afterPos.getRow();
+        this.after_col = afterPos.getCell();
+
+        // If moved illegally, return true
         // else, return false
-        return false;
+        if (this.after_row != (this.before_row - 1)){
+            return true;
+        }
+        return (this.after_col != (this.before_col - 1) && this.after_col != (this.before_col + 1));
     }
 
     /**
@@ -79,6 +51,6 @@ public class BasicMoveRule extends Rule{
      */
     @Override
     public void action(){
-        master.validBasicMove = true;
+        master.invalidBasicMove = true;
     }
 }

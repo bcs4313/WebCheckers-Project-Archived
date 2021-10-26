@@ -42,7 +42,10 @@ public class KingMoveRule extends Rule {
         // Return false if move is legal (movement rule should be the same for both red and white king pieces)
         if (this.after_row == (this.before_row - 1) || this.after_row == (this.before_row + 1)){
             if(this.after_col == (this.before_col - 1) || this.after_col == (this.before_col + 1))
-                return false;
+                // checker must be a king to make this move anyway
+                if(b_after[after_row][after_col] == GameBoard.cells.RK || b_after[after_row][after_col] == GameBoard.cells.WK) {
+                    return false;
+                }
         }
 
         return true;
@@ -54,7 +57,7 @@ public class KingMoveRule extends Rule {
      */
     @Override
     public void action() {
-        master.validKingMove = true;
+        master.invalidKingMove = true;
     }
     
 }

@@ -80,6 +80,6 @@ public class BackwardJumpRule extends Rule {
 
     @Override
     public void action() {
-        master.validBackwardJump = true;
+        master.invalidBackwardJump = true;
     }
 }

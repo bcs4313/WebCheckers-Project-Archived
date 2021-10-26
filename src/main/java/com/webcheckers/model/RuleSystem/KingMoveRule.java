@@ -54,7 +54,7 @@ public class KingMoveRule extends Rule {
      */
     @Override
     public void action() {
-
+        master.validKingMove = false;
     }
     
 }

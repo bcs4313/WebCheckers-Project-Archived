@@ -76,9 +76,9 @@ public class BasicMoveRule extends Rule{
 
     /**
      * revert move if move was illegal
-     * @return the game board as it was prior to move made
      */
     @Override
     public void action(){
+        master.validBasicMove = false;
     }
 }

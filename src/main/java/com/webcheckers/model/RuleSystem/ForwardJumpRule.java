@@ -75,5 +75,6 @@ public class ForwardJumpRule extends Rule {
 
     @Override
     public void action() {
+        master.validForwardJump = false;
     }
 }

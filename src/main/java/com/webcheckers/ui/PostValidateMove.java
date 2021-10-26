@@ -6,6 +6,7 @@ import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.RuleSystem.RuleMaster;
+import com.webcheckers.util.Message;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -29,7 +30,7 @@ public class PostValidateMove implements Route {
      * @param templateEngine - template engine to use for rendering HTML page
      * @param sessionManager - allows easy identification of the game in question.
      * @throws NullPointerException
-     *    when the playerLobby or templateEngine parameter is null
+     *    when the sessionManager or templateEngine parameter is null
      */
     PostValidateMove(TemplateEngine templateEngine, SessionManager sessionManager) {
         System.out.println("construct");
@@ -39,7 +40,7 @@ public class PostValidateMove implements Route {
     }
 
     @Override
-    public String handle(Request request, Response response) {
+    public Message handle(Request request, Response response) {
         Gson gson = new Gson();
         Move movement = gson.fromJson(request.queryParams("actionData"), Move.class);
 
@@ -68,9 +69,19 @@ public class PostValidateMove implements Route {
 
         // now create a board transition and trigger the master ruleset
         master.createBoardTransition(beforePos, afterPos);
-        master.triggerRuleSet(); // trigger the ruleset of master
 
+        // are we allowed to make this move?
+        boolean result = master.triggerRuleSet(); // trigger the ruleset of master
 
-        return null;
+        if(result)
+        {
+            System.out.println("+ValidMove");
+            return new Message("", Message.Type.INFO);
+        }
+        else
+        {
+            System.out.println("-InvalidMove");
+            return new Message("not allowed bruh", Message.Type.ERROR);
+        }
     }
 }

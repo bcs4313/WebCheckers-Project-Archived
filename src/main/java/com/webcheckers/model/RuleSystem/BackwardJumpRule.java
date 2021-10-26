@@ -76,5 +76,6 @@ public class BackwardJumpRule extends Rule {
 
     @Override
     public void action() {
+        master.validBackwardJump = false;
     }
 }

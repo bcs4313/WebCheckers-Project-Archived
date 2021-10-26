@@ -23,10 +23,10 @@ public class RuleMaster {
      * each name corresponds to an abstract rule
      */
     // turn level
-    boolean validForwardJump;
-    boolean validBackwardJump;
-    boolean validBasicMove;
-    boolean validKingMove;
+    boolean invalidForwardJump;
+    boolean invalidBackwardJump;
+    boolean invalidBasicMove;
+    boolean invalidKingMove;
 
     //game level
     boolean isGameOver;
@@ -108,10 +108,10 @@ public class RuleMaster {
     public boolean triggerRuleSet()
     {
         // initialize turn level bools
-        validForwardJump = false;
-        validBackwardJump = false;
-        validBasicMove = false;
-        validKingMove = false;
+        invalidForwardJump = false;
+        invalidBackwardJump = false;
+        invalidBasicMove = false;
+        invalidKingMove = false;
 
         for(Rule r : ruleSet)
         {
@@ -121,13 +121,13 @@ public class RuleMaster {
             }
         }
 
-        System.out.println("validForwardJump = " + validForwardJump);
-        System.out.println("validBackwardJump = " + validBackwardJump);
-        System.out.println("validBasicMove = " + validBasicMove);
-        System.out.println("validKingMove = " + validKingMove);
+        System.out.println("validForwardJump = " + invalidForwardJump);
+        System.out.println("validBackwardJump = " + invalidBackwardJump);
+        System.out.println("validBasicMove = " + invalidBasicMove);
+        System.out.println("validKingMove = " + invalidKingMove);
 
         // now to evaluate if this move is allowed
-        return (!validForwardJump || !validBackwardJump || !validBasicMove || !validKingMove);
+        return (!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove);
     }
 
     // Rule Helper Methods

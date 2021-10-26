@@ -72,6 +72,8 @@ public class WebServer {
   public static final String BACKUPMOVE_URL = "/backupMove";
 
   public static final String RESIGNGAME_URL = "/resignGame";
+
+  public static final String SUBMITTURN_URL = "/submitTurn";
   //
   // Attributes
   //
@@ -175,13 +177,15 @@ public class WebServer {
 
     post(GAME_URL, new PostGameRoute(templateEngine));
 
-    post(CHECKTURN_URL, new PostCheckTurn(templateEngine, this.playerLobby));
+    post(CHECKTURN_URL, new PostCheckTurn(templateEngine, this.playerLobby, this.sessionManager));
 
     post(VALIDATEMOVE_URL, new PostValidateMove(templateEngine, this.sessionManager));
 
-    post(BACKUPMOVE_URL, new PostBackupMove(templateEngine));
+    post(BACKUPMOVE_URL, new PostBackupMove(templateEngine, this.sessionManager));
 
     post(RESIGNGAME_URL, new PostResignGame(templateEngine, this.playerLobby));
+
+    post(SUBMITTURN_URL, new PostSubmitTurn(templateEngine, this.sessionManager));
     //
     LOG.config("WebServer is initialized.");
   }

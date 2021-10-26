@@ -12,11 +12,14 @@ import java.util.ArrayList;
 public class RuleMaster {
     ArrayList<Rule> ruleSet; // rules to scroll through on each action
 
-    GameBoard board; // where the actual gameboard object is stored
-    GameBoard.cells[][] b_before; // board grid before change
-    GameBoard.cells[][] b_after; // board grid after change
-    Position prevPos; // previous position of checker movement
-    Position afterPos; // after position of checker movement
+    private GameBoard board; // where the actual gameboard object is stored
+    private GameBoard.cells[][] b_before; // board grid before change
+    private GameBoard.cells[][] b_after; // board grid after change
+    private Position prevPos; // previous position of checker movement
+    private Position afterPos; // after position of checker movement
+
+    private MoveLog moveLog; // object that stores previous moves a player during their turn
+    private Chainer chainer; // object that forces jump chains to occur
 
     /**
      * booleans to handled by rule objects
@@ -39,6 +42,7 @@ public class RuleMaster {
     {
         ruleSet = new ArrayList<>();
         board = currentBoard;
+        chainer = new Chainer(this);
 
         // initialize game level bools
         isGameOver = false;
@@ -88,6 +92,46 @@ public class RuleMaster {
         // switch position
         b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];
         b_after[prevRow][prevCell] = GameBoard.cells.E;
+
+        // log new movement into memory
+        moveLog.addMovement(before);
+    }
+
+    /**
+     * Retrieve previous board state
+     * @return board state before movement
+     */
+    public GameBoard.cells[][] getB_Before()
+    {
+        return b_before;
+    }
+
+    /**
+     * Retrieve new board state
+     * @return board state after movement
+     */
+    public GameBoard.cells[][] getB_After()
+    {
+        return b_after;
+    }
+
+    /**
+     * Get stack object of previous positions in turn
+     * @return log of checker positions in turn
+     */
+    public MoveLog getLog()
+    {
+        return moveLog;
+    }
+
+    /**
+     * Get object that works with forced implications
+     * of chain jumps
+     * @return chain jump object
+     */
+    public Chainer getChainer()
+    {
+        return chainer;
     }
 
     /**
@@ -126,6 +170,12 @@ public class RuleMaster {
         System.out.println("validBasicMove = " + invalidBasicMove);
         System.out.println("validKingMove = " + invalidKingMove);
 
+        // log a jump in the chainer if a jump was allowed
+        if(!invalidBackwardJump || !invalidForwardJump)
+        {
+            chainer.logJump(afterPos);
+        }
+
         // now to evaluate if this move is allowed
         return (!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove);
     }
@@ -146,4 +196,9 @@ public class RuleMaster {
             return;
         }
     }
+
+    public GameBoard.cells[][] getB_before() {
+        return b_before;
+    }
 }
+

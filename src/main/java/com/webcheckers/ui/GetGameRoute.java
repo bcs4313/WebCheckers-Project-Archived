@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
 import com.webcheckers.ui.boardview.BoardView;
@@ -23,16 +24,18 @@ public class GetGameRoute implements Route{
     private final String VIEW_NAME = "game.ftl";
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
+    private final SessionManager sessionManager;
     
     /**
      * The constructor for the {@code GET/game} route handler
      * 
      * @param templateEngine engine used to construct a webpage route
      */
-    public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
+    public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
         this.playerLobby = Objects.requireNonNull(playerLobby, "playerLobby is required");
+        this.sessionManager = Objects.requireNonNull(sessionManager, "playerLobby is required");
         LOG.config("GetGameRoute is initialized");
     }
 
@@ -78,8 +81,13 @@ public class GetGameRoute implements Route{
             vm.put("activeColor",thisBoard.getActiveColor());
             vm.put("board", thisBoardView);
             vm.put("game",thisBoard);
-            System.out.println("Atrributing game ID: " + currentUser.getGame().getGameID());
-            session.attribute("gameID", currentUser.getGame().getGameID());
+
+            // game must be stored in SessionManager
+            sessionManager.addSession(thisBoard.getGameID(), thisBoard);
+
+            // Game ID must be stored in session
+            vm.put("gameID", currentUser.getGame().getGameID());
+
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
@@ -95,9 +103,11 @@ public class GetGameRoute implements Route{
                 currentUser.setInGame(true, thisBoard);
                 opponentUser.setInGame(true, thisBoard);
 
+                // game must be stored in SessionManager
+                sessionManager.addSession(thisBoard.getGameID(), thisBoard);
+
                 // Game ID must be stored in session
-                System.out.println("Atrributing game ID: " + currentUser.getGame().getGameID());
-                session.attribute("gameID", currentUser.getGame().getGameID());
+                vm.put("gameID", currentUser.getGame().getGameID());
 
                 BoardView thisBoardView = thisBoard.toBoardView();
                 vm.put("currentUser", currentUser);

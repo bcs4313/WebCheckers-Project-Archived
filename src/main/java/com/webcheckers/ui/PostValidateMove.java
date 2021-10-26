@@ -1,9 +1,9 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.RuleSystem.RuleMaster;
 import spark.Request;
@@ -21,20 +21,21 @@ import java.util.Objects;
  */
 public class PostValidateMove implements Route {
     private final TemplateEngine templateEngine;
-
+    private final SessionManager sessionManager;
 
     /**
      * The constructor for the POST /validateMove route handler.
      *
      * @param templateEngine - template engine to use for rendering HTML page
-     *
+     * @param sessionManager - allows easy identification of the game in question.
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */
-    PostValidateMove(TemplateEngine templateEngine) {
+    PostValidateMove(TemplateEngine templateEngine, SessionManager sessionManager) {
         System.out.println("construct");
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
+        this.sessionManager = sessionManager;
     }
 
     @Override
@@ -54,21 +55,22 @@ public class PostValidateMove implements Route {
         System.out.println("BEFOREPOS:: y:" + beforePos.getRow() + " x:" + beforePos.getCell());
         System.out.println("AFTERPOS:: y:" + afterPos.getRow() + " x:" + afterPos.getCell());
 
-        // now to retreive a game via the user connection
-        final String username = request.queryParams("username");
-        Player ply = new Player(username);
-        GameBoard gb = ply.getGame();
-        System.out.println("Game = '" + gb.toString());
-        //System.out.println("PostValidateTrigger--> " + gb.getGameID());
+        System.out.println("GAMEID: " + request.queryParams("gameID"));
+
+        // retrieve gameID from session manager
+        int idVal = Integer.parseInt(request.queryParams("gameID"));
+
+        // now to retrieve a game with the queried ID
+        GameBoard gb = sessionManager.retrieveSession(idVal);
 
         // get the rulemaster of the board to evaluate the validity of a move
         RuleMaster master = gb.getMaster();
-        //master.createBoardTransition(beforePos, afterPos);
-        //master.triggerRuleSet(); // trigger the ruleset of master
 
-        //master.
+        // now create a board transition and trigger the master ruleset
+        master.createBoardTransition(beforePos, afterPos);
+        master.triggerRuleSet(); // trigger the ruleset of master
 
-        //Message m = new Message();
+
         return null;
     }
 }

@@ -52,11 +52,11 @@ public class BackwardJumpRule extends Rule {
             if(before_col - 2 == after_col) // top left jump
             {
                 GameBoard.cells victimIdentity = b_before[after_row - 1][after_col + 1];
-                if(jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK)
+                if(jumperIdentity == GameBoard.cells.RK)
                 {
                     return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
                 }
-                if(jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK)
+                if(jumperIdentity == GameBoard.cells.WK)
                 {
                     return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
                 }
@@ -65,11 +65,11 @@ public class BackwardJumpRule extends Rule {
             if(before_col + 2 == after_col) // top right jump
             {
                 GameBoard.cells victimIdentity = b_before[after_row - 1][after_col - 1];
-                if(jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK)
+                if(jumperIdentity == GameBoard.cells.RK)
                 {
                     return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
                 }
-                if(jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK)
+                if(jumperIdentity == GameBoard.cells.WK)
                 {
                     return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
                 }

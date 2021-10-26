@@ -12,11 +12,13 @@ import java.util.ArrayList;
 public class RuleMaster {
     ArrayList<Rule> ruleSet; // rules to scroll through on each action
 
-    GameBoard board; // where the actual gameboard object is stored
-    GameBoard.cells[][] b_before; // board grid before change
-    GameBoard.cells[][] b_after; // board grid after change
-    Position prevPos; // previous position of checker movement
-    Position afterPos; // after position of checker movement
+    private GameBoard board; // where the actual gameboard object is stored
+    private GameBoard.cells[][] b_before; // board grid before change
+    private GameBoard.cells[][] b_after; // board grid after change
+    private Position prevPos; // previous position of checker movement
+    private Position afterPos; // after position of checker movement
+
+    Chainer chainer; // object that forces jump chains to occur
 
     /**
      * booleans to handled by rule objects
@@ -89,6 +91,25 @@ public class RuleMaster {
         b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];
         b_after[prevRow][prevCell] = GameBoard.cells.E;
     }
+
+    /**
+     * Retrieve previous board state
+     * @return board state before movement
+     */
+    public GameBoard.cells[][] getB_Before()
+    {
+        return b_before;
+    }
+
+    /**
+     * Retrieve new board state
+     * @return board state after movement
+     */
+    public GameBoard.cells[][] getB_After()
+    {
+        return b_after;
+    }
+
 
     /**
      * Add a rule to be triggered by the RuleMaster

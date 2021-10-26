@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
 import spark.TemplateEngine;
 
 import java.util.Objects;
@@ -79,6 +80,7 @@ public class WebServer {
   private final Gson gson;
 
   private final PlayerLobby playerLobby; // player waiting room manager
+  private final SessionManager sessionManager; // game ID management system
 
   //
   // Constructor
@@ -96,7 +98,7 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby playerLobby) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby playerLobby, final SessionManager sessionManager) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -105,6 +107,7 @@ public class WebServer {
     this.templateEngine = templateEngine;
     this.gson = gson;
     this.playerLobby = playerLobby;
+    this.sessionManager = sessionManager;
   }
 
   //
@@ -165,7 +168,7 @@ public class WebServer {
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
 
     // Shows the Checkers game Game page
-    get(GAME_URL, new GetGameRoute(templateEngine, this.playerLobby));
+    get(GAME_URL, new GetGameRoute(templateEngine, this.playerLobby, this.sessionManager));
 
     // Posts login request to Signin Page
     post(SIGNIN_URL, new PostSignInRoute(playerLobby, templateEngine));
@@ -174,7 +177,7 @@ public class WebServer {
 
     post(CHECKTURN_URL, new PostCheckTurn(templateEngine, this.playerLobby));
 
-    post(VALIDATEMOVE_URL, new PostValidateMove(templateEngine));
+    post(VALIDATEMOVE_URL, new PostValidateMove(templateEngine, this.sessionManager));
 
     post(BACKUPMOVE_URL, new PostBackupMove(templateEngine));
 

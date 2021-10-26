@@ -18,6 +18,17 @@ public class RuleMaster {
     Position prevPos; // previous position of checker movement
     Position afterPos; // after position of checker movement
 
+    /**
+     * booleans to handled by rule objects
+     * each name corresponds to an abstract rule
+     */
+    // turn level
+    boolean validForwardJump;
+    boolean validBackwardJump;
+    boolean validBasicMove;
+    boolean validKingMove;
+
+    //game level
     boolean isGameOver;
     boolean white_win;
     boolean red_win;
@@ -28,6 +39,11 @@ public class RuleMaster {
     {
         ruleSet = new ArrayList<>();
         board = currentBoard;
+
+        // initialize game level bools
+        isGameOver = false;
+        white_win = false;
+        red_win = false;
 
         // add all rules to the ruleset
         ruleSet.add(new BackwardJumpRule(this));
@@ -87,9 +103,16 @@ public class RuleMaster {
      * Modify the gameboard and do actions by triggering each rule in the ruleset
      * prereq: board has the current acting player's orientation on the bottom of
      * the board.
+     * @return if the move is authorized to occur
      */
-    public void triggerRuleSet()
+    public boolean triggerRuleSet()
     {
+        // initialize turn level bools
+        validForwardJump = true;
+        validBackwardJump = true;
+        validBasicMove = true;
+        validKingMove = true;
+
         for(Rule r : ruleSet)
         {
             if (r.isTriggered(b_before, b_after))
@@ -97,6 +120,9 @@ public class RuleMaster {
                 r.action();
             }
         }
+
+        // now to evaluate if this move is allowed
+        return (!validForwardJump || !validBackwardJump || !validBasicMove || !validKingMove);
     }
 
     // Rule Helper Methods

@@ -6,26 +6,26 @@ package com.webcheckers.model;
  */
 public class Move {
     // positions that represent a movement
-    private Position previousPos;
-    private Position newPos;
+    private Position start;
+    private Position end;
 
     /**
      * Basic constructor for movement representation
-     * @param previousPos position of checker target before movement
-     * @param newPos position of checker target after movement
+     * @param start position of checker target before movement
+     * @param end position of checker target after movement
      */
-    public Move(Position previousPos, Position newPos){
-        this.previousPos = previousPos;
-        this.newPos = newPos;
+    public Move(Position start, Position end){
+        this.start = start;
+        this.end = end;
     }
 
     public Position getStart()
     {
-        return previousPos;
+        return start;
     }
 
     public Position getEnd()
     {
-        return newPos;
+        return end;
     }
 }

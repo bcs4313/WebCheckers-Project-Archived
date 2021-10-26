@@ -39,6 +39,10 @@ public class BackwardJumpRule extends Rule {
         this.after_row = afterPos.getRow();
         this.after_col = afterPos.getCell();
 
+        System.out.println("br " + before_row);
+        System.out.println("bc " + before_col);
+        System.out.println("ar " + after_row);
+        System.out.println("ac " + after_col);
 
         GameBoard.cells jumperIdentity = b_after[after_row][after_col];
 
@@ -71,11 +75,11 @@ public class BackwardJumpRule extends Rule {
                 }
             }
         }
-        return false;
+        return true;
     }
 
     @Override
     public void action() {
-        master.validBackwardJump = false;
+        master.validBackwardJump = true;
     }
 }

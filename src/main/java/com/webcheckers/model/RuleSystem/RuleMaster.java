@@ -108,10 +108,10 @@ public class RuleMaster {
     public boolean triggerRuleSet()
     {
         // initialize turn level bools
-        validForwardJump = true;
-        validBackwardJump = true;
-        validBasicMove = true;
-        validKingMove = true;
+        validForwardJump = false;
+        validBackwardJump = false;
+        validBasicMove = false;
+        validKingMove = false;
 
         for(Rule r : ruleSet)
         {
@@ -120,6 +120,11 @@ public class RuleMaster {
                 r.action();
             }
         }
+
+        System.out.println("validForwardJump = " + validForwardJump);
+        System.out.println("validBackwardJump = " + validBackwardJump);
+        System.out.println("validBasicMove = " + validBasicMove);
+        System.out.println("validKingMove = " + validKingMove);
 
         // now to evaluate if this move is allowed
         return (!validForwardJump || !validBackwardJump || !validBasicMove || !validKingMove);

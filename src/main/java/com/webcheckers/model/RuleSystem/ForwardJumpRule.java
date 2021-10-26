@@ -70,11 +70,11 @@ public class ForwardJumpRule extends Rule {
                 }
             }
         }
-        return false;
+        return true;
     }
 
     @Override
     public void action() {
-        master.validForwardJump = false;
+        master.validForwardJump = true;
     }
 }

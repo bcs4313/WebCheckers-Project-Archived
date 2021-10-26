@@ -79,6 +79,6 @@ public class BasicMoveRule extends Rule{
      */
     @Override
     public void action(){
-        master.validBasicMove = false;
+        master.validBasicMove = true;
     }
 }

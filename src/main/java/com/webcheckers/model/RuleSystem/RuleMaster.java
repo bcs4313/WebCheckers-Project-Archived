@@ -18,7 +18,8 @@ public class RuleMaster {
     private Position prevPos; // previous position of checker movement
     private Position afterPos; // after position of checker movement
 
-    Chainer chainer; // object that forces jump chains to occur
+    private MoveLog moveLog; // object that stores previous moves a player during their turn
+    private Chainer chainer; // object that forces jump chains to occur
 
     /**
      * booleans to handled by rule objects
@@ -41,6 +42,7 @@ public class RuleMaster {
     {
         ruleSet = new ArrayList<>();
         board = currentBoard;
+        chainer = new Chainer(this);
 
         // initialize game level bools
         isGameOver = false;
@@ -90,6 +92,9 @@ public class RuleMaster {
         // switch position
         b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];
         b_after[prevRow][prevCell] = GameBoard.cells.E;
+
+        // log new movement into memory
+        moveLog.addMovement(before);
     }
 
     /**
@@ -110,6 +115,24 @@ public class RuleMaster {
         return b_after;
     }
 
+    /**
+     * Get stack object of previous positions in turn
+     * @return log of checker positions in turn
+     */
+    public MoveLog getLog()
+    {
+        return moveLog;
+    }
+
+    /**
+     * Get object that works with forced implications
+     * of chain jumps
+     * @return chain jump object
+     */
+    public Chainer getChainer()
+    {
+        return chainer;
+    }
 
     /**
      * Add a rule to be triggered by the RuleMaster
@@ -146,6 +169,12 @@ public class RuleMaster {
         System.out.println("validBackwardJump = " + invalidBackwardJump);
         System.out.println("validBasicMove = " + invalidBasicMove);
         System.out.println("validKingMove = " + invalidKingMove);
+
+        // log a jump in the chainer if a jump was allowed
+        if(!invalidBackwardJump || !invalidForwardJump)
+        {
+            chainer.logJump(afterPos);
+        }
 
         // now to evaluate if this move is allowed
         return (!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove);

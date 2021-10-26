@@ -40,7 +40,7 @@ public class PostValidateMove implements Route {
     }
 
     @Override
-    public Message handle(Request request, Response response) {
+    public String handle(Request request, Response response) {
         Gson gson = new Gson();
         Move movement = gson.fromJson(request.queryParams("actionData"), Move.class);
 
@@ -60,6 +60,7 @@ public class PostValidateMove implements Route {
 
         // retrieve gameID from session manager
         int idVal = Integer.parseInt(request.queryParams("gameID"));
+        System.out.println("Player = " + request.attribute("PLAYER_KEY"));
 
         // now to retrieve a game with the queried ID
         GameBoard gb = sessionManager.retrieveSession(idVal);
@@ -76,12 +77,18 @@ public class PostValidateMove implements Route {
         if(result)
         {
             System.out.println("+ValidMove");
-            return new Message("", Message.Type.INFO);
+
+            // since the move is valid, we must send one of
+            // two messages
+            // true:
+            // false: opponent is still taking their turn
+
+            return gson.toJson(Message.info("false"));
         }
         else
         {
             System.out.println("-InvalidMove");
-            return new Message("not allowed bruh", Message.Type.ERROR);
+            return gson.toJson(Message.error("Move is not allowed bruh"));
         }
     }
 }

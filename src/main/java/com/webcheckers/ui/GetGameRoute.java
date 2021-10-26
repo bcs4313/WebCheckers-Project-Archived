@@ -88,6 +88,9 @@ public class GetGameRoute implements Route{
             // Game ID must be stored in session
             vm.put("gameID", currentUser.getGame().getGameID());
 
+            // store client player id into session
+            session.attribute("PLAYER_KEY", currentUser.toString());
+
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
@@ -118,6 +121,9 @@ public class GetGameRoute implements Route{
                 vm.put("activeColor",thisBoard.getActiveColor());
                 vm.put("board", thisBoardView);
                 vm.put("game",thisBoard);
+
+                // store client player id into session
+                session.attribute("PLAYER_KEY", currentUser.toString());
             }
         }
 

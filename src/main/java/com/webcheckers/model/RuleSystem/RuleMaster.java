@@ -75,19 +75,34 @@ public class RuleMaster {
      * @param before position before checker was moved
      * @param after position after checker was moved
      */
-    public void createBoardTransition(Position before, Position after)
+    public void createBoardTransition(Position before, Position after, GameBoard.activeColors color)
     {
         prevPos = before;
         afterPos = after;
+
+
 
         // get board before/after states
         b_before = board.getBoard().clone();
         b_after = board.getBoard().clone();
 
-        int prevCell = prevPos.getCell();
-        int prevRow = prevPos.getRow();
-        int afterCell = afterPos.getCell();
-        int afterRow = afterPos.getRow();
+        int prevCell;
+        int prevRow;
+        int afterCell;
+        int afterRow;
+        if(color.equals(GameBoard.activeColors.RED)) {
+            prevCell = prevPos.getCell();
+            prevRow = prevPos.getRow();
+            afterCell = afterPos.getCell();
+            afterRow = afterPos.getRow();
+        }
+        else
+        {
+            prevCell = 7 - prevPos.getCell();
+            prevRow = 7 - prevPos.getRow();
+            afterCell = 7 - afterPos.getCell();
+            afterRow = 7 - afterPos.getRow();
+        }
 
         // switch position
         b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];

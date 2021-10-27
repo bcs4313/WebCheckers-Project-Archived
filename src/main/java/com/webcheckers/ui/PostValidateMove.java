@@ -69,7 +69,7 @@ public class PostValidateMove implements Route {
         RuleMaster master = gb.getMaster();
 
         // now create a board transition and trigger the master ruleset
-        master.createBoardTransition(beforePos, afterPos);
+        master.createBoardTransition(beforePos, afterPos, sessionManager.retrieveSession(gb.getGameID()).getActiveColor());
 
         // are we allowed to make this move?
         boolean result = master.triggerRuleSet(); // trigger the ruleset of master

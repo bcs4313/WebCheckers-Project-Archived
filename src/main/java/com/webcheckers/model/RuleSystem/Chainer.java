@@ -14,6 +14,17 @@ public class Chainer {
     // list of positions that are included in this jump
     // chain
     ArrayList<Position> jumpChains;
+
+    // locations of checkers that were jumped over
+    // *will be killed at end of turn
+    ArrayList<Position> victims;
+
+    /**
+     * Respective statuses of each checker captured
+     * this turn.
+     */
+    ArrayList<GameBoard.cells> colors;
+
     RuleMaster master; // used to reference GameBoard state
 
     /**
@@ -25,23 +36,46 @@ public class Chainer {
     {
         this.master = master;
         jumpChains = new ArrayList<>();
+        victims = new ArrayList<>();
+        colors = new ArrayList<>();
     }
 
     /**
      * log a jump within a specific turn
+     * @param posAttacker position of attacker after jump
+     * @param posVictim position of checker that was jumped over
+     * @param color identity of checker captured
      */
-    public void logJump(Position pos)
+    public void logJump(Position posAttacker, Position posVictim, GameBoard.cells color)
     {
-        jumpChains.add(pos);
+        jumpChains.add(posAttacker);
+        victims.add(posVictim);
+        colors.add(color);
     }
 
     /**
-     * undo part of a jump chain
+     * undo part of a jump chain within the gameboard
+     * if possible.
      */
-    public void undoJump()
+    public void undoJump(GameBoard gb)
     {
         if(jumpChains.size() >= 1) { // error guard
+            // restore checker at position
+            Position restorePoint = jumpChains.get(jumpChains.size() - 1);
+            GameBoard.cells restoreColor = colors.get(colors.size() - 1);
             jumpChains.remove(jumpChains.size() - 1);
+            victims.remove(victims.size() - 1);
+            colors.remove(victims.size() - 1);
+
+            // restore a checker upon undo if available
+            if(restorePoint != null)
+            {
+                GameBoard.cells[][] restoreFrame = master.getB_Before();
+
+                restoreFrame[restorePoint.getRow()][restorePoint.getCell()] = restoreColor;
+
+                gb.setboard(restoreFrame);
+            }
         }
     }
 
@@ -51,6 +85,8 @@ public class Chainer {
     public void clearJumps()
     {
         jumpChains.clear();
+        victims.clear();
+        colors.clear();
     }
 
     /**

@@ -18,6 +18,8 @@ public class BackwardJumpRule extends Rule {
     private int after_row;
     private int after_col;
 
+    protected Position posVictim; // victim found by this rule if triggered
+    private GameBoard.cells colorVictim; // color of victim captured
 
     public BackwardJumpRule(RuleMaster master) {
         super(master);
@@ -51,27 +53,29 @@ public class BackwardJumpRule extends Rule {
         {
             if(before_col - 2 == after_col) // top left jump
             {
-                GameBoard.cells victimIdentity = b_before[after_row - 1][after_col + 1];
+                colorVictim = b_before[after_row - 1][after_col + 1];
+                posVictim = new Position(after_row - 1, after_col + 1);
                 if(jumperIdentity == GameBoard.cells.RK)
                 {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+                    return !(colorVictim == GameBoard.cells.W || colorVictim == GameBoard.cells.WK);
                 }
                 if(jumperIdentity == GameBoard.cells.WK)
                 {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                    return !(colorVictim == GameBoard.cells.R || colorVictim == GameBoard.cells.RK);
                 }
             }
 
             if(before_col + 2 == after_col) // top right jump
             {
-                GameBoard.cells victimIdentity = b_before[after_row - 1][after_col - 1];
+                colorVictim = b_before[after_row - 1][after_col - 1];
+                posVictim = new Position(after_row - 1, after_col - 1);
                 if(jumperIdentity == GameBoard.cells.RK)
                 {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+                    return !(colorVictim == GameBoard.cells.W || colorVictim == GameBoard.cells.WK);
                 }
                 if(jumperIdentity == GameBoard.cells.WK)
                 {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                    return !(colorVictim == GameBoard.cells.R || colorVictim == GameBoard.cells.RK);
                 }
             }
         }
@@ -81,5 +85,6 @@ public class BackwardJumpRule extends Rule {
     @Override
     public void action() {
         master.invalidBackwardJump = true;
+        master.setVictim(posVictim, colorVictim);
     }
 }

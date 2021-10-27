@@ -17,6 +17,8 @@ public class RuleMaster {
     private GameBoard.cells[][] b_after; // board grid after change
     private Position prevPos; // previous position of checker movement
     private Position afterPos; // after position of checker movement
+    private Position victim; // potential victim of jump in move
+    private GameBoard.cells victimColor; // color of most recently captured victim
 
     private MoveLog moveLog; // object that stores previous moves a player during their turn
     private Chainer chainer; // object that forces jump chains to occur
@@ -186,9 +188,11 @@ public class RuleMaster {
         System.out.println("validKingMove = " + invalidKingMove);
 
         // log a jump in the chainer if a jump was allowed
-        if(!invalidBackwardJump || !invalidForwardJump)
+        if(!invalidForwardJump || !invalidBackwardJump)
         {
-            chainer.logJump(afterPos);
+            System.out.println("victim = " + victim.toString());
+            chainer.logJump(afterPos, victim, victimColor);
+            board.getBoard()[victim.getRow()][victim.getCell()] = GameBoard.cells.E; // MURDER THE CHECKER
         }
 
         // now to evaluate if this move is allowed
@@ -210,6 +214,17 @@ public class RuleMaster {
             white_win=true;
             return;
         }
+    }
+
+    /**
+     * set the most recent victim of a checker jump
+     * @param loc coordinates of checker that was attacked
+     * @param color color / king status of checker
+     */
+    public void setVictim(Position loc, GameBoard.cells color)
+    {
+        this.victim = loc;
+        this.victimColor = color;
     }
 
     public GameBoard.cells[][] getB_before() {

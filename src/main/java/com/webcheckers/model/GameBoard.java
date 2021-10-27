@@ -278,4 +278,12 @@ public class GameBoard {
     public int getGameID(){
         return this.gameID;
     }
+
+    /**
+     * Restart the statuses of various objects that are turn based
+     */
+    public void resetTurn()
+    {
+        master.getChainer().clearJumps();
+    }
 }

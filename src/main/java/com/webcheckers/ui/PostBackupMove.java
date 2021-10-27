@@ -40,6 +40,9 @@ public class PostBackupMove implements Route {
 
         gb.setboard(master.getB_before());
 
+        // restore an undone jump if applicable
+        master.getChainer().undoJump(gb);
+
         return gson.toJson(Message.info("Backup Move Successful"));
     }
 }

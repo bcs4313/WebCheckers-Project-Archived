@@ -8,8 +8,6 @@ import com.webcheckers.model.Position;
  * Forward Jump
  */
 public class ForwardJumpRule extends Rule {
-
-
     // Piece starting position
     private int before_row;
     private int before_col;
@@ -18,6 +16,8 @@ public class ForwardJumpRule extends Rule {
     private int after_row;
     private int after_col;
 
+    private Position posVictim; // victim found by this rule if triggered
+    private GameBoard.cells colorVictim; // color of victim captured
 
     public ForwardJumpRule(RuleMaster master) {
         super(master);
@@ -46,27 +46,29 @@ public class ForwardJumpRule extends Rule {
         {
             if(before_col - 2 == after_col) // top left jump
             {
-                GameBoard.cells victimIdentity = b_before[after_row + 1][after_col + 1];
+                colorVictim = b_before[after_row + 1][after_col + 1];
+                posVictim = new Position(after_row + 1, after_col + 1);
                 if(jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK)
                 {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+                    return !(colorVictim == GameBoard.cells.W || colorVictim == GameBoard.cells.WK);
                 }
                 if(jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK)
                 {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                    return !(colorVictim == GameBoard.cells.R || colorVictim == GameBoard.cells.RK);
                 }
             }
 
             if(before_col + 2 == after_col) // top right jump
             {
-                GameBoard.cells victimIdentity = b_before[after_row + 1][after_col - 1];
+                colorVictim = b_before[after_row + 1][after_col - 1];
+                posVictim = new Position(after_row + 1, after_col - 1);
                 if(jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK)
                 {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+                    return !(colorVictim == GameBoard.cells.W || colorVictim == GameBoard.cells.WK);
                 }
                 if(jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK)
                 {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                    return !(colorVictim == GameBoard.cells.R || colorVictim == GameBoard.cells.RK);
                 }
             }
         }
@@ -76,5 +78,6 @@ public class ForwardJumpRule extends Rule {
     @Override
     public void action() {
         master.invalidForwardJump = true;
+        master.setVictim(posVictim, colorVictim);
     }
 }

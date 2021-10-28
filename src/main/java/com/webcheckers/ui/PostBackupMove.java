@@ -37,7 +37,8 @@ public class PostBackupMove implements Route {
         GameBoard gb = sessionManager.retrieveSession(idVal);
 
         RuleMaster master = gb.getMaster();
-
+        //TODO Bug-fix: if move is backed-up, both the backed-up move and the submitted move will be submitted
+        //TODO Could potentially be an issue with Submit Turn as well
         gb.setboard(master.getB_before());
 
         return gson.toJson(Message.info("Backup Move Successful"));

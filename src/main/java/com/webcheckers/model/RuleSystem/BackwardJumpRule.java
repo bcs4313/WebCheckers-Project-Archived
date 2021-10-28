@@ -49,29 +49,45 @@ public class BackwardJumpRule extends Rule {
         // jump dimensions are checked for validity first
         if(before_row + 2 == after_row)
         {
-            if(before_col - 2 == after_col) // top left jump
+            if(before_col - 2 == after_col) // back left jump
             {
-                GameBoard.cells victimIdentity = b_before[after_row - 1][after_col + 1];
-                if(jumperIdentity == GameBoard.cells.RK)
-                {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+                GameBoard.cells victimIdentity = b_before[before_row + 1][after_col - 1];
+                if (jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK) {
+                    if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
+                        b_after[before_row + 1][before_col - 1] = GameBoard.cells.E;
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
-                if(jumperIdentity == GameBoard.cells.WK)
-                {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                if (jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK) {
+                    if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
+                        b_after[before_row + 1][before_col - 1] = GameBoard.cells.E;
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
 
-            if(before_col + 2 == after_col) // top right jump
+            if(before_col + 2 == after_col) // back right jump
             {
-                GameBoard.cells victimIdentity = b_before[after_row - 1][after_col - 1];
-                if(jumperIdentity == GameBoard.cells.RK)
-                {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+                GameBoard.cells victimIdentity = b_before[before_row + 1][after_col + 1];
+                if (jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK) {
+                    if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
+                        b_after[before_row + 1][before_col + 1] = GameBoard.cells.E;
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
-                if(jumperIdentity == GameBoard.cells.WK)
-                {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                if (jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK) {
+                    if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
+                        b_after[before_row + 1][before_col + 1] = GameBoard.cells.E;
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
         }

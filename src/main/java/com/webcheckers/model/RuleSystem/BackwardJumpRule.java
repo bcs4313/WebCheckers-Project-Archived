@@ -5,7 +5,7 @@ import com.webcheckers.model.Position;
 
 /**
  * This rule analyzes whether or not a checker is making a valid
- * backward jump.
+ * Forward Jump
  */
 public class BackwardJumpRule extends Rule {
 
@@ -39,54 +39,50 @@ public class BackwardJumpRule extends Rule {
         this.after_row = afterPos.getRow();
         this.after_col = afterPos.getCell();
 
-        System.out.println("br " + before_row);
-        System.out.println("bc " + before_col);
-        System.out.println("ar " + after_row);
-        System.out.println("ac " + after_col);
+        GameBoard.cells jumperIdentity;
+        GameBoard.cells victimIdentity;
 
-        GameBoard.cells jumperIdentity = b_after[after_row][after_col];
+        GameBoard.cells[][] altAfter = b_after;
+        if(master.getTurn() == GameBoard.activeColors.WHITE)
+        {
+            b_before = flipBoard(b_before);
+            b_after = flipBoard(b_after);
+        }
+
 
         // jump dimensions are checked for validity first
-        if(before_row + 2 == after_row)
-        {
-            if(before_col - 2 == after_col) // back left jump
+        if(before_row + 2 == after_row) {
+            if (before_col - 2 == after_col) // jump was made forwards
             {
-                GameBoard.cells victimIdentity = b_before[before_row + 1][after_col - 1];
-                if (jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK) {
+                jumperIdentity = b_after[after_row][after_col];
+                victimIdentity = b_before[before_row + 1][before_col - 1];
+
+                if (jumperIdentity == GameBoard.cells.RK) {
                     if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
-                        b_after[before_row + 1][before_col - 1] = GameBoard.cells.E;
+                        b_after[before_row - 1][before_col - 1] = GameBoard.cells.E;
                         return false;
-                    } else {
-                        return true;
                     }
                 }
-                if (jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK) {
+                if (jumperIdentity == GameBoard.cells.WK) {
                     if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
-                        b_after[before_row + 1][before_col - 1] = GameBoard.cells.E;
+                        altAfter[7 - (before_row - 1)][7 - (before_col - 1)] = GameBoard.cells.E;
                         return false;
-                    } else {
-                        return true;
                     }
                 }
             }
-
-            if(before_col + 2 == after_col) // back right jump
-            {
-                GameBoard.cells victimIdentity = b_before[before_row + 1][after_col + 1];
-                if (jumperIdentity == GameBoard.cells.R || jumperIdentity == GameBoard.cells.RK) {
+            if (before_col + 2 == after_col) { // top right jump
+                jumperIdentity = b_after[after_row][after_col];
+                victimIdentity = b_before[before_row + 1][before_col + 1];
+                if (jumperIdentity == GameBoard.cells.RK) {
                     if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
-                        b_after[before_row + 1][before_col + 1] = GameBoard.cells.E;
+                        b_after[before_row - 1][before_col + 1] = GameBoard.cells.E;
                         return false;
-                    } else {
-                        return true;
                     }
                 }
-                if (jumperIdentity == GameBoard.cells.W || jumperIdentity == GameBoard.cells.WK) {
+                if (jumperIdentity == GameBoard.cells.WK) {
                     if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
-                        b_after[before_row + 1][before_col + 1] = GameBoard.cells.E;
+                        altAfter[7 - (before_row - 1)][7 - (before_col + 1)] = GameBoard.cells.E;
                         return false;
-                    } else {
-                        return true;
                     }
                 }
             }
@@ -96,6 +92,37 @@ public class BackwardJumpRule extends Rule {
 
     @Override
     public void action() {
-        master.invalidBackwardJump = true;
+        master.invalidForwardJump = true;
+    }
+
+    /**
+     * Flips a matrix. Annoying that this is needed
+     * but it makes everything else work.
+     * @param b matrix to flip
+     */
+    private GameBoard.cells[][] flipBoard(GameBoard.cells[][] b)
+    {
+
+        GameBoard.cells[][] boardFlipped = new GameBoard.cells[8][8];
+
+        // copy a board, raw
+        for(int i = 0; i <= 7; i++) {
+            // for each piece
+            for(int j = 0; j < boardFlipped[i].length; j++) {
+                // if the piece is red, change to white
+                boardFlipped[i][j] = b[i][j];
+            }
+        }
+
+        // for each row in the bottom half of the board
+        for(int i = 0; i <= 7; i++) {
+            // for each piece
+            for(int j = 0; j < boardFlipped[i].length; j++) {
+                // if the piece is red, change to white
+                boardFlipped[i][j] = b[7 - i][7 - j];
+            }
+        }
+
+        return boardFlipped;
     }
 }

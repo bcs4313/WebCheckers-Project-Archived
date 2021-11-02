@@ -131,6 +131,15 @@ public class RuleMaster {
     }
 
     /**
+     * Get whose turn it is from the gameBoard
+     * @return color of user currently in a turn
+     */
+    GameBoard.activeColors getTurn()
+    {
+        return board.getActiveColor();
+    }
+
+    /**
      * Get stack object of previous positions in turn
      * @return log of checker positions in turn
      */
@@ -192,7 +201,16 @@ public class RuleMaster {
         }
 
         // now to evaluate if this move is allowed
-        return (!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove);
+        if((!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove))
+        {
+            return true;
+        }
+        else
+        {
+            // force movement undo
+            b_after = b_before;
+            return false;
+        }
     }
 
     // Rule Helper Methods

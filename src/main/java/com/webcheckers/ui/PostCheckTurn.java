@@ -31,12 +31,10 @@ public class PostCheckTurn implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        System.out.println("Post Check Turn");
         final Session session = request.session();
 
         String id = request.queryParams("gameID");
         String test = request.queryParams("actionData");
-        System.out.println(id);
         String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
 
         Player currentUser = this.playerLobby.getPlayer(username);

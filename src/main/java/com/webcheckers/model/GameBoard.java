@@ -167,20 +167,6 @@ public class GameBoard {
             }
         }
 
-
-        System.out.println("BEFORE BOARD::\n\n");
-        // for each row in the bottom half of the board
-        for(int i = 0; i <= 7; i++) {
-            // for each piece
-            for(int j = 0; j < boardFlipped[i].length; j++) {
-                // if the piece is red, change to white
-                System.out.print(board[i][j] + ", ");
-            }
-            System.out.println("\n");
-        }
-
-
-
         // for each row in the bottom half of the board
         for(int i = 0; i <= 7; i++) {
             // for each piece
@@ -188,28 +174,6 @@ public class GameBoard {
                 // if the piece is red, change to white
                 boardFlipped[i][j] = board[7 - i][7 - j];
             }
-        }
-
-        System.out.println("OLD BOARD::\n\n");
-        // for each row in the bottom half of the board
-        for(int i = 0; i <= 7; i++) {
-            // for each piece
-            for(int j = 0; j < boardFlipped[i].length; j++) {
-                // if the piece is red, change to white
-                System.out.print(board[i][j] + ", ");
-            }
-            System.out.println("\n");
-        }
-
-        System.out.println("OLD BOARD::\n\n");
-        // for each row in the bottom half of the board
-        for(int i = 0; i <= 7; i++) {
-            // for each piece
-            for(int j = 0; j < boardFlipped[i].length; j++) {
-                // if the piece is red, change to white
-                System.out.print(boardFlipped[i][j] + ", ");
-            }
-            System.out.println("\n");
         }
 
         return new GameBoard(this.redPlayer, this.whitePlayer, boardFlipped, getActiveColor());

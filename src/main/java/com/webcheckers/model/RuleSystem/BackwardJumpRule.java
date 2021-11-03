@@ -59,13 +59,13 @@ public class BackwardJumpRule extends Rule {
 
                 if (jumperIdentity == GameBoard.cells.RK) {
                     if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
-                        b_after[before_row - 1][before_col - 1] = GameBoard.cells.E;
+                        b_after[before_row + 1][before_col - 1] = GameBoard.cells.E;
                         return false;
                     }
                 }
                 if (jumperIdentity == GameBoard.cells.WK) {
                     if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
-                        altAfter[7 - (before_row - 1)][7 - (before_col - 1)] = GameBoard.cells.E;
+                        altAfter[7 - (before_row + 1)][7 - (before_col - 1)] = GameBoard.cells.E;
                         return false;
                     }
                 }
@@ -75,13 +75,13 @@ public class BackwardJumpRule extends Rule {
                 victimIdentity = b_before[before_row + 1][before_col + 1];
                 if (jumperIdentity == GameBoard.cells.RK) {
                     if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
-                        b_after[before_row - 1][before_col + 1] = GameBoard.cells.E;
+                        b_after[before_row + 1][before_col + 1] = GameBoard.cells.E;
                         return false;
                     }
                 }
                 if (jumperIdentity == GameBoard.cells.WK) {
                     if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
-                        altAfter[7 - (before_row - 1)][7 - (before_col + 1)] = GameBoard.cells.E;
+                        altAfter[7 - (before_row + 1)][7 - (before_col + 1)] = GameBoard.cells.E;
                         return false;
                     }
                 }

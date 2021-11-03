@@ -92,7 +92,7 @@ public class BackwardJumpRule extends Rule {
 
     @Override
     public void action() {
-        master.invalidForwardJump = true;
+        master.invalidBackwardJump = true;
     }
 
     /**
@@ -108,10 +108,8 @@ public class BackwardJumpRule extends Rule {
         // copy a board, raw
         for(int i = 0; i <= 7; i++) {
             // for each piece
-            for(int j = 0; j < boardFlipped[i].length; j++) {
-                // if the piece is red, change to white
-                boardFlipped[i][j] = b[i][j];
-            }
+            // if the piece is red, change to white
+            System.arraycopy(b[i], 0, boardFlipped[i], 0, boardFlipped[i].length);
         }
 
         // for each row in the bottom half of the board

@@ -80,11 +80,12 @@ public class RuleMaster {
         prevPos = before;
         afterPos = after;
 
-
-
         // get board before/after states
         b_before = board.getBoard().clone();
         b_after = board.getBoard().clone();
+
+        // log old position into memory
+        moveLog.addMovement(b_before);
 
         int prevCell;
         int prevRow;
@@ -107,9 +108,6 @@ public class RuleMaster {
         // switch position
         b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];
         b_after[prevRow][prevCell] = GameBoard.cells.E;
-
-        // log new movement into memory
-        moveLog.addMovement(before);
     }
 
     /**
@@ -200,15 +198,33 @@ public class RuleMaster {
             chainer.logJump(afterPos);
         }
 
+        // works with illegal jumpChain movements
+        // == basic movements after jump
+        if(chainer.jumpChains.size() > 0)
+        {
+            if(!invalidBasicMove || !invalidKingMove)
+            {
+                return false;
+            }
+        }
+
+        // handles multiple basic movements in general
+        if(moveLog.positionStack.size() - chainer.jumpChains.size() > 1)
+        {
+            return false; // in no case should this be true
+        }
+
         // now to evaluate if this move is allowed
         if((!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove))
         {
             return true;
-        }
+        } // this section checks if an illegal post-chain move has been made
         else
         {
             // force movement undo
             b_after = b_before;
+            board.setBoard(b_before);
+
             return false;
         }
     }
@@ -219,14 +235,26 @@ public class RuleMaster {
         isGameOver = gameOver;
     }
 
+    /**
+     * Sets board before and after states
+     * @param board cell matrix to change
+     */
+    public void setBoards(GameBoard.cells[][] board)
+    {
+        this.b_before = board;
+        this.b_after = board;
+    }
+
+    /**
+     * Set the player to a win state
+     * @param player string identity of player
+     */
     public void setWin(String player){
         if(player.equals("red player")){
             red_win=true;
-            return;
         }
         if(player.equals("white player")){
             white_win=true;
-            return;
         }
     }
 

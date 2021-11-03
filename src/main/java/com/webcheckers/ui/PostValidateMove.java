@@ -68,6 +68,9 @@ public class PostValidateMove implements Route {
         // get the rulemaster of the board to evaluate the validity of a move
         RuleMaster master = gb.getMaster();
 
+        // clone the previous board position to use if move is invalid
+        GameBoard.cells[][] beforeBoard = copyBoard(gb.getBoard());
+
         // now create a board transition and trigger the master ruleset
         master.createBoardTransition(beforePos, afterPos, sessionManager.retrieveSession(gb.getGameID()).getActiveColor());
 
@@ -87,8 +90,24 @@ public class PostValidateMove implements Route {
         }
         else
         {
+            gb.setBoard(beforeBoard); // undo board on an invalid move
+            master.getLog().getPrevPosition(); // undo log storage
             System.out.println("-InvalidMove");
             return gson.toJson(Message.error("Move is not allowed bruh"));
         }
+    }
+
+    /**
+     * Helper method to copy a board state
+     * @return copied matrix state
+     */
+    public GameBoard.cells[][] copyBoard(GameBoard.cells[][] reference)
+    {
+        GameBoard.cells[][] board = new GameBoard.cells[8][8];
+        for(int y = 0; y < reference.length; y++)
+        {
+            System.arraycopy(reference[y], 0, board[y], 0, reference.length);
+        }
+        return board;
     }
 }

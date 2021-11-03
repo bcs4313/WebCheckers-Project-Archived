@@ -161,10 +161,8 @@ public class GameBoard {
         // copy a board, raw
         for(int i = 0; i <= 7; i++) {
             // for each piece
-            for(int j = 0; j < boardFlipped[i].length; j++) {
-                // if the piece is red, change to white
-                boardFlipped[i][j] = board[i][j];
-            }
+            // if the piece is red, change to white
+            System.arraycopy(board[i], 0, boardFlipped[i], 0, boardFlipped[i].length);
         }
 
         // for each row in the bottom half of the board
@@ -187,8 +185,14 @@ public class GameBoard {
         return board;
     }
 
-    public void setboard(cells[][] board){
+    /**
+     * Sets a new board state, along with the master's
+     * before and after state
+     * @param board cell matrix to incorporate
+     */
+    public void setBoard(cells[][] board){
         this.board = board;
+        master.setBoards(board);
     }
     /**
      * simulates the end of a turn being made.

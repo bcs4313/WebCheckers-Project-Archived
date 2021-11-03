@@ -3,8 +3,12 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.RuleSystem.RuleMaster;
 import com.webcheckers.util.Message;
-import spark.*;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
 
 import java.util.Objects;
 
@@ -28,7 +32,7 @@ public class PostSubmitTurn implements Route {
      * @param response
      *   the HTTP response
      *
-     * @return
+     * @return gson message indicating turn submission success or failure
      */
 
     @Override
@@ -38,6 +42,18 @@ public class PostSubmitTurn implements Route {
         // now to retrieve a game with the queried ID
         GameBoard gb = sessionManager.retrieveSession(idVal);
         gb.switchActiveColor();
+        RuleMaster rm = gb.getMaster();
+
+        // in the case where the chainer sees another possible move,
+        // prevent the turn from submitting
+        if(rm.getChainer().mustJump())
+        {
+            return gson.toJson(Message.error("To submit this turn, you must complete the jump chain!"));
+        }
+
+        // clear chains and log
+        rm.getChainer().clearJumps();
+        rm.getLog().clearStack();
 
         //response.redirect(WebServer.GAME_URL);
         return gson.toJson(Message.info("Submitted Turn"));

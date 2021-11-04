@@ -1,6 +1,7 @@
 package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 
 import java.util.ArrayList;
@@ -260,6 +261,19 @@ public class RuleMaster {
 
     public GameBoard.cells[][] getB_before() {
         return b_before;
+    }
+
+    public boolean getGameOver(){
+        return isGameOver;
+    }
+
+    public Player getWinner(){
+        if (red_win){
+            return board.getRedPlayer();
+        }
+        else{
+            return board.getWhitePlayer();
+        }
     }
 }
 

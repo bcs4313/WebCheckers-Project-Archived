@@ -82,10 +82,10 @@ public class GetGameRoute implements Route{
             }
 
             RuleMaster rm = currentUser.getGame().getMaster();
+            RuleMaster opprm = opponentUser.getGame().getMaster();
             if (rm.getGameOver()){
                 Player winner = rm.getWinner();
                 if (currentUser.equals(winner)){
-                    RuleMaster opprm = opponentUser.getGame().getMaster();
                     if (opponentUser.equals(opponentUser.getGame().getRedPlayer())){
                         opprm.setWin("white player");
                     }
@@ -100,7 +100,17 @@ public class GetGameRoute implements Route{
                 }
                 final Map<String,Object> modeOptions = new HashMap<>(2);
                 modeOptions.put("isGameOver", true);
-                modeOptions.put("gameOverMessage", winner.toString() + " has captured all pieces");
+                if (currentUser.getResigned() || opponentUser.getResigned()){
+                    if (currentUser.equals(winner)) {
+                        modeOptions.put("gameOverMessage", opponentUser.toString() + " has resigned");
+                    }
+                    else{
+                        response.redirect(WebServer.HOME_URL);
+                    }
+                }
+                else {
+                    modeOptions.put("gameOverMessage", winner.toString() + " has captured all pieces");
+                }
                 vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
             }
 

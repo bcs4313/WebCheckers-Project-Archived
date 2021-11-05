@@ -18,6 +18,7 @@ public class Player {
     private final String name;
     private Player opponent;
 
+    private boolean resigned;
     private GameBoard playersGame;
 
     /**
@@ -31,6 +32,7 @@ public class Player {
         this.playersGame = null;
         this.isVerified = false;
         this.inGame = false;
+        this.resigned = false;
     }
 
     public String getName()
@@ -79,9 +81,14 @@ public class Player {
     // an opponent starts a game for them
     public void setOpponent(Player opponent){ this.opponent = opponent; }
 
+    public void setResigned(boolean status){ this.resigned = status; }
     // get the opponent player, returns null if no one has
     // started a match with this player
     public Player getOpponent(){ return this.opponent; }
+
+    public boolean getResigned(){
+        return this.resigned;
+    }
 
     public GameBoard getGame(){
         return this.playersGame;

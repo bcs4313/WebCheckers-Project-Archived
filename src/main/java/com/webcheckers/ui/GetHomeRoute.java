@@ -79,7 +79,7 @@ public class GetHomeRoute implements Route {
         response.redirect(WebServer.GAME_URL);
       }
       else if(currentUser.getGame() != null){
-        currentUser.removeGame();
+        currentUser.setResigned(false);
         currentUser.removeOpponent();
       }
     }

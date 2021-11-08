@@ -63,6 +63,7 @@ public class PostBackupMove implements Route {
 
         gb.setBoard(prevBoard); // now also modifies the master cell state
         master.getChainer().undoJump();  // undo a jump action from the chainer
+        master.lowerCounter(); // reduce the movement counter by 1
 
         return gson.toJson(Message.info("Backup Move Successful"));
     }

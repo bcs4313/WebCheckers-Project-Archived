@@ -191,7 +191,7 @@ public class WebServer {
 
     post(BACKUPMOVE_URL, new PostBackupMove(templateEngine, this.sessionManager));
 
-    post(RESIGNGAME_URL, new PostResignGame(templateEngine, this.playerLobby));
+    post(RESIGNGAME_URL, new PostResignGame(templateEngine, this.playerLobby, this.sessionManager));
 
     post(SUBMITTURN_URL, new PostSubmitTurn(templateEngine, this.sessionManager));
     //

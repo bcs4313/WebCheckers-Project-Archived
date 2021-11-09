@@ -15,6 +15,7 @@ import java.util.Objects;
  * @author Triston Lincoln
  */
 public class GetSpectGameRoute implements Route {
+    private final String VIEW_NAME = "game.ftl";
     private final TemplateEngine templateEngine;
     private final SessionManager sessionManager;
     private final PlayerLobby playerLobby;
@@ -58,6 +59,6 @@ public class GetSpectGameRoute implements Route {
         vm.put("board", gameView);
         vm.put("game",game);
 
-        return null;
+        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }

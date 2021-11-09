@@ -1,5 +1,7 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.SessionManager;
+import com.webcheckers.model.GameBoard;
 import com.webcheckers.util.Message;
 import spark.*;
 import com.webcheckers.model.Player;
@@ -30,7 +32,7 @@ public class GetHomeRoute implements Route {
   public static final String TITLE = "Welcome!";
 
   private final TemplateEngine templateEngine;
-
+  private final SessionManager sessionManager;
   private final PlayerLobby playerLobby;
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -38,9 +40,10 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
+  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     this.playerLobby = Objects.requireNonNull(playerLobby, "playerLobby is required");
+    this.sessionManager = Objects.requireNonNull(sessionManager, "sessionManager is required");
     //
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -68,6 +71,10 @@ public class GetHomeRoute implements Route {
     Set<String> allUsernames = usernameMap.keySet();
     ArrayList<String> copyNames = new ArrayList<>(allUsernames);
 
+    HashMap<Integer, GameBoard> games = this.sessionManager.getGameBoardMap();
+    Set<Integer> allgameIDs = games.keySet();
+    ArrayList<Integer> copyGameIDs = new ArrayList<>();
+
     vm.put(TITLE_ATTR, TITLE); // store title in home.ftl
 
     // attempt to retrieve the username for the session
@@ -93,6 +100,7 @@ public class GetHomeRoute implements Route {
     //store the amount of active players
     vm.put(USERAMT_ATTR, allUsernames.size());
 
+    vm.put("games", copyGameIDs);
 
     // get a boolean that evaluates if a previous signin was
     // invalid. If so, identify the error and display it on the home.ftl

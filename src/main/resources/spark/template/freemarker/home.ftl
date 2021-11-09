@@ -36,6 +36,15 @@
             </p>
         </#items>
       </#list>
+      <#list games>
+        <#items as game>
+          <form action="/spectator/game" method="get">
+            <p>
+              <input type="hidden" name="gameID" value="${game}">
+              <button type="submit" class="game">${game}</button>
+            </p>
+        </#items>
+      </#list>
     <#else>
       Number of Active Players: ${amtPlayers}
     </#if>

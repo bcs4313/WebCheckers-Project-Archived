@@ -56,7 +56,6 @@ public class GetGameRoute implements Route{
     @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
-        HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
         Gson gson = new Gson();
 
         System.out.println("GetGameRoute trigger");

@@ -175,7 +175,7 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, this.playerLobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, this.playerLobby, this.sessionManager));
 
     // Shows the Checkers game SignIn page.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
@@ -183,7 +183,7 @@ public class WebServer {
     // Shows the Checkers game Game page
     get(GAME_URL, new GetGameRoute(templateEngine, this.playerLobby, this.sessionManager));
 
-    get(SPECT_GAME_URL, new GetSpectGameRoute(templateEngine));
+    get(SPECT_GAME_URL, new GetSpectGameRoute(templateEngine, this.playerLobby, this.sessionManager));
 
     get(SPECT_EXIT_URL, new GetSpectExitRoute(templateEngine));
 

@@ -22,4 +22,35 @@ public abstract class Rule {
      * triggered.
      */
     public abstract void action();
+
+    /**
+     * Flips a matrix. Annoying that this is needed
+     * but it makes everything else work.
+     * @param b matrix to flip
+     */
+    public GameBoard.cells[][] flipBoard(GameBoard.cells[][] b)
+    {
+
+        GameBoard.cells[][] boardFlipped = new GameBoard.cells[8][8];
+
+        // copy a board, raw
+        for(int i = 0; i <= 7; i++) {
+            // for each piece
+            for(int j = 0; j < boardFlipped[i].length; j++) {
+                // if the piece is red, change to white
+                boardFlipped[i][j] = b[i][j];
+            }
+        }
+
+        // for each row in the bottom half of the board
+        for(int i = 0; i <= 7; i++) {
+            // for each piece
+            for(int j = 0; j < boardFlipped[i].length; j++) {
+                // if the piece is red, change to white
+                boardFlipped[i][j] = b[7 - i][7 - j];
+            }
+        }
+
+        return boardFlipped;
+    }
 }

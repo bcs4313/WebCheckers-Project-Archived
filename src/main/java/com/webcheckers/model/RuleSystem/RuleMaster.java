@@ -14,12 +14,14 @@ public class RuleMaster {
     ArrayList<Rule> ruleSet; // rules to scroll through on each action
 
     private GameBoard board; // where the actual gameboard object is stored
+    private int moveCounter; // used to force initial jumps in checkers
+    private GameBoard.cells[][] b_init = new GameBoard.cells[8][8]; // board grid at turn start
     private GameBoard.cells[][] b_before; // board grid before change
     private GameBoard.cells[][] b_after; // board grid after change
     private Position prevPos; // previous position of checker movement
     private Position afterPos; // after position of checker movement
 
-    private MoveLog moveLog; // object that stores previous moves a player during their turn
+    private MoveLog moveLog; // object that stores previous moves a player did (turn basis)
     private Chainer chainer; // object that forces jump chains to occur
 
     /**
@@ -43,6 +45,7 @@ public class RuleMaster {
     {
         ruleSet = new ArrayList<>();
         board = currentBoard;
+        moveCounter = 0;
         chainer = new Chainer(this);
         moveLog = new MoveLog(this);
         // initialize game level bools
@@ -84,6 +87,10 @@ public class RuleMaster {
         // get board before/after states
         b_before = board.getBoard().clone();
         b_after = board.getBoard().clone();
+        for(int y = 0; y < b_before.length; y++)
+        {
+            System.arraycopy(b_before[y], 0, b_init[y], 0, b_init[y].length);
+        }
 
         // log old position into memory
         moveLog.addMovement(b_before);
@@ -193,18 +200,24 @@ public class RuleMaster {
         System.out.println("validBasicMove = " + invalidBasicMove);
         System.out.println("validKingMove = " + invalidKingMove);
 
-        // log a jump in the chainer if a jump was allowed
-        if(!invalidBackwardJump || !invalidForwardJump)
-        {
-            chainer.logJump(afterPos);
-        }
-
         // works with illegal jumpChain movements
         // == basic movements after jump
         if(chainer.jumpChains.size() > 0)
         {
             if(!invalidBasicMove || !invalidKingMove)
             {
+                System.out.println("ic1");
+                return false;
+            }
+        }
+
+        // works with illegal jumpChain movements
+        // == jump after basic movement
+        if(moveLog.positionStack.size() - chainer.jumpChains.size() > 1)
+        {
+            if(!invalidForwardJump || !invalidBackwardJump)
+            {
+                System.out.println("ic2");
                 return false;
             }
         }
@@ -212,12 +225,35 @@ public class RuleMaster {
         // handles multiple basic movements in general
         if(moveLog.positionStack.size() - chainer.jumpChains.size() > 1)
         {
+            System.out.println("illegal move to jump ratio");
             return false; // in no case should this be true
+        }
+
+        // gate for forced jumps at start of turn
+        if(moveCounter == 0) // if this is the first move done so far
+        {
+            System.out.println("first move");
+            InitJumpRule rule = new InitJumpRule(this, board.getActiveColor(), null);
+            if(rule.isTriggered(b_init, null)) // if a person can jump
+            {
+                System.out.println("first move is illegal__GATE");
+                if(invalidBackwardJump && invalidForwardJump) {
+                    System.out.println("first move is illegal");
+                    return false; // the move must be illegal
+                }
+            }
+        }
+
+        // log a jump in the chainer if a jump was allowed
+        if(!invalidBackwardJump || !invalidForwardJump)
+        {
+            chainer.logJump(afterPos);
         }
 
         // now to evaluate if this move is allowed
         if((!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove))
         {
+            moveCounter += 1; // increment movement counter
             return true;
         } // this section checks if an illegal post-chain move has been made
         else
@@ -244,6 +280,29 @@ public class RuleMaster {
     {
         this.b_before = board;
         this.b_after = board;
+        for(int y = 0; y < board.length; y++)
+        {
+            System.arraycopy(board[y], 0, b_init[y], 0, board[y].length);
+        }
+    }
+
+    /**
+     * Reset the movement counter. Makes the RuleMaster
+     * force any possible jump movements at the start of
+     * a turn again.
+     */
+    public void resetCounter()
+    {
+        moveCounter = 0;
+    }
+
+    /**
+     * Reduces the movement counter by 1.
+     * Used for undoing movements.
+     */
+    public void lowerCounter()
+    {
+        moveCounter -= 1;
     }
 
     /**

@@ -51,6 +51,8 @@ public class MoveLog {
         return positionStack.pop();
     }
 
+    public int getLength() { return positionStack.size(); }
+
     /**
      * Clear the stored positions. Usually done
      * if a turn finally has ended.

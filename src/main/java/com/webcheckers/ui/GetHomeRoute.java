@@ -73,7 +73,7 @@ public class GetHomeRoute implements Route {
 
     HashMap<Integer, GameBoard> games = this.sessionManager.getGameBoardMap();
     Set<Integer> allgameIDs = games.keySet();
-    ArrayList<Integer> copyGameIDs = new ArrayList<>();
+    ArrayList<Integer> copyGameIDs = new ArrayList<>(allgameIDs);
 
     vm.put(TITLE_ATTR, TITLE); // store title in home.ftl
 

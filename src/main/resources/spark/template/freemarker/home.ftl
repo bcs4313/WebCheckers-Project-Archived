@@ -34,17 +34,24 @@
               <input type="hidden" name="opponent" value="${user}" />
               <button type="submit" class="player">${user}</button>
             </p>
+          </form>
         </#items>
       </#list>
+      <#if games??>
+      Current Games:
       <#list games>
         <#items as game>
           <form action="/spectator/game" method="get">
             <p>
-              <input type="hidden" name="gameID" value="${game}">
+              <input type="hidden" name="gameID" value="${game}" />
               <button type="submit" class="game">${game}</button>
             </p>
+          </form>
         </#items>
       </#list>
+      <#else>
+       No Active Games
+      </#if>
     <#else>
       Number of Active Players: ${amtPlayers}
     </#if>

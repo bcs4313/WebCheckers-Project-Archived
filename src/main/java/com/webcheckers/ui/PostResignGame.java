@@ -11,6 +11,10 @@ import spark.*;
 
 import java.util.Objects;
 
+/**
+ * the POST /resignGame route handler.
+ * @author Triston Lincoln
+ */
 public class PostResignGame implements Route {
 
     private final TemplateEngine templateEngine;

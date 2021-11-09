@@ -247,7 +247,7 @@ public class RuleMaster {
         // log a jump in the chainer if a jump was allowed
         if(!invalidBackwardJump || !invalidForwardJump)
         {
-            chainer.logJump(afterPos);
+            chainer.logJump(afterPos, prevPos);
         }
 
         // now to evaluate if this move is allowed

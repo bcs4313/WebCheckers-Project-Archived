@@ -100,7 +100,18 @@ public class InitJumpRule extends Rule {
             }
             else
             {
+                System.out.println("Judging...");
+
+                for(int yy = 0; yy < b_input.length; yy++)
+                {
+                    for(int xx = 0; xx < b_input[yy].length; xx++)
+                    {
+                        System.out.print(b_input[yy][xx] + ", ");
+                    }
+                    System.out.println();
+                }
                 System.out.println("???");
+                System.out.println("found " + cell.toString() + " at y: " + y + " x: " + x);
             }
         }
         return false;

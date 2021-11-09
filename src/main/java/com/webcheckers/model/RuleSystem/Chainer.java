@@ -16,6 +16,7 @@ public class Chainer {
     ArrayList<Position> jumpChains;
     RuleMaster master; // used to reference GameBoard state
     GameBoard.cells[][] initState; // initial state of board per turn
+    private Position head;
 
     /**
      * Basic chaining class to track
@@ -30,10 +31,13 @@ public class Chainer {
 
     /**
      * log a jump within a specific turn
+     * @param prevPos position of checker before the jump
+     * @param headPos position of checker after the jump
      */
-    public void logJump(Position pos)
+    public void logJump(Position prevPos, Position headPos)
     {
-        jumpChains.add(pos);
+        jumpChains.add(prevPos);
+        head = headPos;
     }
 
     /**
@@ -42,6 +46,7 @@ public class Chainer {
     public void undoJump()
     {
         if(jumpChains.size() >= 1) { // error guard
+            head = jumpChains.get(jumpChains.size() - 1);
             jumpChains.remove(jumpChains.size() - 1);
         }
     }
@@ -54,8 +59,8 @@ public class Chainer {
      */
     public Position head()
     {
-        if(jumpChains.size() != 0) {
-            return jumpChains.get(jumpChains.size() - 1);
+        if(head != null) {
+            return head;
         }
         else
         {
@@ -69,5 +74,6 @@ public class Chainer {
     public void clearJumps()
     {
         jumpChains.clear();
+        head = null;
     }
 }

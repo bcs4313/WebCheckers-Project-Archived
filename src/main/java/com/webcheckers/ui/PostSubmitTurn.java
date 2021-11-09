@@ -16,11 +16,24 @@ import spark.TemplateEngine;
 
 import java.util.Objects;
 
+/**
+ * the POST /submitTurn route handler.
+ * @author Triston Lincoln
+ */
 public class PostSubmitTurn implements Route {
 
     private final SessionManager sessionManager;
     private final TemplateEngine templateEngine;
 
+    /**
+     * The constructor for the POST /submitTurn route handler.
+     *
+     * @param templateEngine - template engine to use for rendering HTML page
+     * @param sessionManager - the manager for the games being played
+     *
+     * @throws NullPointerException
+     *    when the playerLobby or templateEngine parameter is null
+     */
     public PostSubmitTurn(final TemplateEngine templateEngine, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         Objects.requireNonNull(templateEngine, "sessionManager must not be null");

@@ -7,12 +7,16 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * the @code POST /signout route handler.
+ * @author Triston Lincoln
+ */
 public class PostSignOutRoute implements Route {
     private final PlayerLobby playerLobby; // needed for the sign out process
     private final TemplateEngine templateEngine;
 
     /**
-     * The constructor for the @code POST /signin route handler.
+     * The constructor for the @code POST /signout route handler.
      *
      * @param playerLobby - contains login info. Aids in signing in a user.
      * @param templateEngine - template engine to use for rendering HTML page

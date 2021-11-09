@@ -10,6 +10,10 @@ import spark.*;
 
 import java.util.Objects;
 
+/**
+ * the POST /checkTurn route handler.
+ * @author Triston Lincoln
+ */
 public class PostCheckTurn implements Route {
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;

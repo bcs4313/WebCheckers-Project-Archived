@@ -1,9 +1,11 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.RuleSystem.RuleMaster;
 import com.webcheckers.model.boardview.BoardView;
 import spark.*;
 
@@ -55,6 +57,7 @@ public class GetGameRoute implements Route{
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
         HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
+        Gson gson = new Gson();
 
         System.out.println("GetGameRoute trigger");
 
@@ -78,6 +81,29 @@ public class GetGameRoute implements Route{
                 thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
             }
 
+            RuleMaster rm = currentUser.getGame().getMaster();
+            if (rm.getGameOver()){
+                Player winner = rm.getWinner();
+                if (currentUser.equals(winner)){
+                    RuleMaster opprm = opponentUser.getGame().getMaster();
+                    if (opponentUser.equals(opponentUser.getGame().getRedPlayer())){
+                        opprm.setWin("white player");
+                    }
+                    else{
+                        opprm.setWin("red player");
+                    }
+                    opprm.setGameOver(true);
+                    winner.setInGame(false, thisBoard);
+                }
+                else{
+                    currentUser.setInGame(false, thisBoard);
+                }
+                final Map<String,Object> modeOptions = new HashMap<>(2);
+                modeOptions.put("isGameOver", true);
+                modeOptions.put("gameOverMessage", winner.toString() + " has captured all pieces");
+                vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+            }
+
             BoardView thisBoardView = thisBoard.toBoardView();
             vm.put("currentUser", currentUser);
             vm.put("title", "Playing Game");
@@ -99,6 +125,11 @@ public class GetGameRoute implements Route{
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
+            if(opponentUser == null)
+            {
+                session.attribute("error", true);
+                response.redirect(WebServer.HOME_URL);
+            }
             if (opponentUser.isInGame()) { // error case
                 session.attribute("error", true);
                 response.redirect(WebServer.HOME_URL);

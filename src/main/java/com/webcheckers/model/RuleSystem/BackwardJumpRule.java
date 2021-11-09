@@ -5,7 +5,7 @@ import com.webcheckers.model.Position;
 
 /**
  * This rule analyzes whether or not a checker is making a valid
- * backward jump.
+ * Forward Jump
  */
 public class BackwardJumpRule extends Rule {
 
@@ -39,39 +39,51 @@ public class BackwardJumpRule extends Rule {
         this.after_row = afterPos.getRow();
         this.after_col = afterPos.getCell();
 
-        System.out.println("br " + before_row);
-        System.out.println("bc " + before_col);
-        System.out.println("ar " + after_row);
-        System.out.println("ac " + after_col);
+        GameBoard.cells jumperIdentity;
+        GameBoard.cells victimIdentity;
 
-        GameBoard.cells jumperIdentity = b_after[after_row][after_col];
+        GameBoard.cells[][] altAfter = b_after;
+        if(master.getTurn() == GameBoard.activeColors.WHITE)
+        {
+            b_before = flipBoard(b_before);
+            b_after = flipBoard(b_after);
+        }
+
 
         // jump dimensions are checked for validity first
-        if(before_row + 2 == after_row)
-        {
-            if(before_col - 2 == after_col) // top left jump
+        if(before_row + 2 == after_row) {
+            if (before_col - 2 == after_col) // jump was made forwards
             {
-                GameBoard.cells victimIdentity = b_before[after_row - 1][after_col + 1];
-                if(jumperIdentity == GameBoard.cells.RK)
-                {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+                jumperIdentity = b_after[after_row][after_col];
+                victimIdentity = b_before[before_row + 1][before_col - 1];
+
+                if (jumperIdentity == GameBoard.cells.RK) {
+                    if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
+                        b_after[before_row + 1][before_col - 1] = GameBoard.cells.E;
+                        return false;
+                    }
                 }
-                if(jumperIdentity == GameBoard.cells.WK)
-                {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                if (jumperIdentity == GameBoard.cells.WK) {
+                    if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
+                        altAfter[7 - (before_row + 1)][7 - (before_col - 1)] = GameBoard.cells.E;
+                        return false;
+                    }
                 }
             }
-
-            if(before_col + 2 == after_col) // top right jump
-            {
-                GameBoard.cells victimIdentity = b_before[after_row - 1][after_col - 1];
-                if(jumperIdentity == GameBoard.cells.RK)
-                {
-                    return !(victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK);
+            if (before_col + 2 == after_col) { // top right jump
+                jumperIdentity = b_after[after_row][after_col];
+                victimIdentity = b_before[before_row + 1][before_col + 1];
+                if (jumperIdentity == GameBoard.cells.RK) {
+                    if ((victimIdentity == GameBoard.cells.W || victimIdentity == GameBoard.cells.WK)) {
+                        b_after[before_row + 1][before_col + 1] = GameBoard.cells.E;
+                        return false;
+                    }
                 }
-                if(jumperIdentity == GameBoard.cells.WK)
-                {
-                    return !(victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK);
+                if (jumperIdentity == GameBoard.cells.WK) {
+                    if ((victimIdentity == GameBoard.cells.R || victimIdentity == GameBoard.cells.RK)) {
+                        altAfter[7 - (before_row + 1)][7 - (before_col + 1)] = GameBoard.cells.E;
+                        return false;
+                    }
                 }
             }
         }

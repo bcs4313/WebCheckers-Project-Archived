@@ -31,28 +31,22 @@ public class PostCheckTurn implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        System.out.println("Post Check Turn");
         final Session session = request.session();
 
         String id = request.queryParams("gameID");
-        String test = request.queryParams("actionData");
-        System.out.println(id);
         String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
 
         Player currentUser = this.playerLobby.getPlayer(username);
         GameBoard game = sessionManager.retrieveSession(Integer.parseInt(id));
-        //GameBoard game = currentUser.getGame();
-        //System.out.println(game.getGameID());
+
         Gson gson = new Gson();
         if (game.getWhitePlayer().getName().equals(currentUser.getName())) {
             if (game.getActiveColor().equals(GameBoard.activeColors.WHITE)){
-                //response.redirect(WebServer.GAME_URL);
                 return gson.toJson(Message.info("true"));
             }
         }
         else{
             if (game.getActiveColor().equals(GameBoard.activeColors.RED)){
-                //response.redirect(WebServer.GAME_URL);
                 return gson.toJson(Message.info("true"));
             }
         }

@@ -78,6 +78,10 @@ public class GetHomeRoute implements Route {
       if (currentUser.isInGame()) {
         response.redirect(WebServer.GAME_URL);
       }
+      else if(currentUser.getGame() != null){
+        currentUser.removeGame();
+        currentUser.removeOpponent();
+      }
     }
 
     vm.put(USERNAME_ATTR, username); // store username in home.ftl

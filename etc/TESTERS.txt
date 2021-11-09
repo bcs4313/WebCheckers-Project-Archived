@@ -1,0 +1,7 @@
+Starting the Webcheckers Server:
+1. open terminal
+2. navigate to directory with pom.xml file
+3. execute command: mvn compile exec:java
+
+Connecting to Webcheckers Server:
+1. Open browser to localhost:4567

@@ -26,6 +26,8 @@ public class WinConditionRule extends Rule {
 
     @Override
     public boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after) {
+        this.red_has_piece = false;
+        this.white_has_piece = false;
         for (GameBoard.cells[] cells : b_after) {
             for (GameBoard.cells cell : cells) {
                 if (cell.equals(GameBoard.cells.R) || cell.equals(GameBoard.cells.RK)) {
@@ -35,7 +37,7 @@ public class WinConditionRule extends Rule {
                 }
             }
         }
-        return !red_has_piece || !white_has_piece;
+        return (!red_has_piece) || (!white_has_piece);
 
     }
 

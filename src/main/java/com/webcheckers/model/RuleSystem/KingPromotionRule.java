@@ -47,14 +47,20 @@ public class KingPromotionRule extends Rule {
      */
     @Override
     public void action() {
+        int i = 0;
         for(GameBoard.cells space : spaces[0]) {
-            if(space == cells.R)
-                space = cells.RK;
+            if(space == cells.R) {
+                spaces[0][i] = cells.RK;
+
+            }
+            i++;
         }
-        
+        int j = 0;
         for(GameBoard.cells space : spaces[7]) {
-            if(space == cells.W)
-                space = cells.WK;
+            if(space == cells.W) {
+                spaces[7][j] = cells.WK;
+            }
+            j++;
         }
     }
     

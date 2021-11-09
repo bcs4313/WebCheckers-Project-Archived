@@ -67,6 +67,13 @@ public class Player {
         inGame = status;
     }
 
+    public void removeGame(){
+        this.playersGame = null;
+    }
+
+    public void removeOpponent(){
+        this.opponent = null;
+    }
     // set the opponent assigned to this player,
     //note: used to initiate a game for another user if
     // an opponent starts a game for them
@@ -78,5 +85,10 @@ public class Player {
 
     public GameBoard getGame(){
         return this.playersGame;
+    }
+
+    @Override
+    public String toString(){
+        return this.name;
     }
 }

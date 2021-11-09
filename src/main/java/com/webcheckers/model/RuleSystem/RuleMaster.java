@@ -1,6 +1,7 @@
 package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 
 import java.util.ArrayList;
@@ -13,12 +14,14 @@ public class RuleMaster {
     ArrayList<Rule> ruleSet; // rules to scroll through on each action
 
     private GameBoard board; // where the actual gameboard object is stored
+    private int moveCounter; // used to force initial jumps in checkers
+    private GameBoard.cells[][] b_init = new GameBoard.cells[8][8]; // board grid at turn start
     private GameBoard.cells[][] b_before; // board grid before change
     private GameBoard.cells[][] b_after; // board grid after change
     private Position prevPos; // previous position of checker movement
     private Position afterPos; // after position of checker movement
 
-    private MoveLog moveLog; // object that stores previous moves a player during their turn
+    private MoveLog moveLog; // object that stores previous moves a player did (turn basis)
     private Chainer chainer; // object that forces jump chains to occur
 
     /**
@@ -42,6 +45,7 @@ public class RuleMaster {
     {
         ruleSet = new ArrayList<>();
         board = currentBoard;
+        moveCounter = 0;
         chainer = new Chainer(this);
         moveLog = new MoveLog(this);
         // initialize game level bools
@@ -75,7 +79,7 @@ public class RuleMaster {
      * @param before position before checker was moved
      * @param after position after checker was moved
      */
-    public void createBoardTransition(Position before, Position after)
+    public void createBoardTransition(Position before, Position after, GameBoard.activeColors color)
     {
         prevPos = before;
         afterPos = after;
@@ -83,18 +87,35 @@ public class RuleMaster {
         // get board before/after states
         b_before = board.getBoard().clone();
         b_after = board.getBoard().clone();
+        for(int y = 0; y < b_before.length; y++)
+        {
+            System.arraycopy(b_before[y], 0, b_init[y], 0, b_init[y].length);
+        }
 
-        int prevCell = prevPos.getCell();
-        int prevRow = prevPos.getRow();
-        int afterCell = afterPos.getCell();
-        int afterRow = afterPos.getRow();
+        // log old position into memory
+        moveLog.addMovement(b_before);
+
+        int prevCell;
+        int prevRow;
+        int afterCell;
+        int afterRow;
+        if(color.equals(GameBoard.activeColors.RED)) {
+            prevCell = prevPos.getCell();
+            prevRow = prevPos.getRow();
+            afterCell = afterPos.getCell();
+            afterRow = afterPos.getRow();
+        }
+        else
+        {
+            prevCell = 7 - prevPos.getCell();
+            prevRow = 7 - prevPos.getRow();
+            afterCell = 7 - afterPos.getCell();
+            afterRow = 7 - afterPos.getRow();
+        }
 
         // switch position
         b_after[afterRow][afterCell] =  b_before[prevRow][prevCell];
         b_after[prevRow][prevCell] = GameBoard.cells.E;
-
-        // log new movement into memory
-        moveLog.addMovement(before);
     }
 
     /**
@@ -113,6 +134,15 @@ public class RuleMaster {
     public GameBoard.cells[][] getB_After()
     {
         return b_after;
+    }
+
+    /**
+     * Get whose turn it is from the gameBoard
+     * @return color of user currently in a turn
+     */
+    GameBoard.activeColors getTurn()
+    {
+        return board.getActiveColor();
     }
 
     /**
@@ -170,6 +200,50 @@ public class RuleMaster {
         System.out.println("validBasicMove = " + invalidBasicMove);
         System.out.println("validKingMove = " + invalidKingMove);
 
+        // works with illegal jumpChain movements
+        // == basic movements after jump
+        if(chainer.jumpChains.size() > 0)
+        {
+            if(!invalidBasicMove || !invalidKingMove)
+            {
+                System.out.println("ic1");
+                return false;
+            }
+        }
+
+        // works with illegal jumpChain movements
+        // == jump after basic movement
+        if(moveLog.positionStack.size() - chainer.jumpChains.size() > 1)
+        {
+            if(!invalidForwardJump || !invalidBackwardJump)
+            {
+                System.out.println("ic2");
+                return false;
+            }
+        }
+
+        // handles multiple basic movements in general
+        if(moveLog.positionStack.size() - chainer.jumpChains.size() > 1)
+        {
+            System.out.println("illegal move to jump ratio");
+            return false; // in no case should this be true
+        }
+
+        // gate for forced jumps at start of turn
+        if(moveCounter == 0) // if this is the first move done so far
+        {
+            System.out.println("first move");
+            InitJumpRule rule = new InitJumpRule(this, board.getActiveColor(), null);
+            if(rule.isTriggered(b_init, null)) // if a person can jump
+            {
+                System.out.println("first move is illegal__GATE");
+                if(invalidBackwardJump && invalidForwardJump) {
+                    System.out.println("first move is illegal");
+                    return false; // the move must be illegal
+                }
+            }
+        }
+
         // log a jump in the chainer if a jump was allowed
         if(!invalidBackwardJump || !invalidForwardJump)
         {
@@ -177,7 +251,19 @@ public class RuleMaster {
         }
 
         // now to evaluate if this move is allowed
-        return (!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove);
+        if((!invalidForwardJump || !invalidBackwardJump || !invalidBasicMove || !invalidKingMove))
+        {
+            moveCounter += 1; // increment movement counter
+            return true;
+        } // this section checks if an illegal post-chain move has been made
+        else
+        {
+            // force movement undo
+            b_after = b_before;
+            board.setBoard(b_before);
+
+            return false;
+        }
     }
 
     // Rule Helper Methods
@@ -186,19 +272,67 @@ public class RuleMaster {
         isGameOver = gameOver;
     }
 
+    /**
+     * Sets board before and after states
+     * @param board cell matrix to change
+     */
+    public void setBoards(GameBoard.cells[][] board)
+    {
+        this.b_before = board;
+        this.b_after = board;
+        for(int y = 0; y < board.length; y++)
+        {
+            System.arraycopy(board[y], 0, b_init[y], 0, board[y].length);
+        }
+    }
+
+    /**
+     * Reset the movement counter. Makes the RuleMaster
+     * force any possible jump movements at the start of
+     * a turn again.
+     */
+    public void resetCounter()
+    {
+        moveCounter = 0;
+    }
+
+    /**
+     * Reduces the movement counter by 1.
+     * Used for undoing movements.
+     */
+    public void lowerCounter()
+    {
+        moveCounter -= 1;
+    }
+
+    /**
+     * Set the player to a win state
+     * @param player string identity of player
+     */
     public void setWin(String player){
         if(player.equals("red player")){
             red_win=true;
-            return;
         }
         if(player.equals("white player")){
             white_win=true;
-            return;
         }
     }
 
     public GameBoard.cells[][] getB_before() {
         return b_before;
+    }
+
+    public boolean getGameOver(){
+        return isGameOver;
+    }
+
+    public Player getWinner(){
+        if (red_win){
+            return board.getRedPlayer();
+        }
+        else{
+            return board.getWhitePlayer();
+        }
     }
 }
 

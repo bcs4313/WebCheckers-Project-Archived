@@ -1,6 +1,6 @@
 package com.webcheckers.model.RuleSystem;
 
-import com.webcheckers.model.Position;
+import com.webcheckers.model.GameBoard;
 
 import java.util.Stack;
 
@@ -10,7 +10,7 @@ import java.util.Stack;
  */
 public class MoveLog {
     RuleMaster master;
-    Stack<Position> positionStack; // stack of player movements
+    Stack<GameBoard.cells[][]> positionStack; // stack of player movements
 
     /**
      * Constructor for a movement Log
@@ -25,11 +25,20 @@ public class MoveLog {
     /**
      * Log the previous movement state to potentially undo
      * later.
-     * @param oldPos old position to store
+     * @param oldBoard old board state to store
      */
-    public void addMovement(Position oldPos)
+    public void addMovement(GameBoard.cells[][] oldBoard)
     {
-        positionStack.add(oldPos);
+        // we can't just throw the reference in, it will change
+        // with time. We need a literal copy.
+        GameBoard.cells[][] b = new GameBoard.cells[8][8];
+
+        for(int y = 0; y < b.length; y++)
+        {
+            System.arraycopy(oldBoard[y], 0, b[y], 0, b[y].length);
+        }
+
+        positionStack.add(b);
     }
 
     /**
@@ -37,10 +46,12 @@ public class MoveLog {
      * The position retrieved will automatically be removed.
      * @return Previous position of checker.
      */
-    public Position getPrevPosition()
+    public GameBoard.cells[][] getPrevPosition()
     {
         return positionStack.pop();
     }
+
+    public int getLength() { return positionStack.size(); }
 
     /**
      * Clear the stored positions. Usually done

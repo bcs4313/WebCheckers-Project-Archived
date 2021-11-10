@@ -25,6 +25,9 @@ public class RuleMaster {
     private MoveLog moveLog; // object that stores previous moves a player did (turn basis)
     private Chainer chainer; // object that forces jump chains to occur
 
+    public static final String WHITE_ATTR = "white player";
+    public static final String RED_ATTR = "red player";
+
     /**
      * booleans to handled by rule objects
      * each name corresponds to an abstract rule
@@ -286,10 +289,10 @@ public class RuleMaster {
      * @param player string identity of player
      */
     public void setWin(String player){
-        if(player.equals("red player")){
+        if(player.equals(RED_ATTR)){
             red_win=true;
         }
-        if(player.equals("white player")){
+        if(player.equals(WHITE_ATTR)){
             white_win=true;
         }
     }

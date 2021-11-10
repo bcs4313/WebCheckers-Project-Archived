@@ -46,7 +46,7 @@ public class PostCheckTurn implements Route {
     public Object handle(Request request, Response response) {
         final Session session = request.session();
 
-        String id = request.queryParams("gameID");
+        String id = request.queryParams(GetGameRoute.ID_ATTR);
         String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
 
         Player currentUser = this.playerLobby.getPlayer(username);
@@ -55,11 +55,13 @@ public class PostCheckTurn implements Route {
         Gson gson = new Gson();
         if (game.getWhitePlayer().getName().equals(currentUser.getName())) {
             if (game.getActiveColor().equals(GameBoard.activeColors.WHITE)){
+                //change turn to white player if active color is white
                 return gson.toJson(Message.info("true"));
             }
         }
         else{
             if (game.getActiveColor().equals(GameBoard.activeColors.RED)){
+                //change turn to red player if active color is red
                 return gson.toJson(Message.info("true"));
             }
         }

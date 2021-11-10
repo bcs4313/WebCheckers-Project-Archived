@@ -17,6 +17,7 @@ public class PostResignGame implements Route {
     private final PlayerLobby playerLobby;
     private final SessionManager sessionManager;
 
+    public final static String RESIGN_MSG = "Successful Resignation";
     /**
      * The constructor for the POST /resignGame route handler.
      *
@@ -49,27 +50,26 @@ public class PostResignGame implements Route {
         final Session session = request.session();
         Gson gson = new Gson();
 
-        String id = request.queryParams("gameID");
+        String id = request.queryParams(GetGameRoute.ID_ATTR);
         String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
 
         Player currentUser = this.playerLobby.getPlayer(username);
         Player opponentUser = currentUser.getOpponent();
         GameBoard game = sessionManager.retrieveSession(Integer.parseInt(id));
         RuleMaster rm = currentUser.getGame().getMaster();
-        RuleMaster opprm = opponentUser.getGame().getMaster();
 
         if (game.getWhitePlayer().equals(currentUser)){
             //Make white the loser/red the winner, set game states via rm and set player states
-            rm.setWin("red player");
+            rm.setWin(RuleMaster.RED_ATTR);
         }
         else{
             //Make red the loser/white the winner set game states via rm and set player states
-            rm.setWin("white player");
+            rm.setWin(RuleMaster.WHITE_ATTR);
         }
         currentUser.setResigned(true);
         opponentUser.setResigned(true);
         rm.setGameOver(true);
-        return gson.toJson(Message.info("Successful Resignation"));
+        return gson.toJson(Message.info(RESIGN_MSG));
     }
 
 }

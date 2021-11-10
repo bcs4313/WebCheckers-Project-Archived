@@ -54,6 +54,7 @@ public class PostSignOutRoute implements Route {
         final String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
         HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
 
+        // remove player from UsernameMap
         usernameMap.remove(username);
         session.removeAttribute(GetHomeRoute.USERNAME_ATTR);
 

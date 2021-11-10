@@ -18,7 +18,8 @@ import static spark.Spark.halt;
 public class GetSignInRoute implements Route{
 
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
-    public static final String TITLE_ATTR = "title"; //Carlos added this, same as the message below this.
+    public static final String TITLE_ATTR = "title";
+    public static final String SIGN_IN_MSG = "Checkers Sign In";
 
     private final String VIEW_NAME = "signin.ftl";
     private final TemplateEngine templateEngine;
@@ -52,16 +53,16 @@ public class GetSignInRoute implements Route{
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
 
-        Boolean error = request.session().attribute("error");
+        Boolean error = request.session().attribute(GetHomeRoute.ERROR_ATTR);
         if (error != null) {
             if (error) {
-
-                vm.put("message", INVALID_MSG);
+                // Tell user that inputted name was invalid
+                vm.put(GetHomeRoute.MESSAGE_ATTR, INVALID_MSG);
 
             }
         }
 
-        vm.put(TITLE_ATTR, "Checkers Sign In"); // add title to signin.ftl  //Carlos changed this to Title_ATTR
+        vm.put(TITLE_ATTR, SIGN_IN_MSG); // add title to signin.ftl
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

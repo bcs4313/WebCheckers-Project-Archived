@@ -24,6 +24,10 @@ public class PostValidateMove implements Route {
     private final TemplateEngine templateEngine;
     private final SessionManager sessionManager;
 
+    private static final String ACTION_DATA = "actionData";
+    private static final String GOOD_MOVE = "Nice Move!";
+    private static final String BAD_MOVE = "Move is not allowed bruh";
+
     /**
      * The constructor for the POST /validateMove route handler.
      *
@@ -55,14 +59,14 @@ public class PostValidateMove implements Route {
     @Override
     public String handle(Request request, Response response) {
         Gson gson = new Gson();
-        Move movement = gson.fromJson(request.queryParams("actionData"), Move.class);
+        Move movement = gson.fromJson(request.queryParams(ACTION_DATA), Move.class);
 
         // retrieve positions regarding the move
         Position beforePos = movement.getStart();
         Position afterPos = movement.getEnd();
 
         // retrieve gameID from session manager
-        int idVal = Integer.parseInt(request.queryParams("gameID"));
+        int idVal = Integer.parseInt(request.queryParams(GetGameRoute.ID_ATTR));
 
         // now to retrieve a game with the queried ID
         GameBoard gb = sessionManager.retrieveSession(idVal);
@@ -81,18 +85,17 @@ public class PostValidateMove implements Route {
 
         if(result)
         {
-            // since the move is valid, we must send one of
-            // two messages
-            // true:
+            // since the move is valid, we must send one of two messages
+            // true: Nice Move!
             // false: opponent is still taking their turn
 
-            return gson.toJson(Message.info("Nice Move!"));
+            return gson.toJson(Message.info(GOOD_MOVE));
         }
         else
         {
             gb.setBoard(beforeBoard); // undo board on an invalid move
             master.getLog().getPrevPosition(); // undo log storage
-            return gson.toJson(Message.error("Move is not allowed bruh"));
+            return gson.toJson(Message.error(BAD_MOVE));
         }
     }
 

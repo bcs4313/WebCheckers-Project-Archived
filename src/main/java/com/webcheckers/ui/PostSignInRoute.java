@@ -50,16 +50,19 @@ public class PostSignInRoute implements Route {
 
         final Session session = request.session();
 
-        session.attribute("error", false);
-        final String username = request.queryParams("username");
+        session.attribute(GetHomeRoute.ERROR_ATTR, false);
+        final String username = request.queryParams(GetHomeRoute.USERNAME_ATTR);
         Player ply = new Player(username);
+        //check to see if login is valid
         boolean attemptLogin = playerLobby.login(ply);
         if (attemptLogin) {
-            session.attribute("username", ply.getName()); // store username in client session
+            //go to home page as signed-in user
+            session.attribute(GetHomeRoute.USERNAME_ATTR, ply.getName()); // store username in client session
             response.redirect(WebServer.HOME_URL);
             return "success";
         } else{
-            session.attribute("error", true);
+            //go back to sign-in page with error msg
+            session.attribute(GetHomeRoute.ERROR_ATTR, true);
             response.redirect(WebServer.SIGNIN_URL);
             return "error";
         }

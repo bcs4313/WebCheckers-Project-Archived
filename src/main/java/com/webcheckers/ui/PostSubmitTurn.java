@@ -26,6 +26,8 @@ public class PostSubmitTurn implements Route {
     private final SessionManager sessionManager;
     private final TemplateEngine templateEngine;
 
+    public static final String JUMP_MSG = "To submit this turn, you must complete the jump chain!";
+    public static final String SUBMIT_MSG = "Submitted Turn";
     /**
      * The constructor for the @code POST /submitTurn route handler.
      *
@@ -56,7 +58,7 @@ public class PostSubmitTurn implements Route {
     @Override
     public Object handle(Request request, Response response) {
         Gson gson = new Gson();
-        int idVal = Integer.parseInt(request.queryParams("gameID"));
+        int idVal = Integer.parseInt(request.queryParams(GetGameRoute.ID_ATTR));
         // now to retrieve a game with the queried ID
         GameBoard gb = sessionManager.retrieveSession(idVal);
         RuleMaster rm = gb.getMaster();
@@ -74,7 +76,7 @@ public class PostSubmitTurn implements Route {
 
             if (ijr.isTriggered(rm.getB_After(), null)) {
                 if (log.getLength() - chainer.getLength() == 0) {
-                    return gson.toJson(Message.error("To submit this turn, you must complete the jump chain!"));
+                    return gson.toJson(Message.error(JUMP_MSG));
                 }
             }
         }
@@ -87,7 +89,6 @@ public class PostSubmitTurn implements Route {
         rm.getChainer().clearJumps();
         rm.getLog().clearStack();
 
-        //response.redirect(WebServer.GAME_URL);
-        return gson.toJson(Message.info("Submitted Turn"));
+        return gson.toJson(Message.info(SUBMIT_MSG));
     }
 }

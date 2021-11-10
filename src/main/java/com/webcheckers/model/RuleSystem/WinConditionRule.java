@@ -49,9 +49,9 @@ public class WinConditionRule extends Rule {
     @Override
     public void action() {
         if(!red_has_piece){
-            master.setWin("white player");
+            master.setWin(RuleMaster.WHITE_ATTR);
         }else if(!white_has_piece){
-            master.setWin("red player");
+            master.setWin(RuleMaster.RED_ATTR);
         }
         master.setGameOver(true);
     }

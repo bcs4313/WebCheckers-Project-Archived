@@ -205,7 +205,7 @@ public class WebServer {
 
     post(SUBMITTURN_URL, new PostSubmitTurn(templateEngine, this.sessionManager));
 
-    post(SPECT_CHECK_URL, new PostSpectCheckRoute(templateEngine));
+    post(SPECT_CHECK_URL, new PostSpectCheckRoute(templateEngine, this.sessionManager ,this.playerLobby));
     //
     LOG.config("WebServer is initialized.");
   }

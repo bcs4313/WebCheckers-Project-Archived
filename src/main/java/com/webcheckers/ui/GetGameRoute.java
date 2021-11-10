@@ -99,6 +99,7 @@ public class GetGameRoute implements Route{
                 }
                 final Map<String,Object> modeOptions = new HashMap<>(2);
                 modeOptions.put("isGameOver", true);
+                sessionManager.removeSession(thisBoard.getGameID());
                 if (currentUser.getResigned() || opponentUser.getResigned()){
                     if (currentUser.equals(winner)) {
                         modeOptions.put("gameOverMessage", opponentUser.toString() + " has resigned");

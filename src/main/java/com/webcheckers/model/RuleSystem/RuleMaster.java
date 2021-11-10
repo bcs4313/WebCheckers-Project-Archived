@@ -167,7 +167,7 @@ public class RuleMaster {
         }
 
         // gate for forced jumps at start of turn
-        if(moveLog.positionStack.size() == 0) // if this is the first move done so far
+        if(moveLog.positionStack.size() == 1) // if this is the first move done so far
         {
             InitJumpRule rule = new InitJumpRule(this, board.getActiveColor(), null);
             if(rule.isTriggered(b_init, null)) // if a person can jump
@@ -181,7 +181,7 @@ public class RuleMaster {
         // log a jump in the chainer if a jump was allowed
         if(!invalidBackwardJump || !invalidForwardJump)
         {
-            chainer.logJump(afterPos, prevPos);
+            chainer.logJump(afterPos, afterPos);
         }
 
         // now to evaluate if this move is allowed

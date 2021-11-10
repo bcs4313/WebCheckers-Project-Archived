@@ -2,20 +2,13 @@ package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
 
-/**
- * Rule that checks the entire board to see if a jump
- * is possible for the opponent. Used for jump
- * restrictions. Also engineered to check a singular
- * position in the case of handling chains.
- * @author Cody Smith (bcs4313@rit.edu)
- */
 public class InitJumpRule extends Rule {
 
     // handler for all basic rules
     private final RuleMaster master;
 
     // if not null, force ONLY a check at this position
-    private final int[] forceCheck;
+    private int[] forceCheck;
 
     // Defined pieces to analyze
     private final GameBoard.cells attackerKing;
@@ -63,6 +56,7 @@ public class InitJumpRule extends Rule {
         // flip board if its white's turn
         if(master.getTurn() == GameBoard.activeColors.WHITE)
         {
+            System.out.println("flipped board");
             b_input = flipBoard(b_before);
         }
         else
@@ -70,7 +64,9 @@ public class InitJumpRule extends Rule {
             b_input = b_before;
         }
 
+
         if(forceCheck == null) {
+            System.out.println("MULTICHECK");
             // we must check every possible situation on the board
             // (only for the team in question though)
             for (int y = 0; y < b_input.length; y++) // note that jumps in certain parts of
@@ -78,7 +74,10 @@ public class InitJumpRule extends Rule {
                 for (int x = 0; x < b_input[y].length; x++) {
                     GameBoard.cells cell = b_input[y][x];
                     if (cell == attackerKing || cell == attackerBasic) {
+                        System.out.println("Potential Attacker identified: " + cell.toString());
+                        System.out.println("At y: " + y + " x: " + x);
                         if (hasTarget(b_input, y, x)) {
+                            System.out.println("Returning true...");
                             return true;
                         }
                     }
@@ -87,11 +86,22 @@ public class InitJumpRule extends Rule {
         }
         else
         {
+            System.out.println("SINGLECHECK");
             int y = forceCheck[0];
             int x = forceCheck[1];
+            System.out.println("looking at y: " + y + "x: " + x);
             GameBoard.cells cell = b_input[y][x];
             if (cell == attackerKing || cell == attackerBasic) {
-                return hasTarget(b_input, y, x);
+                System.out.println("Potential Attacker identified: " + cell.toString());
+                System.out.println("At y: " + y + " x: " + x);
+                if (hasTarget(b_input, y, x)) {
+                    System.out.println("Returning true...");
+                    return true;
+                }
+            }
+            else
+            {
+                System.out.println("??? = " + cell.toString());
             }
         }
         return false;
@@ -113,9 +123,16 @@ public class InitJumpRule extends Rule {
         GameBoard.cells target3 = b_before[Math.min(y + 1, 7)][Math.min(x + 1, 7)];
         GameBoard.cells target4 = b_before[Math.min(y + 1, 7)][Math.max(x - 1, 0)];
 
+        System.out.println("t1: " + target1.toString());
+        System.out.println("t2: " + target2.toString());
+        System.out.println("t3: " + target3.toString());
+        System.out.println("t4: " + target4.toString());
+
+        System.out.println("S0");
         // basic checks
         if(target1 == victimBasic || target1 == victimKing)
         {
+            System.out.println("Scope1");
             if(b_before[Math.max(y - 2, 0)][Math.min(x + 2, 7)] == GameBoard.cells.E)
             {
                 return true;
@@ -123,6 +140,7 @@ public class InitJumpRule extends Rule {
         }
         if(target2 == victimBasic || target2 == victimKing)
         {
+            System.out.println("Scope2");
             if(b_before[Math.max(y - 2, 0)][Math.max(x - 2, 0)] == GameBoard.cells.E)
             {
                 return true;
@@ -134,6 +152,7 @@ public class InitJumpRule extends Rule {
         {
             if(cell == attackerKing)
             {
+                System.out.println("Scope3");
                 if(b_before[Math.min(y + 2, 7)][Math.min(x + 2, 7)] == GameBoard.cells.E)
                 {
                     return true;
@@ -144,14 +163,19 @@ public class InitJumpRule extends Rule {
         {
             if(cell == attackerKing)
             {
-                return b_before[Math.min(y + 2, 7)][Math.max(x - 2, 0)] == GameBoard.cells.E;
+                System.out.println("Scope4");
+                if(b_before[Math.min(y + 2, 7)][Math.max(x - 2, 0)] == GameBoard.cells.E)
+                {
+                    return true;
+                }
             }
         }
+        System.out.println("S1");
         return false;
     }
 
 
-    // the action() for this rule is not used, so nothing should occur
+    // the return value of isTriggered is not used, so nothing should occur
     @Override
     public void action() {
         // not applicable

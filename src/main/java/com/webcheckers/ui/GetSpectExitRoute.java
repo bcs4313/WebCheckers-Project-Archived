@@ -30,6 +30,7 @@ public class GetSpectExitRoute implements Route {
 
     @Override
     public String handle(Request request, Response response) {
+        response.redirect(WebServer.HOME_URL);
         return null;
     }
 }

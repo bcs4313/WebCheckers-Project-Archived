@@ -58,6 +58,7 @@ public class GetSpectGameRoute implements Route {
         vm.put("activeColor", game.getActiveColor());
         vm.put("board", gameView);
         vm.put("game",game);
+        vm.put("username", username);
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

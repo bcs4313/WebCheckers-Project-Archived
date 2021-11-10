@@ -19,25 +19,9 @@ import java.util.logging.Logger;
  *
  * @author Michael Ambrose
  */
+
 public class GetGameRoute implements Route{
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
-
-    public static final String IN_GAME_MSG = "Playing Game";
-
-    public static final String OPP_ATTR = "opponent";
-    public static final String GAME_OVER_ATTR = "isGameOver";
-    public static final String GAME_OVER_MSG_ATTR = "gameOverMessage";
-    public static final String MODE_ATTR = "modeOptionsAsJSON";
-    public static final String CUR_USER_ATTR = "currentUser";
-    public static final String VIEW_ATTR = "viewMode";
-    public static final String PLAY_ATTR = "PLAY";
-    public static final String RED_PLAY_ATTR = "redPlayer";
-    public static final String WHITE_PLAY_ATTR = "whitePlayer";
-    public static final String ACTIVE_ATTR = "activeColor";
-    public static final String BOARD_ATTR = "board";
-    public static final String GAME_ATTR = "game";
-    public static final String ID_ATTR = "gameID";
-    public static final String PLAYER_KEY = "PLAYER_KEY";
 
     private final String VIEW_NAME = "game.ftl";
     private final TemplateEngine templateEngine;
@@ -74,12 +58,14 @@ public class GetGameRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
         Gson gson = new Gson();
 
+        System.out.println("GetGameRoute trigger");
+
         final Session session = request.session();
 
         // retrieve opponent name and get them from the player lobby,
         // also do this for the client
-        final String opponent = request.queryParams(OPP_ATTR); //
-        String username = request.session().attribute(GetHomeRoute.USERNAME_ATTR);
+        final String opponent = request.queryParams("opponent"); //
+        String username = request.session().attribute("username");
         Player currentUser = this.playerLobby.getPlayer(username);
 
         // if an assignable opponent exists for a player (game started),
@@ -87,6 +73,8 @@ public class GetGameRoute implements Route{
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
             GameBoard thisBoard = opponentUser.getGame();
+
+            System.out.println("ID:: " + thisBoard.getGameID());
 
             if (currentUser.getGame().getRedPlayer() == opponentUser) {
                 thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
@@ -98,10 +86,10 @@ public class GetGameRoute implements Route{
                 Player winner = rm.getWinner();
                 if (currentUser.equals(winner)){
                     if (opponentUser.equals(opponentUser.getGame().getRedPlayer())){
-                        opprm.setWin(RuleMaster.WHITE_ATTR);
+                        opprm.setWin("white player");
                     }
                     else{
-                        opprm.setWin(RuleMaster.RED_ATTR);
+                        opprm.setWin("red player");
                     }
                     opprm.setGameOver(true);
                     winner.setInGame(false, thisBoard);
@@ -110,47 +98,50 @@ public class GetGameRoute implements Route{
                     currentUser.setInGame(false, thisBoard);
                 }
                 final Map<String,Object> modeOptions = new HashMap<>(2);
-                modeOptions.put(GAME_OVER_ATTR, true);
+                modeOptions.put("isGameOver", true);
+                sessionManager.removeSession(thisBoard.getGameID());
                 if (currentUser.getResigned() || opponentUser.getResigned()){
                     if (currentUser.equals(winner)) {
-                        modeOptions.put(GAME_OVER_MSG_ATTR, opponentUser + " has resigned");
+                        modeOptions.put("gameOverMessage", opponentUser.toString() + " has resigned");
                     }
                     else{
                         response.redirect(WebServer.HOME_URL);
                     }
                 }
                 else {
-                    modeOptions.put(GAME_OVER_MSG_ATTR, winner.toString() + " has captured all pieces");
+                    modeOptions.put("gameOverMessage", winner.toString() + " has captured all pieces");
                 }
-                vm.put(MODE_ATTR, gson.toJson(modeOptions));
+                vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
             }
 
             BoardView thisBoardView = thisBoard.toBoardView();
-            vm.put(CUR_USER_ATTR, currentUser);
-            vm.put(GetHomeRoute.TITLE_ATTR, IN_GAME_MSG);
-            vm.put(VIEW_ATTR,PLAY_ATTR);
-            vm.put(RED_PLAY_ATTR, thisBoard.getRedPlayer());
-            vm.put(WHITE_PLAY_ATTR, thisBoard.getWhitePlayer());
-            vm.put(ACTIVE_ATTR, thisBoard.getActiveColor());
-            vm.put(BOARD_ATTR, thisBoardView);
-            vm.put(GAME_ATTR,thisBoard);
+            vm.put("currentUser", currentUser);
+            vm.put("title", "Playing Game");
+            vm.put("viewMode","PLAY");
+            vm.put("redPlayer", thisBoard.getRedPlayer());
+            vm.put("whitePlayer", thisBoard.getWhitePlayer());
+            vm.put("activeColor", thisBoard.getActiveColor());
+            vm.put("board", thisBoardView);
+            vm.put("game",thisBoard);
+
+            System.out.println("activeColor = " + thisBoard.getActiveColor().toString());
 
             // Game ID must be stored in session
-            vm.put(ID_ATTR, currentUser.getGame().getGameID());
+            vm.put("gameID", currentUser.getGame().getGameID());
 
             // store client player id into session
-            session.attribute(PLAYER_KEY, currentUser.toString());
+            session.attribute("PLAYER_KEY", currentUser.toString());
 
         }
         else {
             Player opponentUser = this.playerLobby.getPlayer(opponent);
             if(opponentUser == null)
             {
-                session.attribute(GetHomeRoute.ERROR_ATTR, true);
+                session.attribute("error", true);
                 response.redirect(WebServer.HOME_URL);
             }
             if (opponentUser.isInGame()) { // error case
-                session.attribute(GetHomeRoute.ERROR_ATTR, true);
+                session.attribute("error", true);
                 response.redirect(WebServer.HOME_URL);
             }
             else{
@@ -161,28 +152,33 @@ public class GetGameRoute implements Route{
                 currentUser.setInGame(true, thisBoard);
                 opponentUser.setInGame(true, thisBoard);
 
+                System.out.println("ID:: " + thisBoard.getGameID());
+
                 // game must be stored in SessionManager
                 sessionManager.addSession(thisBoard.getGameID(), thisBoard);
 
-                BoardView thisBoardView = thisBoard.toBoardView();
-                vm.put(CUR_USER_ATTR, currentUser);
-                vm.put(GetHomeRoute.TITLE_ATTR, IN_GAME_MSG);
-                vm.put(VIEW_ATTR,PLAY_ATTR);
-                vm.put(RED_PLAY_ATTR, thisBoard.getRedPlayer());
-                vm.put(WHITE_PLAY_ATTR, thisBoard.getWhitePlayer());
-                vm.put(ACTIVE_ATTR, thisBoard.getActiveColor());
-                vm.put(BOARD_ATTR, thisBoardView);
-                vm.put(GAME_ATTR,thisBoard);
-
                 // Game ID must be stored in session
-                vm.put(ID_ATTR, currentUser.getGame().getGameID());
+                vm.put("gameID", currentUser.getGame().getGameID());
+
+                BoardView thisBoardView = thisBoard.toBoardView();
+                vm.put("currentUser", currentUser);
+                vm.put("title", "Playing Game");
+                vm.put("viewMode","PLAY");
+
+                System.out.println("activeColor == " + thisBoard.getActiveColor().toString());
+
+                vm.put("redPlayer", thisBoard.getRedPlayer());
+                vm.put("whitePlayer", thisBoard.getWhitePlayer());
+                vm.put("activeColor",thisBoard.getActiveColor());
+                vm.put("board", thisBoardView);
+                vm.put("game",thisBoard);
 
                 // store client player id into session
-                session.attribute(PLAYER_KEY, currentUser.toString());
+                session.attribute("PLAYER_KEY", currentUser.toString());
             }
         }
 
-        vm.put(GetHomeRoute.USERNAME_ATTR, username); // store username in home.ftl
+        vm.put("username", username); // store username in home.ftl
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

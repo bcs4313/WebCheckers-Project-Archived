@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * Class handles checker jump chains by
  * logging each individual jump and
  * forcing them to occur.
+ * @author Cody Smith (bcs4313@rit.edu)
  */
 public class Chainer {
     // list of positions that are included in this jump

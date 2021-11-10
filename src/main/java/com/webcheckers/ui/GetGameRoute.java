@@ -19,7 +19,6 @@ import java.util.logging.Logger;
  *
  * @author Michael Ambrose
  */
-
 public class GetGameRoute implements Route{
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
@@ -59,8 +58,6 @@ public class GetGameRoute implements Route{
         HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
         Gson gson = new Gson();
 
-        System.out.println("GetGameRoute trigger");
-
         final Session session = request.session();
 
         // retrieve opponent name and get them from the player lobby,
@@ -74,8 +71,6 @@ public class GetGameRoute implements Route{
         if (currentUser.getOpponent() != null){
             Player opponentUser = currentUser.getOpponent();
             GameBoard thisBoard = opponentUser.getGame();
-
-            System.out.println("ID:: " + thisBoard.getGameID());
 
             if (currentUser.getGame().getRedPlayer() == opponentUser) {
                 thisBoard = thisBoard.flipBoard(); // use of return value to not affect original state
@@ -102,7 +97,7 @@ public class GetGameRoute implements Route{
                 modeOptions.put("isGameOver", true);
                 if (currentUser.getResigned() || opponentUser.getResigned()){
                     if (currentUser.equals(winner)) {
-                        modeOptions.put("gameOverMessage", opponentUser.toString() + " has resigned");
+                        modeOptions.put("gameOverMessage", opponentUser + " has resigned");
                     }
                     else{
                         response.redirect(WebServer.HOME_URL);
@@ -123,8 +118,6 @@ public class GetGameRoute implements Route{
             vm.put("activeColor", thisBoard.getActiveColor());
             vm.put("board", thisBoardView);
             vm.put("game",thisBoard);
-
-            System.out.println("activeColor = " + thisBoard.getActiveColor().toString());
 
             // Game ID must be stored in session
             vm.put("gameID", currentUser.getGame().getGameID());
@@ -152,8 +145,6 @@ public class GetGameRoute implements Route{
                 currentUser.setInGame(true, thisBoard);
                 opponentUser.setInGame(true, thisBoard);
 
-                System.out.println("ID:: " + thisBoard.getGameID());
-
                 // game must be stored in SessionManager
                 sessionManager.addSession(thisBoard.getGameID(), thisBoard);
 
@@ -164,8 +155,6 @@ public class GetGameRoute implements Route{
                 vm.put("currentUser", currentUser);
                 vm.put("title", "Playing Game");
                 vm.put("viewMode","PLAY");
-
-                System.out.println("activeColor == " + thisBoard.getActiveColor().toString());
 
                 vm.put("redPlayer", thisBoard.getRedPlayer());
                 vm.put("whitePlayer", thisBoard.getWhitePlayer());

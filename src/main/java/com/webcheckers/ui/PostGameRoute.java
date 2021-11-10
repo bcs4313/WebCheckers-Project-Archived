@@ -1,7 +1,5 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Player;
 import spark.*;
 
 import java.util.Objects;
@@ -31,8 +29,6 @@ public class PostGameRoute implements Route {
     public String handle(Request request, Response response) {
 
         final Session session = request.session();
-        System.out.print("POST GAME ROUTE");
-
         return null;
     }
 

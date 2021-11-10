@@ -16,11 +16,25 @@ import spark.TemplateEngine;
 
 import java.util.Objects;
 
+/**
+ * The {@code POST /submitTurn} route handler.
+ *
+ * @author Cody Smith
+ */
 public class PostSubmitTurn implements Route {
 
     private final SessionManager sessionManager;
     private final TemplateEngine templateEngine;
 
+    /**
+     * The constructor for the @code POST /submitTurn route handler.
+     *
+     * @param templateEngine - template engine to use for rendering HTML page
+     * @param sessionManager - stores game sessions that can be accessed via ID number
+     *
+     * @throws NullPointerException
+     *    when the playerLobby or templateEngine parameter is null
+     */
     public PostSubmitTurn(final TemplateEngine templateEngine, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         Objects.requireNonNull(templateEngine, "sessionManager must not be null");
@@ -72,7 +86,6 @@ public class PostSubmitTurn implements Route {
         // clear chains and log
         rm.getChainer().clearJumps();
         rm.getLog().clearStack();
-        rm.resetCounter(); // create a new board init state
 
         //response.redirect(WebServer.GAME_URL);
         return gson.toJson(Message.info("Submitted Turn"));

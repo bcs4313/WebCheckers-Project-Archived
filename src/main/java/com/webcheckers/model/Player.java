@@ -1,6 +1,5 @@
 package com.webcheckers.model;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -67,10 +66,6 @@ public class Player {
     {
         this.playersGame = game;
         inGame = status;
-    }
-
-    public void removeGame(){
-        this.playersGame = null;
     }
 
     public void removeOpponent(){

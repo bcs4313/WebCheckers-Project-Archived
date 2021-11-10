@@ -33,6 +33,18 @@ public class PostSignInRoute implements Route {
         this.templateEngine = templateEngine;
     }
 
+    /**
+     * Post a command to sign into the PlayerLobby object,
+     * entering their username into the server for processing.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   A string, depicting whether the sign in was successful or not
+     */
     @Override
     public String handle(Request request, Response response) {
 

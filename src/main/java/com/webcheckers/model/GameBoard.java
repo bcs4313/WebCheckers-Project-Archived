@@ -115,8 +115,6 @@ public class GameBoard {
 
         // create rule system
         master = new RuleMaster(this);
-
-        System.out.println("board constructed");
     }
 
     /**
@@ -202,11 +200,9 @@ public class GameBoard {
     public void switchActiveColor(){
         if (this.activeColor.equals(activeColors.RED)){
             this.activeColor = activeColors.WHITE;
-            System.out.println("Switched active color to WHITE");
         }
         else{
             this.activeColor = activeColors.RED;
-            System.out.println("Switched active color to RED");
         }
     }
 

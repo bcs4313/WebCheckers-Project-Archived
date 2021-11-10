@@ -29,6 +29,19 @@ public class PostCheckTurn implements Route {
         this.sessionManager = sessionManager;
     }
 
+    /**
+     * Post a command to check if a player is on their turn,
+     * assuming its not their turn currently.
+     * If this is so, post a gson to switch players.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   gson object to interpret with AJAX
+     */
     @Override
     public Object handle(Request request, Response response) {
         final Session session = request.session();

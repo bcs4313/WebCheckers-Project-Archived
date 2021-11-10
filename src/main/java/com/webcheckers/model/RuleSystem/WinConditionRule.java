@@ -2,6 +2,11 @@ package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
 
+/**
+ * Defines the requirements for a team to "win" in a game
+ * of checkers.
+ * @author Triston Lincoln (trl6895@rit.edu)
+ */
 public class WinConditionRule extends Rule {
 
     private boolean red_has_piece;

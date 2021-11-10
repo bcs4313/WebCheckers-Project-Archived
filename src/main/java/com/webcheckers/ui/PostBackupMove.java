@@ -31,6 +31,18 @@ public class PostBackupMove implements Route {
         this.sessionManager = sessionManager;
     }
 
+    /**
+     * Post a command to back up the a move of a player,
+     * assuming its their turn.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   gson object to interpret with AJAX
+     */
     @Override
     public Object handle(Request request, Response response) {
         Gson gson = new Gson();
@@ -40,30 +52,14 @@ public class PostBackupMove implements Route {
         RuleMaster master = gb.getMaster();
 
         GameBoard.cells[][] debugBoard = gb.getBoard();
-        System.out.println("Prev: prevBoard ->");
-        for (GameBoard.cells[] cells : debugBoard) {
-            for (GameBoard.cells cell : cells) {
-                System.out.print(cell + ", ");
-            }
-            System.out.println();
-        }
 
         //FIX for undo issues:
         // incorporate the log and chainer objects for sync purposes.
         MoveLog log = master.getLog();
         GameBoard.cells[][] prevBoard = log.getPrevPosition();
 
-        System.out.println("After: prevBoard ->");
-        for (GameBoard.cells[] cells : prevBoard) {
-            for (GameBoard.cells cell : cells) {
-                System.out.print(cell + ", ");
-            }
-            System.out.println();
-        }
-
         gb.setBoard(prevBoard); // now also modifies the master cell state
         master.getChainer().undoJump();  // undo a jump action from the chainer
-        master.lowerCounter(); // reduce the movement counter by 1
 
         return gson.toJson(Message.info("Backup Move Successful"));
     }

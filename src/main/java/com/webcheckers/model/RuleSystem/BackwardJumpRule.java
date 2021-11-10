@@ -5,7 +5,9 @@ import com.webcheckers.model.Position;
 
 /**
  * This rule analyzes whether or not a checker is making a valid
- * Forward Jump
+ * Backward Jump
+ *@author Triston Lincoln (base code), (trl6895@rit.edu)
+ *@author Cody Smith (bugfixing and overhaul), (bcs4313@rit.edu)
  */
 public class BackwardJumpRule extends Rule {
 

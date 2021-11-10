@@ -2,6 +2,11 @@ package com.webcheckers.model.RuleSystem;
 
 import com.webcheckers.model.GameBoard;
 
+/**
+ * Abstraction of a rule to be handled by the ruleMaster class.
+ * Defines the fundamental methods of a rule in checkers.
+ * @author Cody Smith (bcs4313@rit.edu)
+ */
 public abstract class Rule {
     RuleMaster master; // master will handle all rule triggers concurrently
 

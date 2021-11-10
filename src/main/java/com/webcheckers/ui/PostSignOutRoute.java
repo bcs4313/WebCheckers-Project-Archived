@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- * the @code POST /signout route handler.
- * @author Triston Lincoln
+ * The {@code POST /signOut} route handler.
+ *
+ * @author Triston Lincoln (trl6895@rit.edu)
  */
 public class PostSignOutRoute implements Route {
     private final PlayerLobby playerLobby; // needed for the sign out process
@@ -33,6 +34,18 @@ public class PostSignOutRoute implements Route {
         this.templateEngine = templateEngine;
     }
 
+    /**
+     * Post a command to remove a user from the lobby, so
+     * they can sign in again.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   null
+     */
     @Override
     public String handle(Request request, Response response) {
 
@@ -41,6 +54,7 @@ public class PostSignOutRoute implements Route {
         final String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
         HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
 
+        // remove player from UsernameMap
         usernameMap.remove(username);
         session.removeAttribute(GetHomeRoute.USERNAME_ATTR);
 

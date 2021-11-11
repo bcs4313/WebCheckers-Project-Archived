@@ -70,6 +70,12 @@ public class WebServer {
    */
   public static final String GAME_URL = "/game";
 
+  public static final String SPECT_GAME_URL = "/spectator/game";
+
+  public static final String SPECT_CHECK_URL = "/spectator/checkTurn";
+
+  public static final String SPECT_EXIT_URL = "/spectator/stopWatching";
+
   public static final String CHECKTURN_URL = "/checkTurn";
 
   public static final String VALIDATEMOVE_URL = "/validateMove";
@@ -169,13 +175,17 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, this.playerLobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, this.playerLobby, this.sessionManager));
 
     // Shows the Checkers game SignIn page.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
 
     // Shows the Checkers game Game page
     get(GAME_URL, new GetGameRoute(templateEngine, this.playerLobby, this.sessionManager));
+
+    get(SPECT_GAME_URL, new GetSpectGameRoute(templateEngine, this.playerLobby, this.sessionManager));
+
+    get(SPECT_EXIT_URL, new GetSpectExitRoute(templateEngine));
 
     // Posts login request to Signin Page
     post(SIGNIN_URL, new PostSignInRoute(playerLobby, templateEngine));
@@ -191,6 +201,8 @@ public class WebServer {
     post(RESIGNGAME_URL, new PostResignGame(templateEngine, this.playerLobby, this.sessionManager));
 
     post(SUBMITTURN_URL, new PostSubmitTurn(templateEngine, this.sessionManager));
+
+    post(SPECT_CHECK_URL, new PostSpectCheckRoute(templateEngine, this.sessionManager ,this.playerLobby));
     //
     LOG.config("WebServer is initialized.");
   }

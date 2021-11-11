@@ -11,6 +11,10 @@ import spark.*;
 
 import java.util.Objects;
 
+/**
+ * the POST /resignGame route handler.
+ * @author Triston Lincoln
+ */
 public class PostResignGame implements Route {
 
     private final TemplateEngine templateEngine;
@@ -22,7 +26,10 @@ public class PostResignGame implements Route {
      * The constructor for the POST /resignGame route handler.
      *
      * @param templateEngine - template engine to use for rendering HTML page
-     *
+     * @param playerLobby
+     *  the manager of all players in the application
+     * @param sessionManager
+     *  manages all games in the application
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */

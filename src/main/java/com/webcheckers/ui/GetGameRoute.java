@@ -48,6 +48,10 @@ public class GetGameRoute implements Route{
      * The constructor for the {@code GET/game} route handler
      * 
      * @param templateEngine engine used to construct a webpage route
+     * @param playerLobby
+     *  the manager of all players in the application
+     * @param sessionManager
+     *  manages all games in the application
      */
     public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
@@ -110,7 +114,10 @@ public class GetGameRoute implements Route{
                     currentUser.setInGame(false, thisBoard);
                 }
                 final Map<String,Object> modeOptions = new HashMap<>(2);
+          
+                sessionManager.removeSession(thisBoard.getGameID());
                 modeOptions.put(GAME_OVER_ATTR, true);
+
                 if (currentUser.getResigned() || opponentUser.getResigned()){
                     if (currentUser.equals(winner)) {
                         modeOptions.put(GAME_OVER_MSG_ATTR, opponentUser + " has resigned");

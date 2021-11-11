@@ -135,9 +135,9 @@ public class KingPromotionRuleTest {
         
         //master makes the board transition based on before and after positions
         master.createBoardTransition(before_pos, after_pos, gameBoard.getActiveColor());
-
-        //isTriggered() -> returns true if there is a case of a piece being promoted
-        if(CuT.isTriggered(b_before, b_after))
-            CuT.action();
+        master.triggerRuleSet();
+        
+        //validates basic red piece has been promoted to red king
+        assertEquals(cells.RK, gameBoard.getBoard()[0][3]);
     }
 }

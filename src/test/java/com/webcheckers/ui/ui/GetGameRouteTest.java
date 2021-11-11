@@ -1,7 +1,18 @@
 package com.webcheckers.ui.ui;
 
+import com.sun.net.httpserver.Filter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
+import com.webcheckers.model.GameBoard;
+import com.webcheckers.model.Move;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Position;
+import com.webcheckers.model.RuleSystem.BackwardJumpRule;
+import com.webcheckers.model.RuleSystem.BasicMoveRule;
+import com.webcheckers.model.boardview.BoardView;
+import com.webcheckers.model.boardview.Piece;
+import com.webcheckers.model.boardview.Row;
+import com.webcheckers.model.boardview.Space;
 import com.webcheckers.ui.GetGameRoute;
 import com.webcheckers.ui.TemplateEngineTester;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +39,7 @@ public class GetGameRouteTest {
     private Session session;
     private Response response;
     private TemplateEngine engine;
+    private SessionManager sessionManager;
 
     // friendly values/objects
     private PlayerLobby playerLobby;
@@ -59,8 +71,9 @@ public class GetGameRouteTest {
         // now to set up a playerLobby to process
         // initialize required object/s
         playerLobby = new PlayerLobby();
+
         // generate a route
-        testComponent = new GetGameRoute(engine, playerLobby);
+        // = new GetGameRoute(engine, playerLobby);
         Player opp = new Player("opponent");
         Player self = new Player("self");
         playerLobby.login(opp);
@@ -70,6 +83,10 @@ public class GetGameRouteTest {
         when(session.attribute("currentUser")).thenReturn(self);
         when(session.attribute("username")).thenReturn(self.getName());
         when(request.queryParams("opponent")).thenReturn(opp.getName());
+
+        sessionManager = new SessionManager();
+
+        testComponent = new GetGameRoute(engine, playerLobby,sessionManager);
 
         // now handle the response with the prepared variables
         testComponent.handle(request, response);
@@ -85,7 +102,7 @@ public class GetGameRouteTest {
         testHelper.assertViewModelAttribute("redPlayer", self);
         testHelper.assertViewModelAttribute("whitePlayer", opp);
         testHelper.assertViewModelAttribute("currentUser", self);
-        testHelper.assertViewModelAttribute("activeColor", "RED");
+        testHelper.assertViewModelAttribute("activeColor", GameBoard.activeColors.RED);
         testHelper.assertViewModelAttribute("viewMode", "PLAY");
     }
 
@@ -104,13 +121,15 @@ public class GetGameRouteTest {
         // now to set up a playerLobby to process
         // initialize required object/s
         playerLobby = new PlayerLobby();
+        sessionManager = new SessionManager();
         // generate a route
-        testComponent = new GetGameRoute(engine, playerLobby);
+        testComponent = new GetGameRoute(engine, playerLobby,sessionManager);
         Player opp = new Player("opponent");
         Player self = new Player("self");
         playerLobby.login(opp);
         playerLobby.login(self);
-        //opp.setInGame(true);
+        GameBoard gameBoard = new GameBoard(opp,null);
+        opp.setInGame(true,gameBoard);
 
         // add request parameters
         when(session.attribute("currentUser")).thenReturn(self);
@@ -147,13 +166,17 @@ public class GetGameRouteTest {
         // now to set up a playerLobby to process
         // initialize required object/s, with an implied opponent
         playerLobby = new PlayerLobby();
+        sessionManager = new SessionManager();
         // generate a route
-        testComponent = new GetGameRoute(engine, playerLobby);
+        testComponent = new GetGameRoute(engine, playerLobby,sessionManager);
         Player opp = new Player("opponent");
         Player self = new Player("self");
         self.setOpponent(opp); // this here signifies that an opponent was assigned
         playerLobby.login(opp);
         playerLobby.login(self);
+        GameBoard gameBoard = new GameBoard(opp,self);
+        opp.setInGame(true,gameBoard);
+        self.setInGame(true,gameBoard);
 
         // add request parameters
         when(session.attribute("currentUser")).thenReturn(self);

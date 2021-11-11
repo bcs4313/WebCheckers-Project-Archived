@@ -22,7 +22,7 @@ public class PostCheckTurn implements Route {
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */
-    PostCheckTurn(TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
+    public PostCheckTurn(TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
         this.playerLobby = playerLobby;

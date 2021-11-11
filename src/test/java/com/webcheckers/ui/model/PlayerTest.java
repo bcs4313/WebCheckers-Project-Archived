@@ -1,5 +1,6 @@
 package com.webcheckers.ui.model;
 
+import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -54,18 +55,19 @@ public class PlayerTest {
     @Test
         public void player_in_game(){
             final Player beta = new Player("beta");
+            GameBoard cut = new GameBoard(beta,null);
             assertEquals(beta.isInGame(),false);
 
-           // beta.setInGame(false);
+            beta.setInGame(false,cut);
             assertEquals(beta.isInGame(),false);
 
-           // beta.setInGame(true);
+            beta.setInGame(true,cut);
             assertEquals(beta.isInGame(),true);
 
-           // beta.setInGame(true);
+            beta.setInGame(true,cut);
             assertEquals(beta.isInGame(),true);
 
-           // beta.setInGame(false);
+            beta.setInGame(false,cut);
             assertEquals(beta.isInGame(),false);
         }
 

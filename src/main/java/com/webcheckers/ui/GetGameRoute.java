@@ -114,8 +114,7 @@ public class GetGameRoute implements Route{
                     currentUser.setInGame(false, thisBoard);
                 }
                 final Map<String,Object> modeOptions = new HashMap<>(2);
-          
-                sessionManager.removeSession(thisBoard.getGameID());
+
                 modeOptions.put(GAME_OVER_ATTR, true);
 
                 if (currentUser.getResigned() || opponentUser.getResigned()){

@@ -1,14 +1,19 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.GameBoard;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.RuleSystem.RuleMaster;
 import com.webcheckers.model.boardview.BoardView;
 import spark.*;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import static com.webcheckers.ui.GetGameRoute.GAME_OVER_ATTR;
 
 /**
  * the GET /spectator/game route handler.
@@ -20,6 +25,8 @@ public class GetSpectGameRoute implements Route {
     private final SessionManager sessionManager;
     private final PlayerLobby playerLobby;
 
+    private static final String SPECT_MSG = "Spectating Game";
+    private static final String SPECT_MODE = "SPECTATOR";
     /**
      * The constructor for the GET /spectator/game route handler.
      *
@@ -56,24 +63,50 @@ public class GetSpectGameRoute implements Route {
     public String handle(Request request, Response response) {
         Session session = request.session();
         HashMap<String, Object> vm = new HashMap<>();
+        Gson gson = new Gson();
 
-        String username = request.session().attribute("username");
+        String username = request.session().attribute(GetHomeRoute.USERNAME_ATTR);
         Player currentUser = this.playerLobby.getPlayer(username);
+        Player opponentUser = currentUser.getOpponent();
 
-        int id = Integer.parseInt(request.queryParams("gameID"));
+        int id = Integer.parseInt(request.queryParams(GetGameRoute.ID_ATTR));
 
         GameBoard game = sessionManager.retrieveSession(id);
         BoardView gameView = game.toBoardView();
 
-        vm.put("currentUser", currentUser);
-        vm.put("title", "Spectating Game");
-        vm.put("viewMode","SPECTATOR");
-        vm.put("redPlayer", game.getRedPlayer());
-        vm.put("whitePlayer", game.getWhitePlayer());
-        vm.put("activeColor", game.getActiveColor());
-        vm.put("board", gameView);
-        vm.put("game",game);
-        vm.put("username", username);
+        RuleMaster rm = game.getMaster();
+        if (rm.getGameOver()){
+            Player winner = rm.getWinner();
+            final Map<String,Object> modeOptions = new HashMap<>(2);
+            modeOptions.put(GetGameRoute.GAME_OVER_ATTR, true);
+            if (game.getWhitePlayer().getResigned() || game.getRedPlayer().getResigned()){
+                if (game.getWhitePlayer().equals(winner)) {
+                    modeOptions.put(GetGameRoute.GAME_OVER_MSG_ATTR, game.getRedPlayer().toString() + " has resigned");
+                }
+                else{
+                    modeOptions.put(GetGameRoute.GAME_OVER_MSG_ATTR, game.getWhitePlayer().toString() + " has resigned");
+                }
+            }
+            else {
+                if (game.getWhitePlayer().equals(winner)) {
+                    modeOptions.put(GetGameRoute.GAME_OVER_MSG_ATTR, game.getWhitePlayer().toString() + " has captured all pieces");
+                }
+                else{
+                    modeOptions.put(GetGameRoute.GAME_OVER_MSG_ATTR, game.getRedPlayer().toString() + " has captured all pieces");
+                }
+            }
+            vm.put(GetGameRoute.MODE_ATTR, gson.toJson(modeOptions));
+        }
+
+        vm.put(GetGameRoute.CUR_USER_ATTR, currentUser);
+        vm.put(GetHomeRoute.TITLE_ATTR, SPECT_MSG);
+        vm.put(GetGameRoute.VIEW_ATTR,SPECT_MODE);
+        vm.put(GetGameRoute.RED_PLAY_ATTR, game.getRedPlayer());
+        vm.put(GetGameRoute.WHITE_PLAY_ATTR, game.getWhitePlayer());
+        vm.put(GetGameRoute.ACTIVE_ATTR, game.getActiveColor());
+        vm.put(GetGameRoute.BOARD_ATTR, gameView);
+        vm.put(GetGameRoute.GAME_ATTR,game);
+        vm.put(GetHomeRoute.USERNAME_ATTR, username);
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

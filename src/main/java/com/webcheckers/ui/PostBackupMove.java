@@ -26,7 +26,7 @@ public class PostBackupMove implements Route {
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */
-    PostBackupMove(TemplateEngine templateEngine, SessionManager sessionManager) {
+    public PostBackupMove(TemplateEngine templateEngine, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         Objects.requireNonNull(templateEngine, "sessionManager must not be null");
         this.templateEngine = templateEngine;

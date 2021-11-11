@@ -49,4 +49,8 @@ public class SessionManager {
     {
         gameBoardMap.remove(gameID);
     }
+
+    public HashMap<Integer, GameBoard> getGameBoardMap(){
+        return this.gameBoardMap;
+    }
 }

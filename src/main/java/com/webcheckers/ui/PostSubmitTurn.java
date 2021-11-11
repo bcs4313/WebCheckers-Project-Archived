@@ -26,6 +26,7 @@ public class PostSubmitTurn implements Route {
     private final SessionManager sessionManager;
     private final TemplateEngine templateEngine;
 
+
     public static final String JUMP_MSG = "To submit this turn, you must complete the jump chain!";
     public static final String SUBMIT_MSG = "Submitted Turn";
     /**

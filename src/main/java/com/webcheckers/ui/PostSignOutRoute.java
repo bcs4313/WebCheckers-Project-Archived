@@ -17,7 +17,7 @@ public class PostSignOutRoute implements Route {
     private final TemplateEngine templateEngine;
 
     /**
-     * The constructor for the @code POST /signin route handler.
+     * The constructor for the @code POST /signout route handler.
      *
      * @param playerLobby - contains login info. Aids in signing in a user.
      * @param templateEngine - template engine to use for rendering HTML page

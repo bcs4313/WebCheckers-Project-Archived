@@ -39,6 +39,10 @@ public class GetHomeRoute implements Route {
    *
    * @param templateEngine
    *   the HTML template rendering engine
+   * @param playerLobby
+   *   the manager of all players in the application
+   * @param sessionManager
+   *   manages all games in the application
    */
   public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");

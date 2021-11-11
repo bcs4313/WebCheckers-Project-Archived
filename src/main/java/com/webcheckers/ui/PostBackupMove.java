@@ -26,7 +26,8 @@ public class PostBackupMove implements Route {
      * The constructor for the POST /backupMove route handler.
      *
      * @param templateEngine - template engine to use for rendering HTML page
-     *
+     * @param sessionManager
+     *   manages all games in the application
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */

@@ -24,7 +24,10 @@ public class GetSpectGameRoute implements Route {
      * The constructor for the GET /spectator/game route handler.
      *
      * @param templateEngine - template engine to use for rendering HTML page
-     *
+     * @param playerLobby
+     *  the manager of all players in the application
+     * @param sessionManager
+     *  manages all games in the application
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */
@@ -37,6 +40,18 @@ public class GetSpectGameRoute implements Route {
         this.sessionManager = sessionManager;
     }
 
+    /**
+     * Render the WebCheckers Game page
+     * as a spectator
+     *
+     * @param request
+     *  the HTTP request
+     * @param response
+     *  the HTTP response
+     *
+     * @return
+     *  the rendered HTML for the Game page
+     */
     @Override
     public String handle(Request request, Response response) {
         Session session = request.session();

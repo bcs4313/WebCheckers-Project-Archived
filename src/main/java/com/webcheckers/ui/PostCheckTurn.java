@@ -22,7 +22,10 @@ public class PostCheckTurn implements Route {
      * The constructor for the POST /checkTurn route handler.
      *
      * @param templateEngine - template engine to use for rendering HTML page
-     *
+     * @param playerLobby
+     *  the manager of all players in the application
+     * @param sessionManager
+     *  manages all games in the application
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */

@@ -23,7 +23,10 @@ public class PostSpectCheckRoute implements Route {
      * The constructor for the POST /spectator/checkTurn route handler.
      *
      * @param templateEngine - template engine to use for rendering HTML page
-     *
+     * @param playerLobby
+     *  the manager of all players in the application
+     * @param sessionManager
+     *  manages all games in the application
      * @throws NullPointerException
      *    when the playerLobby or templateEngine parameter is null
      */
@@ -36,6 +39,19 @@ public class PostSpectCheckRoute implements Route {
         this.sessionManager = sessionManager;
     }
 
+    /**
+     * Post a command to check if a player is on their turn,
+     * assuming its not their turn currently.
+     * If this is so, post a gson to switch players.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   gson object to interpret with AJAX
+     */
     @Override
     public String handle(Request request, Response response) {
         final Session session = request.session();

@@ -24,6 +24,10 @@ public class PostValidateMove implements Route {
     private final TemplateEngine templateEngine;
     private final SessionManager sessionManager;
 
+    private static final String ACTION_DATA = "actionData";
+    private static final String GOOD_MOVE = "Nice Move!";
+    private static final String BAD_MOVE = "Move is not allowed bruh";
+
     /**
      * The constructor for the POST /validateMove route handler.
      *
@@ -33,34 +37,36 @@ public class PostValidateMove implements Route {
      *    when the sessionManager or templateEngine parameter is null
      */
     PostValidateMove(TemplateEngine templateEngine, SessionManager sessionManager) {
-        System.out.println("construct");
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
         this.sessionManager = sessionManager;
     }
 
+    /**
+     * Post a command containing the information regarding a move,
+     * If the move is valid (RuleMaster checks this), Change the
+     * GameBoard matrix according to the info.
+     * if not, revert the move and print an error message.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   gson object to interpret with AJAX
+     */
     @Override
     public String handle(Request request, Response response) {
         Gson gson = new Gson();
-        Move movement = gson.fromJson(request.queryParams("actionData"), Move.class);
+        Move movement = gson.fromJson(request.queryParams(ACTION_DATA), Move.class);
 
-        System.out.println("PostValidateTrigger");
-        System.out.println("obj = " + movement.toString());
         // retrieve positions regarding the move
         Position beforePos = movement.getStart();
         Position afterPos = movement.getEnd();
 
-        System.out.println("beforePos = " + beforePos.toString());
-        System.out.println("afterPos = " + afterPos.toString());
-
-        System.out.println("BEFOREPOS:: y:" + beforePos.getRow() + " x:" + beforePos.getCell());
-        System.out.println("AFTERPOS:: y:" + afterPos.getRow() + " x:" + afterPos.getCell());
-
-        System.out.println("GAMEID: " + request.queryParams("gameID"));
-
         // retrieve gameID from session manager
-        int idVal = Integer.parseInt(request.queryParams("gameID"));
-        System.out.println("Player = " + request.attribute("PLAYER_KEY"));
+        int idVal = Integer.parseInt(request.queryParams(GetGameRoute.ID_ATTR));
 
         // now to retrieve a game with the queried ID
         GameBoard gb = sessionManager.retrieveSession(idVal);
@@ -79,21 +85,17 @@ public class PostValidateMove implements Route {
 
         if(result)
         {
-            System.out.println("+ValidMove");
-
-            // since the move is valid, we must send one of
-            // two messages
-            // true:
+            // since the move is valid, we must send one of two messages
+            // true: Nice Move!
             // false: opponent is still taking their turn
 
-            return gson.toJson(Message.info("Nice Move!"));
+            return gson.toJson(Message.info(GOOD_MOVE));
         }
         else
         {
             gb.setBoard(beforeBoard); // undo board on an invalid move
             master.getLog().getPrevPosition(); // undo log storage
-            System.out.println("-InvalidMove");
-            return gson.toJson(Message.error("Move is not allowed bruh"));
+            return gson.toJson(Message.error(BAD_MOVE));
         }
     }
 

@@ -182,9 +182,6 @@ public class WebServer {
 
     post(SIGNOUT_URL, new PostSignOutRoute(playerLobby, templateEngine));
 
-    // Posts requests to the Game Page
-    post(GAME_URL, new PostGameRoute(templateEngine));
-
     post(CHECKTURN_URL, new PostCheckTurn(templateEngine, this.playerLobby, this.sessionManager));
 
     post(VALIDATEMOVE_URL, new PostValidateMove(templateEngine, this.sessionManager));

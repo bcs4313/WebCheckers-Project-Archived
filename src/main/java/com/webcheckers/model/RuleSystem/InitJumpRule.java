@@ -89,6 +89,7 @@ public class InitJumpRule extends Rule {
             System.out.println("SINGLECHECK");
             int y = forceCheck[0];
             int x = forceCheck[1];
+            System.out.println("looking at y: " + y + "x: " + x);
             GameBoard.cells cell = b_input[y][x];
             if (cell == attackerKing || cell == attackerBasic) {
                 System.out.println("Potential Attacker identified: " + cell.toString());
@@ -100,7 +101,7 @@ public class InitJumpRule extends Rule {
             }
             else
             {
-                System.out.println("???");
+                System.out.println("??? = " + cell.toString());
             }
         }
         return false;

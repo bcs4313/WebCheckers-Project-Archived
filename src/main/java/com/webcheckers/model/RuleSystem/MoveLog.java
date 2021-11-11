@@ -7,6 +7,7 @@ import java.util.Stack;
 /**
  * This class stores the previous movements of a player,
  * making it easy to undo a move.
+ * @author Cody Smith (bcs4313@rit.edu)
  */
 public class MoveLog {
     RuleMaster master;

@@ -28,6 +28,17 @@ public class GetSpectExitRoute implements Route {
         this.templateEngine = templateEngine;
     }
 
+    /**
+     * Post a command to stop spectating
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   null
+     */
     @Override
     public String handle(Request request, Response response) {
         response.redirect(WebServer.HOME_URL);

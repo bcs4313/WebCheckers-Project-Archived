@@ -32,6 +32,10 @@ public class GetGameRoute implements Route{
      * The constructor for the {@code GET/game} route handler
      * 
      * @param templateEngine engine used to construct a webpage route
+     * @param playerLobby
+     *  the manager of all players in the application
+     * @param sessionManager
+     *  manages all games in the application
      */
     public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby, SessionManager sessionManager) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");

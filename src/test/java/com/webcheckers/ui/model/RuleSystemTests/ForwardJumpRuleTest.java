@@ -88,7 +88,7 @@ public class ForwardJumpRuleTest {
 
     /**
      * Validates the jump made was legal
-     * 
+     */
     @Test
     public void test_valid_jump() {
         //board with moved piece (forward jump)
@@ -112,6 +112,34 @@ public class ForwardJumpRuleTest {
         //isTriggered() -> returns false if jump is legal/valid
         assertFalse(CuT.isTriggered(b_before, b_after));
     }
-    */
+
+    /**
+     * Verifies that a valid jump deletes the piece (target) that
+     * was being jumped over
+     */
+    @Test
+    public void test_jump_action() {
+        //board with moved piece (forward jump)
+        b_after = new cells[][] {
+            {X, W, X, W, X, W, X, W},
+            {W, X, W, X, W, X, W, X},
+            {X, E, X, W, X, R, X, W},
+            {E, X, R, X, E, X, E, X},
+            {X, W, X, E, X, E, X, E},
+            {E, X, E, X, R, X, R, X},
+            {X, R, X, R, X, R, X, R},
+            {R, X, R, X, R, X, R, X}};
+        
+        //Location of piece
+        before_pos = new Position(4, 3);
+        after_pos = new Position(2, 5);
+
+        //master makes the board transition based on before and after positions
+        master.createBoardTransition(before_pos, after_pos, gameBoard.getActiveColor());
+        master.triggerRuleSet();
+
+        //validates the white piece (that was jumped over) is now an empty space
+        assertEquals(cells.E, gameBoard.getBoard()[3][4]);
+    }
 
 }

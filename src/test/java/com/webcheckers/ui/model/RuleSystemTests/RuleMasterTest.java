@@ -71,18 +71,40 @@ public class RuleMasterTest {
             {X, R, X, R, X, R, X, R},
             {R, X, R, X, R, X, R, X}};
         
-            //Makes a jump
-            before_pos = new Position(4, 7);
-            after_pos = new Position(2, 5);
+        //Makes a jump
+        before_pos = new Position(4, 7);
+        after_pos = new Position(2, 5);
             
-            gameBoard.setBoard(fixedBoard);
-            CuT.createBoardTransition(before_pos, after_pos, gameBoard.getActiveColor());
-            CuT.triggerRuleSet();
+        gameBoard.setBoard(fixedBoard);
+        CuT.createBoardTransition(before_pos, after_pos, gameBoard.getActiveColor());
+
+        assertTrue(CuT.triggerRuleSet());
 
         assertEquals(cells.E, gameBoard.getBoard()[4][7]);
         assertEquals(cells.E, gameBoard.getBoard()[3][6]);
         assertEquals(cells.R, gameBoard.getBoard()[2][5]);
+    }
+
+    @Test
+    public void test_trigger_ruleset_invalid_jump() {
+        fixedBoard = new cells[][] {
+            {X, W, X, W, X, W, X, W},
+            {W, X, W, X, E, X, W, X},
+            {X, W, X, W, X, W, X, W},
+            {E, X, E, X, E, X, W, X},
+            {X, E, X, E, X, E, X, R},
+            {R, X, R, X, R, X, E, X},
+            {X, R, X, R, X, R, X, R},
+            {R, X, R, X, R, X, R, X}};
+        
+        //Makes a jump
+        before_pos = new Position(4, 7);
+        after_pos = new Position(1, 4);
             
+        gameBoard.setBoard(fixedBoard);
+        CuT.createBoardTransition(before_pos, after_pos, gameBoard.getActiveColor());
+
+        assertFalse(CuT.triggerRuleSet());
     }
 
     /**

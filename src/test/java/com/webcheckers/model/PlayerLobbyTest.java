@@ -39,13 +39,13 @@ public class PlayerLobbyTest {
         player = new Player("   "); //INVALID USERNAME: no alphanumeric
 
         // check if login was a failure
-        assertFalse(CuT.login(player));
+        assertNull(CuT.login(player));
         assertFalse(CuT.getUsernameMap().containsKey(player.getName()));
 
         player = new Player(""); //INVALID USERNAME: 0 char long
 
         // check if login was a failure
-        assertFalse(CuT.login(player));
+        assertNull(CuT.login(player));
         assertFalse(CuT.getUsernameMap().containsKey(player.getName()));
     }
 
@@ -66,7 +66,7 @@ public class PlayerLobbyTest {
     public void loginSystemSuccesses() {
         //Valid Username with alphanumerics
         player = new Player("Hi1");
-        assertTrue(CuT.login(player));
+        assertSame(CuT.login(player), player);
         assertTrue(CuT.getUsernameMap().containsKey(player.getName()));
         assertEquals(player, CuT.getPlayer(player.getName()));
         CuT.logout(player.getName());
@@ -74,7 +74,7 @@ public class PlayerLobbyTest {
 
         //Valid Username with alphanumerics and spaces
         player = new Player("my Name is");
-        assertTrue(CuT.login(player));
+        assertSame(CuT.login(player), player);
         assertTrue(CuT.getUsernameMap().containsKey(player.getName()));
         assertEquals(player, CuT.getPlayer(player.getName()));
         CuT.logout(player.getName());

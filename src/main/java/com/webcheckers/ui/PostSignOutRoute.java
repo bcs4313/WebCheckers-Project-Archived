@@ -1,10 +1,8 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Player;
 import spark.*;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -52,10 +50,9 @@ public class PostSignOutRoute implements Route {
         final Session session = request.session();
 
         final String username = session.attribute(GetHomeRoute.USERNAME_ATTR);
-        HashMap<String, Player> usernameMap = this.playerLobby.getUsernameMap();
+        this.playerLobby.logout(username);
 
         // remove player from UsernameMap
-        usernameMap.remove(username);
         session.removeAttribute(GetHomeRoute.USERNAME_ATTR);
 
         response.redirect(WebServer.HOME_URL);

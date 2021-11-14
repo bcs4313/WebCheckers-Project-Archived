@@ -1,9 +1,9 @@
 package com.webcheckers.ui.ui;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.Player;
 import com.webcheckers.ui.GetHomeRoute;
-import com.webcheckers.ui.GetSignInRoute;
 import com.webcheckers.ui.TemplateEngineTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,12 +20,14 @@ public class GetHomeRouteTest {
     private TemplateEngine engine;
     private GetHomeRoute beta;
     private PlayerLobby lobby;
+    private SessionManager sessionManager;
     private TemplateEngineTester testHelper;
 
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
         session = mock(Session.class);
+        sessionManager = mock(SessionManager.class);
         when(request.session()).thenReturn(session);
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
@@ -33,7 +35,7 @@ public class GetHomeRouteTest {
         Player self = new Player("self");
         lobby.login(self);
 
-        beta = new GetHomeRoute(engine,lobby);
+        beta = new GetHomeRoute(engine,lobby, sessionManager);
         testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     }

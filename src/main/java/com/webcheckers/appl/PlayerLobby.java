@@ -19,7 +19,7 @@ public class PlayerLobby {
     // Map of username -> player object, stores
     // all logged-in users
     private HashMap<String, Player> usernameMap;
-
+    private HashMap<String, Player> loggedOutMap;
     /**
      * Basic constructor. Just makes a username hashmap and logs creation.
      */
@@ -29,6 +29,7 @@ public class PlayerLobby {
 
         // create a new username hashmap
         usernameMap = new HashMap<>();
+        loggedOutMap = new HashMap<>();
     }
 
     public HashMap<String, Player> getUsernameMap(){
@@ -60,9 +61,10 @@ public class PlayerLobby {
      * Attempts to sign in a user by adding their name
      * to the username list.
      * @param player a player object containing the name
-     * @return if the login was successful
+     * @return null if unsuccessful, a player object
+     * if successful, player object handles async login
      */
-    public boolean login(Player player)
+    public Player login(Player player)
     {
         // get list via hashmap keyset
         Set<String> usernameList = usernameMap.keySet();
@@ -70,14 +72,29 @@ public class PlayerLobby {
         // first we will do some syntax checks for username validation
         boolean isNameValid = verifyPlayerName(player);
 
+        Player ply = loggedOutMap.get(player.getName());
         // if the name already exists they cannot login
-        if(usernameList.contains(player.getName())) { return false; }
-        if(!isNameValid) { return false; }
+        if(!isNameValid) { return null; } // in no case should the string formatting be invalid
+        if(usernameList.contains(player.getName())) {
+            // if the player that exists hasn't
+            // logged out than we will deny the login
+            if(ply == null)
+            {
+                return null;
+            }
+        }
+        else if(ply != null)
+        { // if the player has logged out, load the relevant player object
+            loggedOutMap.remove(ply.getName());
+            usernameMap.put(player.getName(), ply);
+            ply.setVerified(true);
+            return ply;
+        }
 
         // validation checks passed. We will now log in
         usernameMap.put(player.getName(), player);
         player.setVerified(true);
-        return true;
+        return player; // return newly created player
 
     }
 
@@ -86,12 +103,14 @@ public class PlayerLobby {
      * from the user list.
      * @param username name of player to remove
      */
-    //TODO: actually implement sign out lol
     public void logout(String username)
     {
         Player ply = getPlayer(username);
         ply.setVerified(false);
         usernameMap.remove(ply.getName());
+
+        // asynchronously store this player's data for later
+        loggedOutMap.put(ply.getName(), ply);
     }
 
     /**

@@ -51,11 +51,17 @@ public class PostSignInRoute implements Route {
         final Session session = request.session();
 
         session.attribute(GetHomeRoute.ERROR_ATTR, false);
+
         final String username = request.queryParams(GetHomeRoute.USERNAME_ATTR);
         Player ply = new Player(username);
+
         //check to see if login is valid
-        boolean attemptLogin = playerLobby.login(ply);
-        if (attemptLogin) {
+        Player attemptLogin = playerLobby.login(ply);
+        if (attemptLogin != null) {
+
+            // if the object id's are different,
+            ply = attemptLogin; // potentially update Player object
+
             //go to home page as signed-in user
             session.attribute(GetHomeRoute.USERNAME_ATTR, ply.getName()); // store username in client session
             response.redirect(WebServer.HOME_URL);

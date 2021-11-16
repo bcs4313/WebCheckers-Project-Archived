@@ -13,7 +13,7 @@ public class GameBoard {
     static int universal_ID = 0;
 
     // handles all rules regarding the board state and various actions
-    private RuleMaster master;
+    private final RuleMaster master;
 
     // current state of the board players see
     BoardView currentView;
@@ -31,25 +31,10 @@ public class GameBoard {
     // whose turn is it currently?
     activeColors activeColor;
 
-    boolean isGameOver;
-
-    boolean red_win;
-
-    boolean white_win;
-
-    enum viewModes{
-        PLAY,
-        SPECTATOR,
-        REPLAY
-    }
-
     public enum activeColors{
         RED,
         WHITE
     }
-
-    // other stats
-    viewModes viewMode = viewModes.PLAY;
 
     /**
      * an enumeration of all the possible states of

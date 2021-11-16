@@ -24,7 +24,6 @@ public class GetHomeRoute implements Route {
   public static final String USERLIST_ATTR = "allUsernames";
   public static final String USERAMT_ATTR = "amtPlayers";
   public static final String ERROR_ATTR = "error";
-  public static final String IP_ATTR = "address";
 
   public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
   public static final Message ERROR_OPP_IN_GAME_MSG = Message.error("Requested opponent is already in a game.");

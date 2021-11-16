@@ -8,7 +8,7 @@ public class InitJumpRule extends Rule {
     private final RuleMaster master;
 
     // if not null, force ONLY a check at this position
-    private int[] forceCheck;
+    private final int[] forceCheck;
 
     // Defined pieces to analyze
     private final GameBoard.cells attackerKing;

@@ -18,17 +18,6 @@ public class WinConditionRule extends Rule {
         this.white_has_piece=false;
     }
 
-    // TODO
-    //  is this necessary if the cell Types are present in the GameBoard class? - Triston
-    public enum cells {
-        X,
-        E,
-        W,
-        R,
-        WK,
-        RK
-    }
-
     @Override
     public boolean isTriggered(GameBoard.cells[][] b_before, GameBoard.cells[][] b_after) {
         this.red_has_piece = false;

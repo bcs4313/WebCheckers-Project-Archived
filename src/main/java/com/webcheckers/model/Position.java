@@ -5,8 +5,8 @@ package com.webcheckers.model;
  * @author Cody Smith (bcs4313@rit.edu)
  */
 public class Position {
-    private int row; // 0 to 7
-    private int cell; // 0 to 7
+    private final int row; // 0 to 7
+    private final int cell; // 0 to 7
 
     /**
      * Position Object Constructor

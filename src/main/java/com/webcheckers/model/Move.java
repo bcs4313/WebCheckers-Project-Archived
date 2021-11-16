@@ -6,8 +6,8 @@ package com.webcheckers.model;
  */
 public class Move {
     // positions that represent a movement
-    private Position start;
-    private Position end;
+    private final Position start;
+    private final Position end;
 
     /**
      * Basic constructor for movement representation

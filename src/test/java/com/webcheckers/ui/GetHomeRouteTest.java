@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.SessionManager;
 import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -11,9 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +35,7 @@ class GetHomeRouteTest {
     private Request request;
     private Response response;
     private Session session;
+    private SessionManager sessionManager;
     private TemplateEngine engine;
 
     // Strings for testing sessions with players
@@ -50,12 +50,13 @@ class GetHomeRouteTest {
         request = mock(Request.class);
         response = mock(Response.class);
         session = mock(Session.class);
+        sessionManager = mock(SessionManager.class);
         when(request.session()).thenReturn(session);
         engine = mock(TemplateEngine.class);
 
         playerLobby = new PlayerLobby();
 
-        CuT = new GetHomeRoute(engine, playerLobby);
+        CuT = new GetHomeRoute(engine, playerLobby, sessionManager);
     }
 
     /**
